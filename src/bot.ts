@@ -24,16 +24,17 @@ import type { PermittedRoleIdsDatabase } from './api/permitted-role-ids-database
 import type { BroadcasterNameAndPersonalEmoteSetsDatabase } from './api/broadcaster-name-and-personal-emote-sets-database.js';
 import type { TwitchClipMessageBuilder } from './message-builders/twitch-clip-message-builder.js';
 import type { EmoteMessageBuilder } from './message-builders/emote-message-builder.js';
-import type { ReadonlyOpenAI, ReadonlyTranslator } from './types.js';
+import type { PingMessageBuilder } from './message-builders/ping-message-builder.js';
+import type { ReadonlyGoogleGenAI, ReadonlyOpenAI, ReadonlyTranslator } from './types.js';
 import type { Guild } from './guild.js';
 import type { TwitchClipsMeiliSearch } from './twitch-clips-meili-search.js';
-import type { GoogleGenAI } from '@google/genai';
 
 const CLEANUP_MINUTES = 10;
 
 export class Bot {
   readonly #client: Client;
   readonly #openai: ReadonlyOpenAI | undefined;
+  readonly #googleGenAI: ReadonlyGoogleGenAI | undefined;
   readonly #translator: ReadonlyTranslator | undefined;
   readonly #twitchApi: Readonly<TwitchApi> | undefined;
   readonly #addedEmotesDatabase: Readonly<AddedEmotesDatabase>;
@@ -42,10 +43,10 @@ export class Bot {
   readonly #broadcasterNameAndPersonalEmoteSetsDatabase: Readonly<BroadcasterNameAndPersonalEmoteSetsDatabase>;
   readonly #cachedUrl: Readonly<CachedUrl>;
   readonly #guilds: Readonly<Guild>[];
-  readonly #twitchClipMessageBuilders: TwitchClipMessageBuilder[];
-  readonly #emoteMessageBuilders: EmoteMessageBuilder[];
+  readonly #twitchClipMessageBuilders: TwitchClipMessageBuilder[] = [];
+  readonly #emoteMessageBuilders: EmoteMessageBuilder[] = [];
+  readonly #pingMessageBuilders: PingMessageBuilder[] = [];
   readonly #twitchClipsMeiliSearch: Readonly<TwitchClipsMeiliSearch> | undefined;
-  readonly #googleGenAi: Readonly<GoogleGenAI> | undefined;
   readonly #commandHandlers: Map<
     string,
     (interaction: ChatInputCommandInteraction, guild: Readonly<Guild>) => Promise<void>
@@ -54,6 +55,7 @@ export class Bot {
   public constructor(
     client: Client,
     openai: ReadonlyOpenAI | undefined,
+    googleGenAI: ReadonlyGoogleGenAI | undefined,
     translator: ReadonlyTranslator | undefined,
     twitchApi: Readonly<TwitchApi> | undefined,
     addedEmotesDatabase: Readonly<AddedEmotesDatabase>,
@@ -62,11 +64,11 @@ export class Bot {
     broadcasterNameAndPersonalEmoteSetsDatabase: Readonly<BroadcasterNameAndPersonalEmoteSetsDatabase>,
     cachedUrl: Readonly<CachedUrl>,
     guilds: readonly Readonly<Guild>[],
-    twitchClipsMeiliSearch: Readonly<TwitchClipsMeiliSearch> | undefined,
-    googleGenAI: Readonly<GoogleGenAI> | undefined
+    twitchClipsMeiliSearch: Readonly<TwitchClipsMeiliSearch> | undefined
   ) {
     this.#client = client;
     this.#openai = openai;
+    this.#googleGenAI = googleGenAI;
     this.#translator = translator;
     this.#twitchApi = twitchApi;
     this.#addedEmotesDatabase = addedEmotesDatabase;
@@ -75,10 +77,7 @@ export class Bot {
     this.#broadcasterNameAndPersonalEmoteSetsDatabase = broadcasterNameAndPersonalEmoteSetsDatabase;
     this.#cachedUrl = cachedUrl;
     this.#guilds = [...guilds];
-    this.#twitchClipMessageBuilders = [];
-    this.#emoteMessageBuilders = [];
     this.#twitchClipsMeiliSearch = twitchClipsMeiliSearch;
-    this.#googleGenAi = googleGenAI;
     this.#commandHandlers = new Map<
       string,
       (interaction: ChatInputCommandInteraction, guild: Readonly<Guild>) => Promise<void>
@@ -86,7 +85,7 @@ export class Bot {
       ['emote', emoteHandler()],
       ['emotes', emotesHandler(this.#cachedUrl)],
       ['emotelist', emoteListHandler(this.#emoteMessageBuilders)],
-      ['gemini', geminiHandler(this.#googleGenAi)],
+      ['gemini', geminiHandler(this.#googleGenAI)],
       ['clip', clipHandler(this.#twitchClipMessageBuilders)],
       ['addemote', addEmoteHandlerSevenTVNotInSet(this.#addedEmotesDatabase)],
       ['shortestuniquesubstrings', shortestuniquesubstringsHandler(this.#emoteMessageBuilders)],
@@ -94,7 +93,7 @@ export class Bot {
       ['translate', translateHandler(this.#translator)],
       ['transient', transientHandler()],
       ['findtheemoji', findTheEmojiHandler()],
-      ['pingme', pingMeHandler(this.#pingsDatabase, this.#client)],
+      ['pingme', pingMeHandler(this.#pingsDatabase, this.#pingMessageBuilders, this.#client)],
       ['poe2', steamHandler('2694490')],
       ['settings', settingsHandler()]
     ]);
@@ -123,12 +122,15 @@ export class Bot {
   }
 
   public registerHandlers(): void {
-    this.#client.on(Events.ClientReady, () => {
-      console.log(`Logged in as ${this.#client.user?.tag ?? ''}!`);
+    this.#client.on(Events.ClientReady, (): void => {
+      const { user } = this.#client;
+      if (user === null) throw new Error('Bot client user is empty.');
+
+      console.log(`Logged in as ${user.tag}!`);
     });
 
     //interaction
-    this.#client.on(Events.InteractionCreate, async (interaction) => {
+    this.#client.on(Events.InteractionCreate, async (interaction): Promise<void> => {
       //interaction not
       if (
         !interaction.isChatInputCommand() &&
@@ -189,9 +191,11 @@ export class Bot {
         const emoteMessageBuilder = await buttonHandler(
           this.#twitchClipMessageBuilders,
           this.#emoteMessageBuilders,
+          this.#pingMessageBuilders,
           guild,
           this.#addedEmotesDatabase,
-          this.#permittedRoleIdsDatabase
+          this.#permittedRoleIdsDatabase,
+          this.#pingsDatabase
         )(interaction);
 
         if (emoteMessageBuilder !== undefined) this.#emoteMessageBuilders.push(emoteMessageBuilder);
@@ -207,31 +211,40 @@ export class Bot {
     });
   }
 
-  public cleanUpMessageBuilders(): void {
+  public cleanupMessageBuilders(): void {
     const timeNow = Date.now();
 
-    for (const [index, twitchClipMessageBuilder] of this.#twitchClipMessageBuilders.entries()) {
-      const difference = timeNow - twitchClipMessageBuilder.interaction.createdAt.getTime();
+    this.#cleanupMessageBuilders(this.#twitchClipMessageBuilders, timeNow);
+    this.#cleanupMessageBuilders(this.#emoteMessageBuilders, timeNow);
+    this.#cleanupPingMessageBuilders(timeNow);
+  }
+
+  public async start(discordToken: string | undefined): Promise<void> {
+    await this.#client.login(discordToken);
+  }
+
+  #cleanupMessageBuilders(messageBuilders: (TwitchClipMessageBuilder | EmoteMessageBuilder)[], timeNow: number): void {
+    for (const [index, messageBuilder] of messageBuilders.entries()) {
+      const difference = timeNow - messageBuilder.interaction.createdAt.getTime();
 
       if (difference > CLEANUP_MINUTES * 60000) {
-        this.#twitchClipMessageBuilders.splice(index, 1);
-        this.cleanUpMessageBuilders();
-        return;
-      }
-    }
-
-    for (const [index, emoteMessageBuilder] of this.#emoteMessageBuilders.entries()) {
-      const difference = timeNow - emoteMessageBuilder.interaction.createdAt.getTime();
-
-      if (difference > CLEANUP_MINUTES * 60000) {
-        this.#emoteMessageBuilders.splice(index, 1);
-        this.cleanUpMessageBuilders();
+        messageBuilders.splice(index, 1);
+        this.#cleanupMessageBuilders(messageBuilders, timeNow);
         return;
       }
     }
   }
 
-  public async start(discordToken: string | undefined): Promise<void> {
-    await this.#client.login(discordToken);
+  #cleanupPingMessageBuilders(timeNow: number): void {
+    for (const [index, pingMessageBuilder] of this.#pingMessageBuilders.entries()) {
+      const difference = timeNow - pingMessageBuilder.interaction.createdAt.getTime();
+
+      if (difference > CLEANUP_MINUTES * 60000) {
+        pingMessageBuilder.cleanupPressedMapsJob.cancel();
+        this.#pingMessageBuilders.splice(index, 1);
+        this.#cleanupPingMessageBuilders(timeNow);
+        return;
+      }
+    }
   }
 }

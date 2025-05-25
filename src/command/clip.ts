@@ -6,6 +6,16 @@ import type { Guild } from '../guild.js';
 const CLEANUP_MINUTES = 10;
 const MAX_TWITCH_CLIP_MESSAGE_BUILDERS_LENGTH = 15;
 
+function shuffle(array: unknown[]): void {
+  let currentIndex = array.length;
+  while (currentIndex !== 0) {
+    const randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+  }
+}
+
 export function clipHandler(twitchClipMessageBuilders: TwitchClipMessageBuilder[]) {
   return async (interaction: ChatInputCommandInteraction, guild: Readonly<Guild>): Promise<void> => {
     const { twitchClipsMeiliSearchIndex } = guild;
@@ -38,9 +48,10 @@ export function clipHandler(twitchClipMessageBuilders: TwitchClipMessageBuilder[
         const sortOptions = interaction.options.get('sortby')?.value;
         return sortOptions !== undefined ? String(sortOptions).trim() : undefined;
       })();
-      const sortByField = ((): string | undefined => {
-        if (sortBy === 'views') return 'view_count';
-        return undefined;
+      const sortByField = ((): string => {
+        if (sortBy === 'views') return 'view_count:desc';
+        else if (sortBy === 'shuffle') return sortBy;
+        return 'created_at:desc';
       })();
 
       const filter = ((): string => {
@@ -53,7 +64,7 @@ export function clipHandler(twitchClipMessageBuilders: TwitchClipMessageBuilder[
 
         if (filter_.length >= 2) return filter_.join(' AND ');
         else if (filter_.length === 1) return filter_[0];
-        else return '';
+        return '';
       })();
 
       const { maxTotalHits } = await twitchClipsMeiliSearchIndex.getPagination();
@@ -62,10 +73,11 @@ export function clipHandler(twitchClipMessageBuilders: TwitchClipMessageBuilder[
       const search = await twitchClipsMeiliSearchIndex.search(title ?? '', {
         filter: filter,
         matchingStrategy: 'all',
-        sort: sortByField !== undefined ? [`${sortByField}:desc`] : ['created_at:desc'],
+        sort: sortByField !== 'shuffle' ? [sortByField] : undefined,
         limit: maxTotalHits
       });
-      const hits: readonly TwitchClip[] = search.hits.map((hit: ReadonlyHit) => hit as TwitchClip);
+      const hits: TwitchClip[] = search.hits.map((hit: ReadonlyHit) => hit as TwitchClip);
+      if (sortByField === 'shuffle') shuffle(hits);
 
       if (hits.length === 0) {
         await defer;
@@ -81,16 +93,14 @@ export function clipHandler(twitchClipMessageBuilders: TwitchClipMessageBuilder[
       const reply = twitchClipMessageBuilder.first();
       await defer;
 
-      if (reply === undefined) return undefined;
+      if (reply === undefined) return;
       await interaction.editReply(reply);
       twitchClipMessageBuilders.push(twitchClipMessageBuilder);
-      return;
     } catch (error) {
       console.log(`Error at clipHandler --> ${error instanceof Error ? error.message : String(error)}`);
 
       await defer;
-      await interaction.editReply('failed to get clip.');
-      return;
+      await interaction.editReply('Failed to get clip.');
     }
   };
 }

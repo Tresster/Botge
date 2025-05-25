@@ -1,18 +1,19 @@
-import schedule from 'node-schedule';
+import type { PermissionsBitField, Client, ChatInputCommandInteraction, TextChannel } from 'discord.js';
 
-import type { Client, ChatInputCommandInteraction, TextChannel } from 'discord.js';
-
-import type { Ping } from '../types.js';
+import { PingMessageBuilder } from '../message-builders/ping-message-builder.js';
 import type { PingsDatabase } from '../api/ping-database.js';
-import {
-  hoursAndMinutesToMiliseconds,
-  getMessage,
-  getTimeMessagePart,
-  getMessageMessagePart
-} from '../utils/ping/ping-utils.js';
 import type { Guild } from '../guild.js';
+import type { Ping } from '../types.js';
 
-export function pingMeHandler(pingsDataBase: Readonly<PingsDatabase>, client: Client) {
+export function hoursAndMinutesToMiliseconds(hours: number, minutes: number): number {
+  return (hours * 60 + minutes) * 60 * 1000;
+}
+
+export function pingMeHandler(
+  pingsDataBase: Readonly<PingsDatabase>,
+  pingMessageBuilders: Readonly<PingMessageBuilder>[],
+  client: Client
+) {
   return async (interaction: ChatInputCommandInteraction, guild: Readonly<Guild>): Promise<void> => {
     const defer = interaction.deferReply();
     try {
@@ -29,6 +30,13 @@ export function pingMeHandler(pingsDataBase: Readonly<PingsDatabase>, client: Cl
         return messageOptions !== undefined ? String(messageOptions).trim() : undefined;
       })();
 
+      const interactionGuild = interaction.guild;
+      if (interactionGuild === null) {
+        await defer;
+        await interaction.editReply('The bot had to have been added as a server bot for this command to work.');
+        return;
+      }
+
       if (hours === undefined && minutes === undefined) {
         await defer;
         await interaction.editReply('Either hours or minutes must be specified.');
@@ -37,24 +45,19 @@ export function pingMeHandler(pingsDataBase: Readonly<PingsDatabase>, client: Cl
 
       if (hours !== undefined && hours < 1) {
         await defer;
-        await interaction.editReply('Hours must at least 1.');
+        await interaction.editReply('Hours must be at least 1.');
         return;
       }
+
       if (minutes !== undefined && minutes < 1) {
         await defer;
-        await interaction.editReply('Minutes must at least 1.');
+        await interaction.editReply('Minutes must be at least 1.');
         return;
       }
 
       if (message !== undefined && message.length > 1800) {
         await defer;
         await interaction.editReply('Message must be at most 1800 characters.');
-        return;
-      }
-
-      if (interaction.guild === null) {
-        await defer;
-        await interaction.editReply('The bot must be in a server for this command to work.');
         return;
       }
 
@@ -65,34 +68,52 @@ export function pingMeHandler(pingsDataBase: Readonly<PingsDatabase>, client: Cl
       let channel: TextChannel | undefined = undefined;
 
       try {
-        channel = (await client.channels.fetch(channelId)) as TextChannel;
+        channel = client.channels.cache.get(channelId) as TextChannel | undefined;
+        if (channel === undefined) throw new Error('Channel not found.');
       } catch {
         await defer;
         await interaction.editReply('The command can only be used in a text channel.');
         return;
       }
 
-      const userId = interaction.user.id;
+      const botPermissionsInChannel = ((): Readonly<PermissionsBitField> => {
+        const { user } = client;
+        if (user === null) throw new Error('Bot client user is empty.');
 
+        const botAsMember = interactionGuild.members.cache.get(user.id);
+        if (botAsMember === undefined) throw new Error('Bot is not in the guild.');
+
+        const botPermissionsInChannel_ = channel.permissionsFor(botAsMember);
+        return botPermissionsInChannel_;
+      })();
+
+      if (!botPermissionsInChannel.has('ViewChannel') || !botPermissionsInChannel.has('SendMessages')) {
+        await defer;
+        await interaction.editReply(
+          'The bot does not have the permissions to either view this channel or to send messages in this channel.\n(Replying to command is different from sending messages.)'
+        );
+        return;
+      }
+
+      const userId = interaction.user.id;
       const ping: Ping = {
         time: timeNow,
         hours: hours ?? null,
         minutes: minutes ?? null,
         userId: userId,
         channelId: channelId,
-        message: message ?? null
+        message: message ?? null,
+        userIds: null,
+        userIdRemoved: null
       };
-      pingsDataBase.insert(ping);
 
-      schedule.scheduleJob(pingDate, () => {
-        void channel.send(getMessage(hours, minutes, message, userId));
-        pingsDataBase.delete(ping);
-      });
-
+      const pingMessageBuilder = new PingMessageBuilder(interaction, ping, pingDate, channel);
+      const reply = pingMessageBuilder.registerPing(pingsDataBase);
       await defer;
-      await interaction.editReply(
-        `The ping has been registered for ${getTimeMessagePart(hours, minutes)}${getMessageMessagePart(message)}`
-      );
+
+      if (reply === undefined) return;
+      await interaction.editReply(reply);
+      pingMessageBuilders.push(pingMessageBuilder);
     } catch (error) {
       console.log(`Error at pingMe --> ${error instanceof Error ? error.message : String(error)}`);
 

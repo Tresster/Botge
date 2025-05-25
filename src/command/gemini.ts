@@ -1,6 +1,7 @@
 import type { ChatInputCommandInteraction } from 'discord.js';
-import type { GoogleGenAI, Content, Tool } from '@google/genai';
+import type { Content, Tool } from '@google/genai';
 import type { Guild } from '../guild.js';
+import type { ReadonlyGoogleGenAI } from '../types.js';
 
 const MAXDISCORDMESSAGELENGTH = 2000;
 
@@ -121,9 +122,9 @@ export function isWebSearchRequired(promptText: string): boolean {
   return true;
 }
 
-export function geminiHandler(googleGenAi: Readonly<GoogleGenAI> | undefined) {
+export function geminiHandler(googleGenAI: ReadonlyGoogleGenAI | undefined) {
   return async (interaction: ChatInputCommandInteraction, guild: Readonly<Guild>): Promise<void> => {
-    if (googleGenAi === undefined) {
+    if (googleGenAI === undefined) {
       await interaction.reply('Gemini command is not available in this server.');
       return;
     }
@@ -159,7 +160,7 @@ export function geminiHandler(googleGenAi: Readonly<GoogleGenAI> | undefined) {
       };
 
       // 1 token is around 4 english characters
-      const response = await googleGenAi.models.generateContent({
+      const response = await googleGenAI.models.generateContent({
         model: 'gemini-2.5-flash-preview-04-17',
         contents: fullPrompt,
         config: {

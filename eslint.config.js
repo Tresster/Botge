@@ -69,7 +69,8 @@ export default tseslint.config(
                 'GuildEmoji',
                 'Role',
                 'GuildMember',
-                'Guild'
+                'Guild',
+                'TextChannel'
               ],
               package: 'discord.js'
             }

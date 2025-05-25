@@ -52,7 +52,7 @@ export class TwitchClipMessageBuilder extends BaseMessageBuilder<
         )
         .setImage(thumbnail_url)
         .setFooter({
-          text: `${this.currentIndex + 1}/${this.arrayLength}. Sorted by ${this.#sortedByText}.`
+          text: `${this.currentIndex + 1}/${this.arrayLength}. ${this.#sortedByText === 'shuffle' ? 'Shuffled' : `Sorted by ${this.#sortedByText}`}.`
         });
 
       return {

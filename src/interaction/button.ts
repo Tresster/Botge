@@ -13,6 +13,12 @@ import {
 import { TwitchClipMessageBuilder } from '../message-builders/twitch-clip-message-builder.js';
 import { EmoteMessageBuilder } from '../message-builders/emote-message-builder.js';
 import {
+  PingMessageBuilder,
+  PING_ME_AS_WELL_BUTTON_BASE_CUSTOM_ID,
+  REMOVE_ME_FROM_PING_BUTTON_BASE_CUSTOM_ID,
+  DELETE_PING_BUTTON_BASE_CUSTOM_ID
+} from '../message-builders/ping-message-builder.js';
+import {
   getBaseCustomIdFromCustomId,
   getMessageBuilderTypeFromCustomId,
   getCounterFromCustomId,
@@ -32,12 +38,14 @@ import {
 } from '../command/settings.js';
 import type {
   TwitchClipMessageBuilderTransformFunctionReturnType,
-  EmoteMessageBuilderTransformFunctionReturnType
+  EmoteMessageBuilderTransformFunctionReturnType,
+  PingMessageBuilderReplies
 } from '../types.js';
 import type { Guild } from '../guild.js';
 import { booleanToAllowed } from '../utils/boolean-to-string.js';
 import type { PermittedRoleIdsDatabase } from '../api/permitted-role-ids-database.js';
 import type { AddedEmotesDatabase } from '../api/added-emotes-database.js';
+import type { PingsDatabase } from '../api/ping-database.js';
 import { Platform } from '../enums.js';
 import { getSevenTvEmoteSetLinkFromSevenTvApiUlr } from '../utils/get-api-url.js';
 
@@ -74,9 +82,11 @@ const MAX_ROLE_SELECT_MENU_VALUES = 10;
 export function buttonHandler(
   twitchClipMessageBuilders: readonly Readonly<TwitchClipMessageBuilder>[],
   emoteMessageBuilders: readonly Readonly<EmoteMessageBuilder>[],
+  pingMessageBuilders: Readonly<PingMessageBuilder>[],
   guild: Readonly<Guild>,
   addedEmotesDatabase: Readonly<AddedEmotesDatabase>,
-  permittedRoleIdsDatabase: Readonly<PermittedRoleIdsDatabase>
+  permittedRoleIdsDatabase: Readonly<PermittedRoleIdsDatabase>,
+  pingsDataBase: Readonly<PingsDatabase>
 ) {
   return async (interaction: ButtonInteraction): Promise<EmoteMessageBuilder | undefined> => {
     try {
@@ -160,34 +170,91 @@ export function buttonHandler(
         return undefined;
       }
 
+      const messageBuilderType = getMessageBuilderTypeFromCustomId(customId);
+      const counter = getCounterFromCustomId(customId);
+      const baseCustomId = getBaseCustomIdFromCustomId(customId);
+      const interactionUserId = interaction.user.id;
+
+      if (messageBuilderType === PingMessageBuilder.messageBuilderType) {
+        const pingMessageBuilderIndex = pingMessageBuilders.findIndex(
+          (pingMessageBuilder_) => pingMessageBuilder_.counter === counter
+        );
+        if (pingMessageBuilderIndex === -1) {
+          await interaction.deferUpdate();
+          return undefined;
+        }
+
+        const pingMessageBuilder = pingMessageBuilders[pingMessageBuilderIndex];
+        const pingMessageBuilderInteraction = pingMessageBuilder.interaction;
+
+        let pingMessageBuilderReplies: PingMessageBuilderReplies | undefined = undefined;
+        if (baseCustomId === PING_ME_AS_WELL_BUTTON_BASE_CUSTOM_ID) {
+          pingMessageBuilderReplies = pingMessageBuilder.addUserId(pingsDataBase, interactionUserId);
+        } else if (baseCustomId === REMOVE_ME_FROM_PING_BUTTON_BASE_CUSTOM_ID) {
+          pingMessageBuilderReplies = pingMessageBuilder.removeUserId(pingsDataBase, interactionUserId);
+        } else if (baseCustomId === DELETE_PING_BUTTON_BASE_CUSTOM_ID) {
+          if (pingMessageBuilderInteraction.user.id !== interactionUserId) {
+            await interaction.deferUpdate();
+            return undefined;
+          }
+
+          pingMessageBuilderReplies = pingMessageBuilder.deletePing(pingsDataBase);
+        } else {
+          throw new Error('unknown button baseCustomId.');
+        }
+
+        const { buttonReply, reply, deletionEvent } = pingMessageBuilderReplies;
+        if (buttonReply !== undefined) {
+          await interaction.reply({ content: buttonReply, flags: MessageFlags.Ephemeral });
+          return undefined;
+        }
+
+        await interaction.deferUpdate();
+        if (reply === undefined) return undefined;
+        else {
+          await pingMessageBuilderInteraction.editReply(reply);
+
+          if (deletionEvent) {
+            pingMessageBuilder.cleanupPressedMapsJob.cancel();
+            pingMessageBuilders.splice(pingMessageBuilderIndex, 1);
+          }
+        }
+        return undefined;
+      }
+
       const messageBuilders = (():
         | readonly Readonly<TwitchClipMessageBuilder>[]
         | readonly Readonly<EmoteMessageBuilder>[]
         | undefined => {
-        const messageBuilderType = getMessageBuilderTypeFromCustomId(customId);
-
         if (messageBuilderType === TwitchClipMessageBuilder.messageBuilderType) return twitchClipMessageBuilders;
         else if (messageBuilderType === EmoteMessageBuilder.messageBuilderType) return emoteMessageBuilders;
         return undefined;
       })();
-      if (messageBuilders === undefined) return undefined;
+      if (messageBuilders === undefined) {
+        await interaction.deferUpdate();
+        return undefined;
+      }
 
-      const counter = getCounterFromCustomId(customId);
       const messageBuilderIndex = messageBuilders.findIndex(
-        (messageBuilder: Readonly<TwitchClipMessageBuilder> | Readonly<EmoteMessageBuilder>) =>
-          messageBuilder.counter === counter
+        (messageBuilder_: Readonly<TwitchClipMessageBuilder> | Readonly<EmoteMessageBuilder>) =>
+          messageBuilder_.counter === counter
       );
-      if (messageBuilderIndex === -1) return undefined;
+      if (messageBuilderIndex === -1) {
+        await interaction.deferUpdate();
+        return undefined;
+      }
 
       const messageBuilder = messageBuilders[messageBuilderIndex];
       const messageBuilderInteraction = messageBuilder.interaction;
-      if (messageBuilderInteraction.user.id !== interaction.user.id) return undefined;
+      if (messageBuilderInteraction.user.id !== interactionUserId) {
+        await interaction.deferUpdate();
+        return undefined;
+      }
 
       let reply:
         | EmoteMessageBuilderTransformFunctionReturnType
         | TwitchClipMessageBuilderTransformFunctionReturnType
         | undefined = undefined;
-      const baseCustomId = getBaseCustomIdFromCustomId(customId);
       if (baseCustomId === PREVIOUS_BUTTON_BASE_CUSTOM_ID) {
         reply = messageBuilder.previous();
       } else if (baseCustomId === NEXT_BUTTON_BASE_CUSTOM_ID) {
@@ -212,6 +279,8 @@ export function buttonHandler(
         } else {
           reply = undefined;
         }
+      } else {
+        throw new Error('unknown button baseCustomId.');
       }
 
       await interaction.deferUpdate();

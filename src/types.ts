@@ -1,6 +1,7 @@
 import type { DeepReadonly } from 'ts-essentials';
 
 import type OpenAI from 'openai';
+import type { GoogleGenAI } from '@google/genai';
 import type { Hit, RecordAny } from 'meilisearch';
 import type { Translator } from 'deepl-node';
 
@@ -20,6 +21,7 @@ import type {
 } from 'discord.js';
 
 export type ReadonlyOpenAI = DeepReadonly<OpenAI>;
+export type ReadonlyGoogleGenAI = DeepReadonly<GoogleGenAI>;
 export type ReadonlyTranslator = DeepReadonly<Translator>;
 export type ReadonlyHit = DeepReadonly<Hit>;
 export type ReadonlyRecordAny = DeepReadonly<RecordAny>;
@@ -167,6 +169,8 @@ export type Ping = {
   readonly userId: string;
   readonly channelId: string;
   readonly message: string | null;
+  readonly userIds: readonly string[] | null;
+  readonly userIdRemoved: boolean | null;
 };
 
 export type AssetInfo = {
@@ -223,4 +227,15 @@ export type TwitchClipMessageBuilderTransformFunctionReturnType = {
 export type EmoteMessageBuilderTransformFunctionReturnType = {
   readonly embeds: readonly ReadonlyEmbedBuilder[];
   readonly components: readonly ReadonlyActionRowBuilderMessageActionRowComponentBuilder[];
+};
+
+export type PingMessageBuilderTransformFunctionReturnType = {
+  readonly content: string;
+  readonly components: readonly ReadonlyActionRowBuilderMessageActionRowComponentBuilder[];
+};
+
+export type PingMessageBuilderReplies = {
+  readonly reply: PingMessageBuilderTransformFunctionReturnType | undefined;
+  readonly buttonReply: string | undefined;
+  readonly deletionEvent: boolean;
 };

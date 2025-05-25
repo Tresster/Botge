@@ -79,7 +79,7 @@ const clip: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
     option
       .setName('sortby')
       .setDescription('Sort. Default: date created (newest first)')
-      .addChoices({ name: 'Views', value: 'views' })
+      .addChoices({ name: 'Views', value: 'views' }, { name: 'Shuffle the list', value: 'shuffle' })
   );
 
 const addemote: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()

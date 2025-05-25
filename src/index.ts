@@ -74,7 +74,7 @@ const bot = await (async (): Promise<Readonly<Bot>> => {
   const openai: ReadonlyOpenAI | undefined =
     OPENAI_API_KEY !== undefined ? new OpenAI({ apiKey: OPENAI_API_KEY }) : undefined;
 
-  const googleGenAi = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
+  const googleGenAI = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
 
   const translator: ReadonlyTranslator | undefined =
     DEEPL_API_KEY !== undefined ? new Translator(DEEPL_API_KEY) : undefined;
@@ -124,6 +124,7 @@ const bot = await (async (): Promise<Readonly<Bot>> => {
   return new Bot(
     client,
     openai,
+    googleGenAI,
     translator,
     await twitchApi,
     addedEmotesDatabase,
@@ -132,8 +133,7 @@ const bot = await (async (): Promise<Readonly<Bot>> => {
     broadcasterNameAndPersonalEmoteSetsDatabase,
     cachedUrl,
     await Promise.all(guilds),
-    twitchClipsMeiliSearch,
-    googleGenAi
+    twitchClipsMeiliSearch
   );
 })();
 
@@ -141,6 +141,8 @@ function closeDatabase(): void {
   try {
     bot.addedEmotesDatabase.close();
     bot.pingsDatabase.close();
+    bot.permittedRoleIdsDatabase.close();
+    bot.broadcasterNameAndPersonalEmoteSetsDatabase.close();
   } catch (error) {
     console.log(`Error at closeDatabase: ${error instanceof Error ? error.message : String(error)}`);
   }
@@ -193,7 +195,7 @@ if (UPDATE_CLIPS_ON_STARTUP === 'true') {
 // update every 4th minutes 0th second
 scheduleJob('0 */4 * * * *', () => {
   try {
-    bot.cleanUpMessageBuilders();
+    bot.cleanupMessageBuilders();
   } catch (error) {
     console.log(`cleanUpTwitchClipMessageBuilders() failed: ${error instanceof Error ? error.message : String(error)}`);
   }

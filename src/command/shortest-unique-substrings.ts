@@ -47,7 +47,7 @@ export function getShortestUniqueSubstrings(
   return [original, shortestUniqueSubstrings];
 }
 
-export function shortestuniquesubstringsHandler(emb: EmoteMessageBuilder[]) {
+export function shortestuniquesubstringsHandler(emoteMessageBuilders: EmoteMessageBuilder[]) {
   return async (interaction: ChatInputCommandInteraction, guild: Readonly<Guild>): Promise<void> => {
     const { emoteMatcher } = guild;
     const ephemeral = Boolean(interaction.options.get('ephemeral')?.value);
@@ -83,7 +83,7 @@ export function shortestuniquesubstringsHandler(emb: EmoteMessageBuilder[]) {
 
         await defer;
         await interaction.editReply(reply);
-        emb.push(emoteMessageBuilder);
+        emoteMessageBuilders.push(emoteMessageBuilder);
         return;
       }
 

@@ -179,7 +179,7 @@ export function emoteHandler() {
   };
 }
 
-export function emoteListHandler(emb: EmoteMessageBuilder[]) {
+export function emoteListHandler(emoteMessageBuilders: EmoteMessageBuilder[]) {
   return async (interaction: ChatInputCommandInteraction, guild: Readonly<Guild>): Promise<void> => {
     const { emoteMatcher } = guild;
     const defer = interaction.deferReply();
@@ -229,7 +229,7 @@ export function emoteListHandler(emb: EmoteMessageBuilder[]) {
 
       if (reply === undefined) return undefined;
       await interaction.editReply(reply);
-      emb.push(emoteMessageBuilder);
+      emoteMessageBuilders.push(emoteMessageBuilder);
       return;
     } catch (error) {
       console.log(`Error at emoteListHandler --> ${error instanceof Error ? error.message : String(error)}`);

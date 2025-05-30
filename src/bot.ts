@@ -126,6 +126,8 @@ export class Bot {
       const { user } = this.#client;
       if (user === null) throw new Error('Bot client user is empty.');
 
+      user.setStatus('online');
+      user.setActivity('botge.gitbook.io');
       console.log(`Logged in as ${user.tag}!`);
     });
 

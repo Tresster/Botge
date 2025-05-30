@@ -148,7 +148,7 @@ const transient: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilde
     option.setName('attachment').setDescription('The attachment to send')
   )
   .addIntegerOption((option: ReadonlySlashCommandIntegerOption) =>
-    option.setName('duration').setDescription('The duration in seconds before deletion. Default: 3')
+    option.setName('duration').setDescription('The duration in seconds before deletion. Default: 3, maximum: 600')
   );
 
 const findTheEmoji: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()

@@ -1,19 +1,14 @@
-process.on('warning', (error: Readonly<Error>) => {
-  console.log(error.stack);
-
-  //discordjs problem. restart as the bot is not functional after we receive this error
-  if (error.name === 'TimeoutNegativeWarning') process.exit(1);
-});
-
 import dotenv from 'dotenv';
 import { scheduleJob } from 'node-schedule';
 import { ensureDir, type Dirent } from 'fs-extra';
 import { readdir, rm } from 'node:fs/promises';
 import { join } from 'node:path';
 import OpenAI from 'openai';
+import { GoogleGenAI } from '@google/genai';
 import { Translator } from 'deepl-node';
 import { Client, GatewayIntentBits } from 'discord.js';
 import { MeiliSearch } from 'meilisearch';
+
 import type { ReadonlyOpenAI, ReadonlyTranslator } from './types.js';
 import { Bot } from './bot.js';
 import type { Guild } from './guild.js';
@@ -30,9 +25,7 @@ import { newTwitchApi } from './utils/constructors/new-twitch-api.js';
 import { updateCommands } from './update-commands-docker.js';
 import { registerPings } from './utils/ping/register-pings.js';
 import type { PersonalEmoteSets } from './personal-emote-sets.js';
-import { GoogleGenAI } from '@google/genai';
 
-//dotenv
 dotenv.config();
 const {
   DISCORD_TOKEN,
@@ -137,30 +130,43 @@ const bot = await (async (): Promise<Readonly<Bot>> => {
   );
 })();
 
-function closeDatabase(): void {
+function closeFunction(): void {
   try {
     bot.addedEmotesDatabase.close();
     bot.pingsDatabase.close();
     bot.permittedRoleIdsDatabase.close();
     bot.broadcasterNameAndPersonalEmoteSetsDatabase.close();
   } catch (error) {
-    console.log(`Error at closeDatabase: ${error instanceof Error ? error.message : String(error)}`);
+    console.log(
+      `Error at closeFunction - closing databases: ${error instanceof Error ? error.message : String(error)}`
+    );
+  }
+
+  try {
+    const { user } = bot.client;
+    if (user === null) return;
+
+    user.setStatus('invisible');
+  } catch (error) {
+    console.log(
+      `Error at closeFunction - setting invisible status: ${error instanceof Error ? error.message : String(error)}`
+    );
   }
 }
 
 process.on('exit', (): void => {
   console.log('exiting');
-  closeDatabase();
+  closeFunction();
 });
 
 process.on('SIGINT', (): void => {
   console.log('received SIGINT');
-  closeDatabase();
+  closeFunction();
 });
 
 process.on('SIGTERM', (): void => {
   console.log('received SIGTERM');
-  closeDatabase();
+  closeFunction();
 });
 
 process.on('uncaughtException', (error: Readonly<Error>): void => {
@@ -173,84 +179,41 @@ process.on('unhandledRejection', (error): void => {
 
 let refreshClipsOrRefreshUniqueCreatorNamesAndGameIds: readonly Promise<void>[] = [];
 if (UPDATE_CLIPS_ON_STARTUP === 'true') {
-  try {
-    refreshClipsOrRefreshUniqueCreatorNamesAndGameIds = bot.guilds.map(async (guild) =>
-      guild.refreshClips(bot.twitchApi)
-    );
-  } catch (error) {
-    console.log(`refreshClips() failed: ${error instanceof Error ? error.message : String(error)}`);
-  }
+  refreshClipsOrRefreshUniqueCreatorNamesAndGameIds = bot.guilds.map(async (guild) =>
+    guild.refreshClips(bot.twitchApi)
+  );
 } else {
-  try {
-    refreshClipsOrRefreshUniqueCreatorNamesAndGameIds = bot.guilds.map(async (guild) =>
-      guild.refreshUniqueCreatorNamesAndGameIds()
-    );
-  } catch (error) {
-    console.log(
-      `refreshUniqueCreatorNamesAndGameIds() failed: ${error instanceof Error ? error.message : String(error)}`
-    );
-  }
+  refreshClipsOrRefreshUniqueCreatorNamesAndGameIds = bot.guilds.map(async (guild) =>
+    guild.refreshUniqueCreatorNamesAndGameIds()
+  );
 }
 
-// update every 4th minutes 0th second
 scheduleJob('0 */4 * * * *', () => {
-  try {
-    bot.cleanupMessageBuilders();
-  } catch (error) {
-    console.log(`cleanUpTwitchClipMessageBuilders() failed: ${error instanceof Error ? error.message : String(error)}`);
-  }
+  bot.cleanupMessageBuilders();
 });
 
-// update every 20th minutes 0th second
-scheduleJob('0 */20 * * * *', () => {
-  try {
-    console.log('Emote cache refreshing');
-
-    bot.guilds.forEach((guild) => {
-      void guild.refreshEmoteMatcher();
-    });
-  } catch (error) {
-    console.log(
-      `refreshEmotes() failed, emotes might be stale: ${error instanceof Error ? error.message : String(error)}`
-    );
-  }
+scheduleJob('0 */20 * * * *', async () => {
+  await Promise.all(bot.guilds.map(async (guild) => guild.refreshEmoteMatcher()));
 });
 
 // update every hour, in the 54th minute 0th second
 // this is because of the 300 second timeout of fetch + 1 minute, so twitch api is validated before use
-scheduleJob('0 54 * * * *', () => {
-  void bot.twitchApi?.validateAccessToken();
+scheduleJob('0 54 * * * *', async () => {
+  await bot.twitchApi?.validateAccessToken();
 });
 
-// update every 2 hours
-scheduleJob('0 */2 * * *', () => {
-  try {
-    bot.guilds.forEach((guild) => {
-      void guild.refreshClips(bot.twitchApi);
-    });
-  } catch (error) {
-    console.log(`refreshClips() failed: ${error instanceof Error ? error.message : String(error)}`);
-  }
+scheduleJob('0 */2 * * *', async () => {
+  await Promise.all(bot.guilds.map(async (guild) => guild.refreshClips(bot.twitchApi)));
 });
 
-// update every 6 hours in the 6th minute
-scheduleJob('6 */6 * * *', () => {
-  try {
-    bot.guilds.forEach((guild) => {
-      void guild.personalEmoteMatcherConstructor.refreshBTTVAndFFZPersonalEmotes();
-    });
-  } catch (error) {
-    console.log(`refreshBTTVAndFFZPersonalEmotes() failed: ${error instanceof Error ? error.message : String(error)}`);
-  }
+scheduleJob('6 */6 * * *', async () => {
+  await Promise.all(
+    bot.guilds.map(async (guild) => guild.personalEmoteMatcherConstructor.refreshBTTVAndFFZPersonalEmotes())
+  );
 });
 
-// update every 12 hours in the 12th minute
-scheduleJob('12 */12 * * *', () => {
-  try {
-    void GlobalEmoteMatcherConstructor.instance.refreshGlobalEmotes();
-  } catch (error) {
-    console.log(`refreshBTTVAndFFZPersonalEmotes() failed: ${error instanceof Error ? error.message : String(error)}`);
-  }
+scheduleJob('12 */12 * * *', async () => {
+  await GlobalEmoteMatcherConstructor.instance.refreshGlobalEmotes();
 });
 
 bot.registerHandlers();
@@ -258,4 +221,4 @@ await ensureDirTmp_;
 await commandUpdate;
 await Promise.all(refreshClipsOrRefreshUniqueCreatorNamesAndGameIds);
 await bot.start(DISCORD_TOKEN);
-void registerPings(bot.client, bot.pingsDatabase);
+await registerPings(bot.client, bot.pingsDatabase);

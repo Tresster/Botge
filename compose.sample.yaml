@@ -54,10 +54,13 @@ services:
       - UPDATE_CLIPS_ON_STARTUP=true
 
       # embed server host, example: https://embedserver.com/t/ with / at the end - optional
-      # - EMBED_SERVER_HOST=
+      #- EMBED_SERVER_HOST=
 
       # Gemini - optional
-      # GEMINI_API_KEY=
+      #- GEMINI_API_KEY=
+
+      # Discord emojis. format: <:emoteName1:emoteId1>,<:emoteName2:emoteId2>
+      #- DISCORD_EMOJIS=
     volumes:
       - ./tmp:/app/tmp
       - ./data:/app/data

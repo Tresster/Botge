@@ -1,4 +1,3 @@
-import { config } from 'dotenv';
 import { EmbedBuilder, type ChatInputCommandInteraction } from 'discord.js';
 import type {
   TwitchClip,
@@ -7,7 +6,6 @@ import type {
 } from '../types.js';
 import { BaseMessageBuilder } from './base.js';
 
-config();
 const { EMBED_SERVER_HOST } = process.env;
 
 export class TwitchClipMessageBuilder extends BaseMessageBuilder<

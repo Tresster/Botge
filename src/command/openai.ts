@@ -1,12 +1,20 @@
 import type { ChatInputCommandInteraction } from 'discord.js';
 import type ResponseInput from 'openai';
 
+import { getOptionValue, getOptionValueWithoutUndefined } from '../utils/get-option-value.js';
 import type { ReadonlyOpenAI } from '../types.js';
 import type { Guild } from '../guild.js';
 
 type openAiResponseInput = ResponseInput.Responses.ResponseInput;
 
-const MAXDISCORDMESSAGELENGTH = 2000;
+const MAX_DISCORD_MESSAGE_LENGTH = 2000;
+
+const DISCORD_EMOJIS_JOINED = ((): string | undefined => {
+  const { DISCORD_EMOJIS } = process.env;
+  if (DISCORD_EMOJIS === undefined) return undefined;
+
+  return DISCORD_EMOJIS.split(',').join(' or ');
+})();
 
 export function chatgptHandler(openai: ReadonlyOpenAI | undefined) {
   return async (interaction: ChatInputCommandInteraction, guild: Readonly<Guild>): Promise<void> => {
@@ -17,14 +25,16 @@ export function chatgptHandler(openai: ReadonlyOpenAI | undefined) {
 
     const defer = interaction.deferReply();
     try {
-      const prompt = String(interaction.options.get('prompt')?.value).trim();
-      const image = ((): string | undefined => {
-        const image_ = interaction.options.get('image')?.value;
-        return image_ !== undefined ? String(image_).trim() : undefined;
-      })();
-      const instruction = ((): string | undefined => {
-        const instruction_ = interaction.options.get('instruction')?.value;
-        return instruction_ !== undefined ? String(instruction_) : undefined;
+      const prompt = getOptionValueWithoutUndefined<string>(interaction, 'prompt');
+      const image = getOptionValue<string>(interaction, 'image');
+      const instructions = ((): string | undefined => {
+        const instruction = getOptionValue<string>(interaction, 'instruction');
+
+        let instructions_ = instruction ?? '';
+        if (DISCORD_EMOJIS_JOINED !== undefined)
+          instructions_ += ` You use ${DISCORD_EMOJIS_JOINED} frequently at the end of your sentences.`;
+
+        return instructions_.trim();
       })();
 
       if (image !== undefined) {
@@ -43,30 +53,36 @@ export function chatgptHandler(openai: ReadonlyOpenAI | undefined) {
         }
       }
 
-      const imageInput: openAiResponseInput | undefined =
-        image !== undefined
-          ? [
-              { role: 'user', content: prompt },
-              {
-                role: 'user',
-                content: [{ type: 'input_image', image_url: image, detail: 'low' }]
-              }
-            ]
-          : undefined;
-      const input = imageInput ?? prompt;
+      //TODO: detect if img is png, jpg, webp, or non animated gif
+
+      const input = ((): openAiResponseInput => {
+        const inputImage: openAiResponseInput | undefined =
+          image !== undefined
+            ? [
+                { role: 'user', content: prompt },
+                {
+                  role: 'user',
+                  content: [{ type: 'input_image', image_url: image, detail: 'low' }]
+                }
+              ]
+            : undefined;
+
+        return inputImage ?? ([{ role: 'user', content: prompt }] as openAiResponseInput);
+      })();
 
       //1 token is around 4 english characters
       const response = await openai.responses.create({
         model: 'gpt-4.1',
         input: input,
         max_output_tokens: 400,
-        instructions: instruction
+        instructions: instructions,
+        user: interaction.user.id
       });
-      const messageContent = response.output_text;
 
+      const messageContent = response.output_text;
       const reply =
-        messageContent.length > MAXDISCORDMESSAGELENGTH
-          ? messageContent.slice(0, MAXDISCORDMESSAGELENGTH - 5) + ' ...'
+        messageContent.length > MAX_DISCORD_MESSAGE_LENGTH
+          ? messageContent.slice(0, MAX_DISCORD_MESSAGE_LENGTH - 5) + ' ...'
           : messageContent;
       await defer;
       await interaction.editReply(reply);

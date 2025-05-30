@@ -1,7 +1,8 @@
 import type { ChatInputCommandInteraction } from 'discord.js';
 
-import type { EmoteMatcher } from '../emote-matcher.js';
 import { EmoteMessageBuilder } from '../message-builders/emote-message-builder.js';
+import { getOptionValue, getOptionValueWithoutUndefined } from '../utils/get-option-value.js';
+import type { EmoteMatcher } from '../emote-matcher.js';
 import type { Guild } from '../guild.js';
 
 export function getAllSubstrings(str: string): readonly string[] {
@@ -50,19 +51,18 @@ export function getShortestUniqueSubstrings(
 export function shortestuniquesubstringsHandler(emoteMessageBuilders: EmoteMessageBuilder[]) {
   return async (interaction: ChatInputCommandInteraction, guild: Readonly<Guild>): Promise<void> => {
     const { emoteMatcher } = guild;
-    const ephemeral = Boolean(interaction.options.get('ephemeral')?.value);
+    const ephemeral = getOptionValue<boolean>(interaction, 'ephemeral') ?? false;
     const defer = ephemeral ? interaction.deferReply({ flags: 'Ephemeral' }) : interaction.deferReply();
     try {
-      const emotesOption: readonly string[] = String(interaction.options.get('emotes')?.value).split(/\s+/);
-      const formatOption = ((): string | undefined => {
-        const option = interaction.options.get('format')?.value;
-        return option !== undefined ? String(option) : undefined;
-      })();
+      const emotesOption: readonly string[] = getOptionValueWithoutUndefined<string>(interaction, 'emotes').split(
+        /\s+/
+      );
+      const format = getOptionValue<string>(interaction, 'format');
 
       const getShortestUniqueSubstrings_: readonly (readonly [string | undefined, readonly string[] | undefined])[] =
         emotesOption.map((emoteOption) => getShortestUniqueSubstrings(emoteMatcher, emoteOption));
 
-      if (formatOption !== undefined) {
+      if (format !== undefined) {
         const emotes = emotesOption
           .map((emoteOption) => emoteMatcher.matchSingle(emoteOption))
           .filter((emote) => emote !== undefined);

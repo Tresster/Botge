@@ -10,6 +10,7 @@ import { maxPlatformSize, emoteSizeChange, assetSizeChange } from '../utils/size
 import { parseToken } from '../utils/parse-token.js';
 import { stringToBoolean } from '../utils/boolean-to-string.js';
 import { stringToPlatform } from '../utils/platform-to-string.js';
+import { getOptionValue, getOptionValueWithoutUndefined } from '../utils/get-option-value.js';
 import type { CachedUrl } from '../api/cached-url.js';
 import type { AssetInfo, DownloadedAsset, HstackElement } from '../types.js';
 import { TMP_DIR } from '../paths-and-endpoints.js';
@@ -136,7 +137,8 @@ function onlyUnique(value: string, index: number, array: readonly string[]): boo
 export function emoteHandler() {
   return async (interaction: ChatInputCommandInteraction, guild: Readonly<Guild>): Promise<void> => {
     const { emoteMatcher } = guild;
-    const emote = String(interaction.options.get('name')?.value).trim();
+
+    const emote = getOptionValueWithoutUndefined<string>(interaction, 'name');
     if (emote.split(/\s+/).length > 1) {
       await interaction.reply({ content: 'Please use /emotes for combined emotes.', flags: 'Ephemeral' });
       return;
@@ -146,21 +148,13 @@ export function emoteHandler() {
     try {
       const emoteNotFoundReply = interaction.guildId === GUILD_ID_CUTEDOG ? 'jij' : 'emote not found';
 
-      const size = ((): number | undefined => {
-        const sizeOptions = interaction.options.get('size')?.value;
-        return sizeOptions !== undefined ? Number(sizeOptions) : undefined;
-      })();
+      const size = getOptionValue<number>(interaction, 'size');
 
       const match = emoteMatcher.matchSingle(emote);
 
       if (match === undefined) {
         await defer;
-        try {
-          new URL(emote);
-          await interaction.editReply('posting link through Botge wtf');
-        } catch {
-          await interaction.editReply(emoteNotFoundReply);
-        }
+        await interaction.editReply(emoteNotFoundReply);
         return;
       }
 
@@ -186,25 +180,10 @@ export function emoteListHandler(emoteMessageBuilders: EmoteMessageBuilder[]) {
     try {
       const emoteNotFoundReply = interaction.guildId === GUILD_ID_CUTEDOG ? 'jij' : 'emote not found';
 
-      const query = ((): string => {
-        const option = interaction.options.get('query')?.value;
-        return option !== undefined ? String(option).trim() : '';
-      })();
-
-      const platform = ((): Platform | undefined => {
-        const option = interaction.options.get('platform')?.value;
-        return option !== undefined ? stringToPlatform(String(option)) : undefined;
-      })();
-
-      const animated = ((): boolean | undefined => {
-        const option = interaction.options.get('animated')?.value;
-        return option !== undefined ? stringToBoolean(String(option)) : undefined;
-      })();
-
-      const zeroWidth = ((): boolean | undefined => {
-        const option = interaction.options.get('overlaying')?.value;
-        return option !== undefined ? stringToBoolean(String(option)) : undefined;
-      })();
+      const query = getOptionValueWithoutUndefined<string>(interaction, 'query');
+      const platform = getOptionValue<Platform>(interaction, 'platform', stringToPlatform);
+      const animated = getOptionValue<boolean>(interaction, 'animated', stringToBoolean);
+      const zeroWidth = getOptionValue<boolean>(interaction, 'overlaying', stringToBoolean);
 
       const matches = emoteMatcher.matchSingleArray(query, platform, animated, zeroWidth, undefined, true);
 
@@ -252,22 +231,19 @@ export function emotesHandler(cachedUrl: Readonly<CachedUrl>) {
     try {
       const emoteNotFoundReply = interaction.guildId === GUILD_ID_CUTEDOG ? 'jij' : 'emote not found';
 
-      const tokens: readonly string[] = String(interaction.options.get('emotes')?.value).trim().split(/\s+/);
-      const size = ((): number | undefined => {
-        const sizeOptions = interaction.options.get('size')?.value;
-        return sizeOptions !== undefined ? Number(sizeOptions) : undefined;
-      })();
-      const fullSize = Boolean(interaction.options.get('fullsize')?.value);
-      const stretch = Boolean(interaction.options.get('stretch')?.value);
+      const emotes: readonly string[] = getOptionValueWithoutUndefined<string>(interaction, 'emotes').split(/\s+/);
+      const size = getOptionValue<number>(interaction, 'size');
+      const fullSize = getOptionValue<boolean>(interaction, 'fullsize') ?? false;
+      const stretch = getOptionValue<boolean>(interaction, 'stretch') ?? false;
 
-      if (tokens.length === 1) {
-        const [token] = tokens;
-        const match = emoteMatcher.matchSingle(token);
+      if (emotes.length === 1) {
+        const [emote] = emotes;
+        const match = emoteMatcher.matchSingle(emote);
 
         if (match === undefined) {
           await defer;
           try {
-            new URL(token);
+            new URL(emote);
             await interaction.editReply('posting link through Botge wtf');
           } catch {
             await interaction.editReply(emoteNotFoundReply);
@@ -292,12 +268,12 @@ export function emotesHandler(cachedUrl: Readonly<CachedUrl>) {
       //dir sync only if multiple emotes
       ensureDirSync(outdir);
 
-      const uniqueTokens: readonly string[] = tokens.filter(onlyUnique);
+      const uniqueTokens: readonly string[] = emotes.filter(onlyUnique);
       const tokenPairs = ((): readonly (readonly [string, number])[] => {
         const tokenPairs_: (readonly [string, number])[] = [];
 
-        for (const i of tokens.keys())
-          for (const j of uniqueTokens.keys()) if (tokens[i] === uniqueTokens[j]) tokenPairs_.push([tokens[i], j]);
+        for (const i of emotes.keys())
+          for (const j of uniqueTokens.keys()) if (emotes[i] === uniqueTokens[j]) tokenPairs_.push([emotes[i], j]);
 
         return tokenPairs_;
       })();

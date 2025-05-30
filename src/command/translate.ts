@@ -1,5 +1,6 @@
 import type { ChatInputCommandInteraction } from 'discord.js';
 
+import { getOptionValueWithoutUndefined } from '../utils/get-option-value.js';
 import type { ReadonlyTranslator } from '../types.js';
 import type { Guild } from '../guild.js';
 
@@ -9,9 +10,10 @@ export function translateHandler(translator: ReadonlyTranslator | undefined) {
       void interaction.reply('translate command is not available in this server.');
       return;
     }
+
     const defer = interaction.deferReply();
     try {
-      const text = String(interaction.options.get('text')?.value).trim();
+      const text = getOptionValueWithoutUndefined<string>(interaction, 'text');
 
       // Let DeepL auto-detect the source language by passing null
       const result = await translator.translateText(text, null, 'en-US', {

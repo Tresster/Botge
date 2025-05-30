@@ -1,5 +1,5 @@
 import type { TwitchApi } from '../api/twitch-api.js';
-import { fetchAndJson } from '../utils/fetch-and-json.js';
+import { fetchAndJson } from './fetch-and-json.js';
 import type { BTTVPersonalEmotes, FFZPersonalEmotes, SevenTVEmotes } from '../types.js';
 
 const regExpSevenTvEmoteSetLink: Readonly<RegExp> = new RegExp(/^https:\/\/7tv\.app\/emote-sets\/[A-Za-z0-9]{26}$/);

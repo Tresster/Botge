@@ -1,6 +1,7 @@
 import type { PermissionsBitField, Client, ChatInputCommandInteraction, TextChannel } from 'discord.js';
 
 import { PingMessageBuilder } from '../message-builders/ping-message-builder.js';
+import { getOptionValue } from '../utils/get-option-value.js';
 import type { PingsDatabase } from '../api/ping-database.js';
 import type { Guild } from '../guild.js';
 import type { Ping } from '../types.js';
@@ -17,18 +18,9 @@ export function pingMeHandler(
   return async (interaction: ChatInputCommandInteraction, guild: Readonly<Guild>): Promise<void> => {
     const defer = interaction.deferReply();
     try {
-      const hours = ((): number | undefined => {
-        const hoursOptions = interaction.options.get('hours')?.value;
-        return hoursOptions !== undefined ? Number(hoursOptions) : undefined;
-      })();
-      const minutes = ((): number | undefined => {
-        const minutesOptions = interaction.options.get('minutes')?.value;
-        return minutesOptions !== undefined ? Number(minutesOptions) : undefined;
-      })();
-      const message = ((): string | undefined => {
-        const messageOptions = interaction.options.get('message')?.value;
-        return messageOptions !== undefined ? String(messageOptions).trim() : undefined;
-      })();
+      const hours = getOptionValue<number>(interaction, 'hours');
+      const minutes = getOptionValue<number>(interaction, 'minutes');
+      const message = getOptionValue<string>(interaction, 'message');
 
       const interactionGuild = interaction.guild;
       if (interactionGuild === null) {

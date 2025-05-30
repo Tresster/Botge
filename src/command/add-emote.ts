@@ -1,12 +1,13 @@
 import type { ChatInputCommandInteraction, GuildMember, Role } from 'discord.js';
 
 import { sevenTVUrlToSevenTVNotInSet, SPLITTER } from '../utils/platform-url-to-api-url.js';
-import type { AddedEmote, SevenTVEmoteNotInSet } from '../types.js';
-import { CDN_ENDPOINTS } from '../paths-and-endpoints.js';
-import type { AddedEmotesDatabase } from '../api/added-emotes-database.js';
-import type { Guild } from '../guild.js';
+import { getOptionValue, getOptionValueWithoutUndefined } from '../utils/get-option-value.js';
 import { fetchAndJson } from '../utils/fetch-and-json.js';
 import { permitted, owner, globalAdministrator } from '../utils/permitted.js';
+import type { AddedEmotesDatabase } from '../api/added-emotes-database.js';
+import type { AddedEmote, SevenTVEmoteNotInSet } from '../types.js';
+import { CDN_ENDPOINTS } from '../paths-and-endpoints.js';
+import type { Guild } from '../guild.js';
 
 export function addEmoteHandlerSevenTVNotInSet(addedEmotesDatabase: Readonly<AddedEmotesDatabase>) {
   return async (interaction: ChatInputCommandInteraction, guild: Readonly<Guild>): Promise<void> => {
@@ -29,11 +30,8 @@ export function addEmoteHandlerSevenTVNotInSet(addedEmotesDatabase: Readonly<Add
         return;
       }
 
-      const url = String(interaction.options.get('url')?.value).trim();
-      const alias = ((): string | null => {
-        const aliasOptions = interaction.options.get('name')?.value;
-        return aliasOptions !== undefined ? String(aliasOptions).trim() : null;
-      })();
+      const url = getOptionValueWithoutUndefined<string>(interaction, 'url');
+      const name = getOptionValue<string>(interaction, 'name') ?? null;
 
       const sevenTVUrlToSevenNotInSet_ = await sevenTVUrlToSevenTVNotInSet(url);
       if (sevenTVUrlToSevenNotInSet_ === undefined) {
@@ -43,7 +41,7 @@ export function addEmoteHandlerSevenTVNotInSet(addedEmotesDatabase: Readonly<Add
         return;
       }
 
-      if (guild.emoteMatcher.matchSingleExact(alias ?? sevenTVUrlToSevenNotInSet_.name)) {
+      if (guild.emoteMatcher.matchSingleExact(name ?? sevenTVUrlToSevenNotInSet_.name)) {
         await defer;
         await interaction.editReply('There is already an emote with the same name.');
 
@@ -51,7 +49,7 @@ export function addEmoteHandlerSevenTVNotInSet(addedEmotesDatabase: Readonly<Add
       }
 
       const emoteId = url.split(SPLITTER).at(-1);
-      const addedEmote: AddedEmote = { url: `${CDN_ENDPOINTS.sevenTVNotInSet}${SPLITTER}${emoteId}`, alias: alias };
+      const addedEmote: AddedEmote = { url: `${CDN_ENDPOINTS.sevenTVNotInSet}${SPLITTER}${emoteId}`, alias: name };
       const addedEmotes = addedEmotesDatabase.getAll(guild.id);
       if (addedEmotes.some((addedEmote_) => addedEmote_.url === addedEmote.url)) {
         await defer;
@@ -65,7 +63,7 @@ export function addEmoteHandlerSevenTVNotInSet(addedEmotesDatabase: Readonly<Add
       const sevenTVEmoteNotInSet = await (async (): Promise<SevenTVEmoteNotInSet> => {
         const sevenTVEmoteNotInSet_ = (await fetchAndJson(addedEmote.url)) as SevenTVEmoteNotInSet;
 
-        if (alias !== null) return { ...sevenTVEmoteNotInSet_, name: alias };
+        if (name !== null) return { ...sevenTVEmoteNotInSet_, name: name };
         else return sevenTVEmoteNotInSet_;
       })();
 
@@ -74,7 +72,7 @@ export function addEmoteHandlerSevenTVNotInSet(addedEmotesDatabase: Readonly<Add
 
       await defer;
       await interaction.editReply(
-        `Added emote ${sevenTVUrlToSevenNotInSet_.name}${alias !== null ? ` with the name ${alias}` : ''}.`
+        `Added emote ${sevenTVUrlToSevenNotInSet_.name}${name !== null ? ` with the name ${name}` : ''}.`
       );
     } catch (error) {
       console.log(

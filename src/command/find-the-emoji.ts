@@ -1,5 +1,6 @@
 import type { ChatInputCommandInteraction, GuildEmoji } from 'discord.js';
 
+import { getOptionValue } from '../utils/get-option-value.js';
 import type { Guild } from '../guild.js';
 
 const DEFAULT_SIZE = 5;
@@ -8,14 +9,8 @@ export function findTheEmojiHandler() {
   return async (interaction: ChatInputCommandInteraction, guild: Readonly<Guild>): Promise<void> => {
     const defer = interaction.deferReply();
     try {
-      const emoji = ((): string | undefined => {
-        const emojiOptions = interaction.options.get('emoji')?.value;
-        return emojiOptions !== undefined ? String(emojiOptions).trim() : undefined;
-      })();
-      const size = ((): number => {
-        const sizeOptions = interaction.options.get('size')?.value;
-        return sizeOptions !== undefined ? Number(sizeOptions) : DEFAULT_SIZE;
-      })();
+      const emoji = getOptionValue<string>(interaction, 'emoji');
+      const size = getOptionValue<number>(interaction, 'size') ?? DEFAULT_SIZE;
 
       if (size < 3) {
         await defer;

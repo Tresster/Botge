@@ -1,6 +1,7 @@
 import type { ChatInputCommandInteraction } from 'discord.js';
 import type { TwitchClip, ReadonlyHit } from '../types.js';
 import { TwitchClipMessageBuilder } from '../message-builders/twitch-clip-message-builder.js';
+import { getOptionValue } from '../utils/get-option-value.js';
 import type { Guild } from '../guild.js';
 
 const CLEANUP_MINUTES = 10;
@@ -32,22 +33,10 @@ export function clipHandler(twitchClipMessageBuilders: TwitchClipMessageBuilder[
 
     const defer = interaction.deferReply();
     try {
-      const title = ((): string | undefined => {
-        const titleOptions = interaction.options.get('title')?.value;
-        return titleOptions !== undefined ? String(titleOptions).trim().toLowerCase() : undefined;
-      })();
-      const clipper = ((): string | undefined => {
-        const clipperOptions = interaction.options.get('clipper')?.value;
-        return clipperOptions !== undefined ? String(clipperOptions).trim() : undefined;
-      })();
-      const category = ((): string | undefined => {
-        const categoryOptions = interaction.options.get('category')?.value;
-        return categoryOptions !== undefined ? String(categoryOptions).trim() : undefined;
-      })();
-      const sortBy = ((): string | undefined => {
-        const sortOptions = interaction.options.get('sortby')?.value;
-        return sortOptions !== undefined ? String(sortOptions).trim() : undefined;
-      })();
+      const title = getOptionValue<string>(interaction, 'title')?.toLowerCase();
+      const clipper = getOptionValue<string>(interaction, 'clipper');
+      const category = getOptionValue<string>(interaction, 'category');
+      const sortBy = getOptionValue<string>(interaction, 'sortby');
       const sortByField = ((): string => {
         if (sortBy === 'views') return 'view_count:desc';
         else if (sortBy === 'shuffle') return sortBy;

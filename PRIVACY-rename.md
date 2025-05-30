@@ -10,7 +10,12 @@ The only data we store are `guildId`, `channelId` and `userId`, from which `chan
 
 ## Data Sharing
 
-We do not share any personal data with third parties. The mentioned are used solely for the bot's functionality and are not shared with any third parties.
+We do not share any personal data with third parties expect the below mentioned.
+
+By using the /chatgpt command you agree to OpenAI's Privacy Policy. [OpenAI Privacy Policy](https://openai.com/policies/privacy-policy)
+By using the /chatgpt command you also agree to sending your Discord user ID (not username) to OpenAI for detecting abuse.
+
+By using the /gemini command you agree to Google's Terms. [Gemini Terms](https://ai.google.dev/gemini-api/terms)
 
 ## Changes to This Policy
 

@@ -8,6 +8,12 @@ import {
   type MessageActionRowComponentBuilder
 } from 'discord.js';
 
+import {
+  emoteCdnUrlToEmoteApiCdnUrl,
+  emoteCdnUrlToEmoteUrl
+} from '../utils/message-builder/emote-cdn-url-to-emote-url.js';
+import { platformToString } from '../utils/platform-to-string.js';
+import { booleanToString } from '../utils/boolean-to-string.js';
 import type {
   AddedEmote,
   AssetInfo,
@@ -15,9 +21,6 @@ import type {
   ReadonlyActionRowBuilderMessageActionRowComponentBuilder
 } from '../types.js';
 import { BaseMessageBuilder, getCustomId, DELETE_BUTTON_BASE_CUSTOM_ID } from './base.js';
-import { emoteCdnUrlToEmoteApiCdnUrl, emoteCdnUrlToEmoteUrl } from '../utils/emote-cdn-url-to-emote-url.js';
-import { platformToString } from '../utils/platform-to-string.js';
-import { booleanToString } from '../utils/boolean-to-string.js';
 import { Platform } from '../enums.js';
 
 export class EmoteMessageBuilder extends BaseMessageBuilder<AssetInfo, EmoteMessageBuilderTransformFunctionReturnType> {

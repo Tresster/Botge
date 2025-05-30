@@ -1,5 +1,5 @@
-import { getTwitchAccessToken } from '../twitch-api-utils.js';
 import { TwitchApi } from '../../api/twitch-api.js';
+import { getTwitchAccessToken } from '../api/twitch-api-utils.js';
 
 export async function newTwitchApi(twitchClientId: string, twitchSecret: string): Promise<Readonly<TwitchApi>> {
   const accessToken = await getTwitchAccessToken(twitchClientId, twitchSecret);

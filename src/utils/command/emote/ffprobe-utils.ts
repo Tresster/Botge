@@ -1,4 +1,5 @@
 import { exec, type ExecException } from 'child_process';
+
 import { DEFAULTDURATION } from './download-asset.js';
 
 export async function getDimension(filename: string): Promise<readonly [number, number] | undefined> {

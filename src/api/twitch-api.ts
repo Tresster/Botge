@@ -1,7 +1,7 @@
+import { getTwitchAccessToken } from '../utils/api/twitch-api-utils.js';
+import { fetchAndJson } from '../utils/fetch-and-json.js';
 import type { TwitchClips, TwitchGames, TwitchGlobalEmotes, TwitchGlobalOptions, TwitchUsers } from '../types.js';
 import { TWITCH_API_ENDPOINTS } from '../paths-and-endpoints.js';
-import { fetchAndJson } from '../utils/fetch-and-json.js';
-import { getTwitchAccessToken } from '../utils/twitch-api-utils.js';
 
 // raw twitch api methods
 export class TwitchApi {

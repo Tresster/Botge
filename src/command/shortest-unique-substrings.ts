@@ -1,7 +1,7 @@
 import type { ChatInputCommandInteraction } from 'discord.js';
 
-import { EmoteMessageBuilder } from '../message-builders/emote-message-builder.js';
 import { getOptionValue, getOptionValueWithoutUndefined } from '../utils/get-option-value.js';
+import { EmoteMessageBuilder } from '../message-builder/emote-message-builder.js';
 import type { EmoteMatcher } from '../emote-matcher.js';
 import type { Guild } from '../guild.js';
 

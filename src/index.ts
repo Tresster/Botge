@@ -1,30 +1,30 @@
-import dotenv from 'dotenv';
-import { scheduleJob } from 'node-schedule';
 import { ensureDir, type Dirent } from 'fs-extra';
 import { readdir, rm } from 'node:fs/promises';
-import { join } from 'node:path';
-import OpenAI from 'openai';
+import { scheduleJob } from 'node-schedule';
 import { GoogleGenAI } from '@google/genai';
-import { Translator } from 'deepl-node';
-import { Client, GatewayIntentBits } from 'discord.js';
 import { MeiliSearch } from 'meilisearch';
+import { Translator } from 'deepl-node';
+import { join } from 'node:path';
+import dotenv from 'dotenv';
+import OpenAI from 'openai';
+import { Client, GatewayIntentBits } from 'discord.js';
 
-import type { ReadonlyOpenAI, ReadonlyTranslator } from './types.js';
-import { Bot } from './bot.js';
-import type { Guild } from './guild.js';
-import { DATABASE_DIR, DATABASE_ENDPOINTS, TMP_DIR } from './paths-and-endpoints.js';
-import { TwitchClipsMeiliSearch } from './twitch-clips-meili-search.js';
-import { GlobalEmoteMatcherConstructor } from './emote-matcher-constructor.js';
-import { CachedUrl } from './api/cached-url.js';
+import { BroadcasterNameAndPersonalEmoteSetsDatabase } from './api/broadcaster-name-and-personal-emote-sets-database.js';
+import { PermittedRoleIdsDatabase } from './api/permitted-role-ids-database.js';
 import { AddedEmotesDatabase } from './api/added-emotes-database.js';
 import { PingsDatabase } from './api/ping-database.js';
-import { PermittedRoleIdsDatabase } from './api/permitted-role-ids-database.js';
-import { BroadcasterNameAndPersonalEmoteSetsDatabase } from './api/broadcaster-name-and-personal-emote-sets-database.js';
-import { newGuild } from './utils/constructors/new-guild.js';
+import { CachedUrl } from './api/cached-url.js';
 import { newTwitchApi } from './utils/constructors/new-twitch-api.js';
-import { updateCommands } from './update-commands-docker.js';
-import { registerPings } from './utils/ping/register-pings.js';
+import { newGuild } from './utils/constructors/new-guild.js';
+import { registerPings } from './utils/register-pings.js';
+import { DATABASE_DIR, DATABASE_ENDPOINTS, TMP_DIR } from './paths-and-endpoints.js';
+import { GlobalEmoteMatcherConstructor } from './emote-matcher-constructor.js';
+import { TwitchClipsMeiliSearch } from './twitch-clips-meili-search.js';
+import type { ReadonlyOpenAI, ReadonlyTranslator } from './types.js';
 import type { PersonalEmoteSets } from './personal-emote-sets.js';
+import { updateCommands } from './update-commands-docker.js';
+import type { Guild } from './guild.js';
+import { Bot } from './bot.js';
 
 dotenv.config();
 const {

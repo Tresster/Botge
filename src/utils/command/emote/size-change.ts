@@ -1,18 +1,12 @@
-import { sevenTVNotInSetToAsset } from './emote-to-asset.js';
-import { sevenTVUrlToSevenTVNotInSet } from './platform-url-to-api-url.js';
-import type { AssetInfo } from '../types.js';
-import { Platform } from '../enums.js';
+import type { AssetInfo } from '../../../types.js';
+import { Platform } from '../../../enums.js';
+import { sevenTVNotInSetToAsset } from '../../emote-to-asset.js';
+import { sevenTVUrlToSevenTVNotInSet } from '../platform-url-to-api-url.js';
 
 export function maxPlatformSize(platform: Platform): number {
   if (platform === Platform.bttv || platform === Platform.twitch) return 3;
 
   return 4;
-}
-
-export function applicableSizes(platform: Platform | undefined): readonly number[] {
-  if (platform === Platform.bttv || platform === Platform.twitch) return [1, 2, 3];
-  else if (platform === Platform.ffz) return [1, 2, 4];
-  else return [1, 2, 3, 4];
 }
 
 export function emoteSizeChange(url: string, size: number, platform: Platform): string {

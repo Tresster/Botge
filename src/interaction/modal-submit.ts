@@ -1,7 +1,12 @@
 import { MessageFlags, type ModalSubmitInteraction } from 'discord.js';
 
-import { TwitchClipMessageBuilder } from '../message-builders/twitch-clip-message-builder.js';
-import { EmoteMessageBuilder } from '../message-builders/emote-message-builder.js';
+import {
+  getSevenTvApiUrlFromSevenTvEmoteSetLink,
+  getBttvApiUrlFromBroadcasterName,
+  getFfzApiUrlFromBroadcasterName
+} from '../utils/interaction/get-api-url.js';
+import { TwitchClipMessageBuilder } from '../message-builder/twitch-clip-message-builder.js';
+import { EmoteMessageBuilder } from '../message-builder/emote-message-builder.js';
 import {
   getBaseCustomIdFromCustomId,
   getMessageBuilderTypeFromCustomId,
@@ -10,22 +15,16 @@ import {
   JUMP_TO_MODAL_BASE_CUSTOM_ID,
   JUMP_TO_TEXT_INPUT_BASE_CUSTOM_ID,
   JUMP_TO_IDENTIFIER_INPUT_BASE_CUSTOM_ID
-} from '../message-builders/base.js';
-
+} from '../message-builder/base.js';
+import type { BroadcasterNameAndPersonalEmoteSetsDatabase } from '../api/broadcaster-name-and-personal-emote-sets-database.js';
+import type { TwitchApi } from '../api/twitch-api.js';
 import {
   ASSIGN_EMOTE_SETS_MODAL_CUSTOM_ID,
   BROADCASTER_NAME_TEXT_INPUT_CUSTOM_ID,
   SEVENTV_TEXT_INPUT_CUSTOM_ID
 } from '../interaction/button.js';
-import type { BroadcasterNameAndPersonalEmoteSetsDatabase } from '../api/broadcaster-name-and-personal-emote-sets-database.js';
-import type { TwitchApi } from '../api/twitch-api.js';
 import { PersonalEmoteSets } from '../personal-emote-sets.js';
 import type { Guild } from '../guild.js';
-import {
-  getSevenTvApiUrlFromSevenTvEmoteSetLink,
-  getBttvApiUrlFromBroadcasterName,
-  getFfzApiUrlFromBroadcasterName
-} from '../utils/get-api-url.js';
 
 export function modalSubmitHandler(
   twitchClipMessageBuilders: readonly Readonly<TwitchClipMessageBuilder>[],

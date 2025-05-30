@@ -9,8 +9,8 @@ import {
   type Role
 } from 'discord.js';
 
+import { permitted, administrator, owner, globalAdministrator } from '../utils/command/permitted.js';
 import { booleanToAllowed } from '../utils/boolean-to-string.js';
-import { permitted, administrator, owner, globalAdministrator } from '../utils/permitted.js';
 import type { Guild } from '../guild.js';
 
 export const SETTINGS_PERMITTED_ROLES_BUTTON_CUSTOM_ID = 'settingsPermittedRolesButton';

@@ -1,14 +1,13 @@
 import type { Index } from 'meilisearch';
 import type { AutocompleteInteraction, ApplicationCommandOptionChoiceData } from 'discord.js';
 
-import { getShortestUniqueSubstrings } from '../command/shortest-unique-substrings.js';
 import { platformStrings, platformToString, stringToPlatform } from '../utils/platform-to-string.js';
 import { booleanToString, stringToBoolean } from '../utils/boolean-to-string.js';
-import { applicableSizes } from '../utils/size-change.js';
 import { getOptionValue } from '../utils/get-option-value.js';
+import { getShortestUniqueSubstrings } from '../command/shortest-unique-substrings.js';
 import type { TwitchClip, ReadonlyHit, ReadonlyApplicationCommandOptionChoiceDataString, AssetInfo } from '../types.js';
 import type { EmoteMatcher } from '../emote-matcher.js';
-import type { Platform } from '../enums.js';
+import { Platform } from '../enums.js';
 
 const MAX_OPTIONS_LENGTH = 10; //THE MAXIMUM YOU CAN SET HERE IS 25
 
@@ -28,6 +27,12 @@ async function getHitsFromTwitchClipsMeilisearchIndex(
   ).hits.map((hit: ReadonlyHit) => hit as TwitchClip);
 
   return hits;
+}
+
+function applicableSizes(platform: Platform | undefined): readonly number[] {
+  if (platform === Platform.bttv || platform === Platform.twitch) return [1, 2, 3];
+  else if (platform === Platform.ffz) return [1, 2, 4];
+  else return [1, 2, 3, 4];
 }
 
 export function autocompleteHandler(

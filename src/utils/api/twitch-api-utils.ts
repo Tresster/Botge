@@ -1,6 +1,6 @@
-import { TWITCH_API_ENDPOINTS } from '../paths-and-endpoints.js';
-import type { ClientCredentialsGrantFlow, TwitchClip, TwitchClips } from '../types.js';
-import type { TwitchApi } from '../api/twitch-api.js';
+import type { TwitchApi } from '../../api/twitch-api.js';
+import type { ClientCredentialsGrantFlow, TwitchClip, TwitchClips } from '../../types.js';
+import { TWITCH_API_ENDPOINTS } from '../../paths-and-endpoints.js';
 
 export async function getTwitchAccessToken(clientId: string, clientSecret: string): Promise<string> {
   const resp = await fetch(TWITCH_API_ENDPOINTS.accessToken, {

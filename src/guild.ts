@@ -1,13 +1,13 @@
 import type { Index } from 'meilisearch';
 
-import { GUILD_ID_CUTEDOG } from './guilds.js';
-import type { EmoteMatcher } from './emote-matcher.js';
-import type { PersonalEmoteMatcherConstructor } from './emote-matcher-constructor.js';
-import type { TwitchApi } from './api/twitch-api.js';
+import { getClipsWithGameNameFromBroadcasterName, getClipsWithGameNameFromIds } from './utils/api/twitch-api-utils.js';
 import { listCutedogClipIds } from './utils/list-cutedog-clip-ids.js';
-import { getClipsWithGameNameFromBroadcasterName, getClipsWithGameNameFromIds } from './utils/twitch-api-utils.js';
-import type { ReadonlyRecordAny, TwitchClip } from './types.js';
+import type { TwitchApi } from './api/twitch-api.js';
+import type { PersonalEmoteMatcherConstructor } from './emote-matcher-constructor.js';
 import type { PersonalEmoteSets } from './personal-emote-sets.js';
+import type { ReadonlyRecordAny, TwitchClip } from './types.js';
+import type { EmoteMatcher } from './emote-matcher.js';
+import { GUILD_ID_CUTEDOG } from './guilds.js';
 
 export class Guild {
   readonly #id: string;

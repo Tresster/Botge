@@ -5,16 +5,16 @@ import { rm } from 'node:fs/promises';
 
 import type { ChatInputCommandInteraction } from 'discord.js';
 
-import { downloadAsset } from '../utils/download-asset.js';
-import { maxPlatformSize, emoteSizeChange, assetSizeChange } from '../utils/size-change.js';
-import { parseToken } from '../utils/parse-token.js';
-import { stringToBoolean } from '../utils/boolean-to-string.js';
-import { stringToPlatform } from '../utils/platform-to-string.js';
+import { maxPlatformSize, emoteSizeChange, assetSizeChange } from '../utils/command/emote/size-change.js';
+import { downloadAsset } from '../utils/command/emote/download-asset.js';
+import { parseToken } from '../utils/command/emote/parse-token.js';
 import { getOptionValue, getOptionValueWithoutUndefined } from '../utils/get-option-value.js';
+import { stringToPlatform } from '../utils/platform-to-string.js';
+import { stringToBoolean } from '../utils/boolean-to-string.js';
 import type { CachedUrl } from '../api/cached-url.js';
+import { EmoteMessageBuilder } from '../message-builder/emote-message-builder.js';
 import type { AssetInfo, DownloadedAsset, HstackElement } from '../types.js';
 import { TMP_DIR } from '../paths-and-endpoints.js';
-import { EmoteMessageBuilder } from '../message-builders/emote-message-builder.js';
 import { GUILD_ID_CUTEDOG } from '../guilds.js';
 import type { Platform } from '../enums.js';
 import type { Guild } from '../guild.js';

@@ -1,3 +1,4 @@
+import { scheduleJob, type Job } from 'node-schedule';
 import {
   ButtonBuilder,
   ButtonStyle,
@@ -6,7 +7,6 @@ import {
   type ChatInputCommandInteraction,
   type TextChannel
 } from 'discord.js';
-import { scheduleJob, type Job } from 'node-schedule';
 
 import type { PingsDatabase } from '../api/ping-database.js';
 import type {

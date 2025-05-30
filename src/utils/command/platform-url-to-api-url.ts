@@ -1,6 +1,6 @@
-import { fetchAndJson } from './fetch-and-json.js';
-import type { SevenTVEmoteNotInSet } from '../types.js';
-import { CDN_ENDPOINTS } from '../paths-and-endpoints.js';
+import { CDN_ENDPOINTS } from '../../paths-and-endpoints.js';
+import type { SevenTVEmoteNotInSet } from '../../types.js';
+import { fetchAndJson } from '../fetch-and-json.js';
 
 export const SPLITTER = '/';
 

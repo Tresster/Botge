@@ -10,14 +10,12 @@ import {
   type MessageActionRowComponentBuilder
 } from 'discord.js';
 
-import { TwitchClipMessageBuilder } from '../message-builders/twitch-clip-message-builder.js';
-import { EmoteMessageBuilder } from '../message-builders/emote-message-builder.js';
 import {
   PingMessageBuilder,
   PING_ME_AS_WELL_BUTTON_BASE_CUSTOM_ID,
   REMOVE_ME_FROM_PING_BUTTON_BASE_CUSTOM_ID,
   DELETE_PING_BUTTON_BASE_CUSTOM_ID
-} from '../message-builders/ping-message-builder.js';
+} from '../message-builder/ping-message-builder.js';
 import {
   getBaseCustomIdFromCustomId,
   getMessageBuilderTypeFromCustomId,
@@ -28,7 +26,14 @@ import {
   NEXT_BUTTON_BASE_CUSTOM_ID,
   JUMP_TO_BUTTON_BASE_CUSTOM_ID,
   DELETE_BUTTON_BASE_CUSTOM_ID
-} from '../message-builders/base.js';
+} from '../message-builder/base.js';
+import { TwitchClipMessageBuilder } from '../message-builder/twitch-clip-message-builder.js';
+import { EmoteMessageBuilder } from '../message-builder/emote-message-builder.js';
+import { getSevenTvEmoteSetLinkFromSevenTvApiUlr } from '../utils/interaction/get-api-url.js';
+import { booleanToAllowed } from '../utils/boolean-to-string.js';
+import type { PermittedRoleIdsDatabase } from '../api/permitted-role-ids-database.js';
+import type { AddedEmotesDatabase } from '../api/added-emotes-database.js';
+import type { PingsDatabase } from '../api/ping-database.js';
 import {
   SETTINGS_PERMITTED_ROLES_BUTTON_CUSTOM_ID,
   ADD_EMOTE_PERMITTED_ROLES_BUTTON_CUSTOM_ID,
@@ -41,13 +46,8 @@ import type {
   EmoteMessageBuilderTransformFunctionReturnType,
   PingMessageBuilderReplies
 } from '../types.js';
-import type { Guild } from '../guild.js';
-import { booleanToAllowed } from '../utils/boolean-to-string.js';
-import type { PermittedRoleIdsDatabase } from '../api/permitted-role-ids-database.js';
-import type { AddedEmotesDatabase } from '../api/added-emotes-database.js';
-import type { PingsDatabase } from '../api/ping-database.js';
 import { Platform } from '../enums.js';
-import { getSevenTvEmoteSetLinkFromSevenTvApiUlr } from '../utils/get-api-url.js';
+import type { Guild } from '../guild.js';
 
 export const SELECT_SETTINGS_PERMITTED_ROLES_ROLE_SELECT_MENU_CUSTOM_ID = 'selectSettingsPermittedRolesRoleSelectMenu';
 export const SELECT_ADD_EMOTE_PERMITTED_ROLES_ROLE_SELECT_MENU_CUSTOM_ID = 'selectAddEmotePermittedRolesRoleSelectMenu';

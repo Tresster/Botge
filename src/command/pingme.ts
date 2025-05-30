@@ -1,6 +1,6 @@
 import type { PermissionsBitField, Client, ChatInputCommandInteraction, TextChannel } from 'discord.js';
 
-import { PingMessageBuilder } from '../message-builders/ping-message-builder.js';
+import { PingMessageBuilder } from '../message-builder/ping-message-builder.js';
 import { getOptionValue } from '../utils/get-option-value.js';
 import type { PingsDatabase } from '../api/ping-database.js';
 import type { Guild } from '../guild.js';

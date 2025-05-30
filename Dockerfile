@@ -23,10 +23,11 @@ COPY package*.json .
 RUN npm ci --omit=dev
 
 COPY --from=build /app/dist ./dist
+COPY --from=build /app/LICENSE /app/PRIVACY.md ./
 
 USER node
 
 VOLUME ["/app/tmp"]
 VOLUME ["/app/data"]
 
-CMD ["node", "dist/index.js", "/app/data/command.json"]
+CMD ["node", "dist/index.js", "/app/data/command.txt"]

@@ -16,7 +16,7 @@ FROM node:${NODE_VERSION}-alpine AS release
 
 WORKDIR /app
 
-RUN apk add --update ffmpeg
+RUN apk add --no-cache ffmpeg
 
 COPY package*.json .
 

@@ -1,40 +1,23 @@
-import type { AutocompleteInteraction, ApplicationCommandOptionChoiceData } from 'discord.js';
 import type { Index } from 'meilisearch';
+import type { AutocompleteInteraction, ApplicationCommandOptionChoiceData } from 'discord.js';
+
 import { getShortestUniqueSubstrings } from '../command/shortest-unique-substrings.js';
 import { platformStrings, platformToString, stringToPlatform } from '../utils/platform-to-string.js';
 import { booleanToString, stringToBoolean } from '../utils/boolean-to-string.js';
 import { applicableSizes } from '../utils/size-change.js';
+import { getOptionValue } from '../utils/get-option-value.js';
 import type { TwitchClip, ReadonlyHit, ReadonlyApplicationCommandOptionChoiceDataString, AssetInfo } from '../types.js';
 import type { EmoteMatcher } from '../emote-matcher.js';
 import type { Platform } from '../enums.js';
 
 const MAX_OPTIONS_LENGTH = 10; //THE MAXIMUM YOU CAN SET HERE IS 25
 
-function getPlatformFromInteraction(interaction: AutocompleteInteraction): Platform | undefined {
-  const platform = interaction.options.get('platform')?.value;
-
-  if (platform !== undefined) return stringToPlatform(String(platform).trim());
-  return undefined;
-}
-function getAnimatedFromInteraction(interaction: AutocompleteInteraction): boolean | undefined {
-  const animated = interaction.options.get('animated')?.value;
-
-  if (animated !== undefined) return stringToBoolean(String(animated).trim());
-  return undefined;
-}
-function getOverlayingFromInteraction(interaction: AutocompleteInteraction): boolean | undefined {
-  const overlaying = interaction.options.get('overlaying')?.value;
-
-  if (overlaying !== undefined) return stringToBoolean(String(overlaying).trim());
-  return undefined;
-}
 async function getHitsFromTwitchClipsMeilisearchIndex(
   twitchClipsMeiliSearchIndex: Index,
   query: string
 ): Promise<readonly TwitchClip[]> {
   const { maxTotalHits } = await twitchClipsMeiliSearchIndex.getPagination();
   if (maxTotalHits === null || maxTotalHits === undefined) throw new Error('pagination max total hits not set');
-  console.log(query);
 
   const hits: readonly TwitchClip[] = (
     await twitchClipsMeiliSearchIndex.search(query.trim(), {
@@ -45,20 +28,6 @@ async function getHitsFromTwitchClipsMeilisearchIndex(
   ).hits.map((hit: ReadonlyHit) => hit as TwitchClip);
 
   return hits;
-}
-
-function getClipperFromInteraction(interaction: AutocompleteInteraction): string | undefined {
-  const clipper = interaction.options.get('clipper')?.value;
-
-  if (clipper !== undefined) return String(clipper).trim();
-  return undefined;
-}
-
-function getCategoryFromInteraction(interaction: AutocompleteInteraction): string | undefined {
-  const category = interaction.options.get('category')?.value;
-
-  if (category !== undefined) return String(category).trim();
-  return undefined;
 }
 
 export function autocompleteHandler(
@@ -94,7 +63,7 @@ export function autocompleteHandler(
 
           await interaction.respond(options);
         } else if (focusedOptionName === 'size') {
-          const emote = String(interaction.options.get('emote')?.value ?? '').trim();
+          const emote = getOptionValue<string>(interaction, 'emote') ?? '';
           const match = emote !== '' ? emoteMatcher.matchSingle(emote) : undefined;
           const applicableSizes_ = match !== undefined ? applicableSizes(match.platform) : applicableSizes(undefined);
 
@@ -111,9 +80,9 @@ export function autocompleteHandler(
         }
       } else if (interactionCommandName === 'emotelist') {
         if (focusedOptionName === 'query') {
-          const platform = getPlatformFromInteraction(interaction);
-          const animated = getAnimatedFromInteraction(interaction);
-          const overlaying = getOverlayingFromInteraction(interaction);
+          const platform = getOptionValue<Platform>(interaction, 'platform', stringToPlatform);
+          const animated = getOptionValue<boolean>(interaction, 'animated', stringToBoolean);
+          const overlaying = getOptionValue<boolean>(interaction, 'overlaying', stringToBoolean);
 
           const matches =
             emoteMatcher.matchSingleArray(
@@ -133,12 +102,12 @@ export function autocompleteHandler(
 
           await interaction.respond(options);
         } else if (focusedOptionName === 'platform') {
-          const emote = String(interaction.options.get('query')?.value ?? '').trim();
-          const animated = getAnimatedFromInteraction(interaction);
-          const overlaying = getOverlayingFromInteraction(interaction);
+          const query = getOptionValue<string>(interaction, 'query') ?? '';
+          const animated = getOptionValue<boolean>(interaction, 'animated', stringToBoolean);
+          const overlaying = getOptionValue<boolean>(interaction, 'overlaying', stringToBoolean);
 
           const matches =
-            emoteMatcher.matchSingleArray(emote, undefined, animated, overlaying) ?? emoteMatcher.matchSingleArray('');
+            emoteMatcher.matchSingleArray(query, undefined, animated, overlaying) ?? emoteMatcher.matchSingleArray('');
           const platforms: readonly string[] =
             matches !== undefined
               ? [...new Set(matches.map((match) => platformToString(match.platform))).keys()]
@@ -153,18 +122,18 @@ export function autocompleteHandler(
 
           await interaction.respond(options);
         } else if (focusedOptionName === 'animated' || focusedOptionName === 'overlaying') {
-          const emote = String(interaction.options.get('query')?.value ?? '').trim();
+          const query = getOptionValue<string>(interaction, 'query') ?? '';
           const matches = ((): readonly AssetInfo[] | undefined => {
+            const platform = getOptionValue<Platform>(interaction, 'platform', stringToPlatform);
+
             if (focusedOptionName === 'animated') {
-              const platform = getPlatformFromInteraction(interaction);
-              const overlaying = getOverlayingFromInteraction(interaction);
+              const overlaying = getOptionValue<boolean>(interaction, 'overlaying', stringToBoolean);
 
-              return emoteMatcher.matchSingleArray(emote, platform, undefined, overlaying);
+              return emoteMatcher.matchSingleArray(query, platform, undefined, overlaying);
             } else {
-              const platform = getPlatformFromInteraction(interaction);
-              const animated = getAnimatedFromInteraction(interaction);
+              const animated = getOptionValue<boolean>(interaction, 'animated', stringToBoolean);
 
-              return emoteMatcher.matchSingleArray(emote, platform, animated);
+              return emoteMatcher.matchSingleArray(query, platform, animated);
             }
           })();
           const bools = [
@@ -194,8 +163,8 @@ export function autocompleteHandler(
         )
           return;
         if (focusedOptionName === 'title') {
-          const category = getCategoryFromInteraction(interaction);
-          const clipper = getClipperFromInteraction(interaction);
+          const category = getOptionValue<string>(interaction, 'category');
+          const clipper = getOptionValue<string>(interaction, 'clipper');
 
           const hits = await (async (): Promise<readonly TwitchClip[]> => {
             let hits_ = await getHitsFromTwitchClipsMeilisearchIndex(
@@ -217,8 +186,8 @@ export function autocompleteHandler(
             options.slice(0, MAX_OPTIONS_LENGTH) as readonly ApplicationCommandOptionChoiceData<string>[]
           );
         } else if (focusedOptionName === 'clipper') {
-          const title = String(interaction.options.get('title')?.value ?? '').trim();
-          const category = getCategoryFromInteraction(interaction);
+          const title = getOptionValue<string>(interaction, 'title') ?? '';
+          const category = getOptionValue<string>(interaction, 'category');
 
           const currentUniqueCreatorNames = await (async (): Promise<readonly string[]> => {
             if (title === '' && category === undefined) return uniqueCreatorNames;
@@ -242,8 +211,8 @@ export function autocompleteHandler(
             options.slice(0, MAX_OPTIONS_LENGTH) as readonly ApplicationCommandOptionChoiceData<string>[]
           );
         } else if (focusedOptionName === 'category') {
-          const title = String(interaction.options.get('title')?.value ?? '').trim();
-          const clipper = getClipperFromInteraction(interaction);
+          const title = getOptionValue<string>(interaction, 'title') ?? '';
+          const clipper = getOptionValue<string>(interaction, 'clipper');
 
           const currentUniqueGameIds = await (async (): Promise<readonly string[]> => {
             if (title === '' && clipper === undefined) return uniqueGameIds;

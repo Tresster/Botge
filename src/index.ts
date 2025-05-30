@@ -40,19 +40,20 @@ const {
   GEMINI_API_KEY
 } = process.env;
 
-async function ensureDirTmp(): Promise<void> {
+const ensureDirs = (async (): Promise<void> => {
+  await ensureDir(DATABASE_DIR);
   await ensureDir(TMP_DIR);
+
   //delete everything in the tmp directory, if temp files got stuck. but not the tmp directory itself
-  (await readdir(TMP_DIR, { withFileTypes: true }))
-    .filter((dirent: Readonly<Dirent>) => dirent.isDirectory())
-    .map((dirent: Readonly<Dirent>) => dirent.name)
-    .forEach((dir) => void rm(join(TMP_DIR, dir), { recursive: true }));
-}
+  await Promise.all(
+    (await readdir(TMP_DIR, { withFileTypes: true }))
+      .filter((dirent: Readonly<Dirent>) => dirent.isDirectory())
+      .map((dirent: Readonly<Dirent>) => dirent.name)
+      .map(async (dir) => rm(join(TMP_DIR, dir), { recursive: true }))
+  );
+})();
 
-const ensureDirTmp_ = ensureDirTmp();
-await ensureDir(DATABASE_DIR);
-
-const commandUpdate = (async function (): Promise<void> {
+const updateCommands_ = (async (): Promise<void> => {
   if (process.argv.length < 3) {
     console.log('No commands lock file provided, skipping commands update.');
     return;
@@ -217,8 +218,8 @@ scheduleJob('12 */12 * * *', async () => {
 });
 
 bot.registerHandlers();
-await ensureDirTmp_;
-await commandUpdate;
+await ensureDirs;
+await updateCommands_;
 await Promise.all(refreshClipsOrRefreshUniqueCreatorNamesAndGameIds);
 await bot.start(DISCORD_TOKEN);
 await registerPings(bot.client, bot.pingsDatabase);

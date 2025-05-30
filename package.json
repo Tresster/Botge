@@ -1,6 +1,6 @@
 {
   "name": "botge",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Search emotes, clips, use zero-width emotes and other such commands.",
   "keywords": [
     "bot",
@@ -14,19 +14,35 @@
     "url": "git+https://github.com/Tresster/Botge.git"
   },
   "license": "MIT",
-  "author": "",
+  "author": {
+    "name": "Tresster"
+  },
+  "contributors": [
+    {
+      "name": "gentlebob"
+    },
+    {
+      "name": "widepogcrazy"
+    },
+    {
+      "name": "TimotronPrime"
+    },
+    {
+      "name": "santirack"
+    }
+  ],
   "type": "module",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
     "commandgeupdate": "tsc && node dist/update-commands.js",
     "lint": "eslint src",
-    "tests-lint": "eslint tests",
     "prepare": "husky || true",
     "prettier-format": "prettier --config .prettierrc . --write",
-    "tests-prettier-format": "prettier --config .prettierrc tests --write",
     "start": "tsc && node dist/index.js",
-    "test": "vitest tests"
+    "test": "vitest tests",
+    "tests-lint": "eslint tests",
+    "tests-prettier-format": "prettier --config .prettierrc tests --write"
   },
   "dependencies": {
     "@google/genai": "^1.2.0",

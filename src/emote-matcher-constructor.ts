@@ -201,9 +201,9 @@ export class PersonalEmoteMatcherConstructor {
     const addedEmotes = globalEmoteMatcherConstructor.addedEmotesDatabase.getAll(this.#guildId);
     const sevenTVEmoteNotInSets = await (async (): Promise<SevenTVEmoteNotInSet[]> => {
       const sevenTVEmoteNotInSets_ = (
-        (await Promise.all(
-          addedEmotes.map(async (addedEmote) => fetchAndJson(addedEmote.url))
-        )) as SevenTVEmoteNotInSet[]
+        await Promise.all(
+          addedEmotes.map(async (addedEmote) => fetchAndJson(addedEmote.url) as Promise<SevenTVEmoteNotInSet>)
+        )
       ).map((sevenTVEmoteNotInSet, index) => {
         const { alias } = addedEmotes[index];
 

@@ -5,7 +5,7 @@ import { GoogleGenAI } from '@google/genai';
 import { MeiliSearch } from 'meilisearch';
 import { Translator } from 'deepl-node';
 import { join } from 'node:path';
-import dotenv from 'dotenv';
+import { config } from 'dotenv';
 import OpenAI from 'openai';
 import { Client, GatewayIntentBits } from 'discord.js';
 
@@ -26,7 +26,7 @@ import { updateCommands } from './update-commands-docker.ts';
 import type { Guild } from './guild.ts';
 import { Bot } from './bot.ts';
 
-dotenv.config();
+config();
 const {
   DISCORD_TOKEN,
   OPENAI_API_KEY,
@@ -178,16 +178,10 @@ process.on('unhandledRejection', (error): void => {
   console.log(`unhandledRejection: ${error instanceof Error ? error.message : String(error)}`);
 });
 
-let refreshClipsOrRefreshUniqueCreatorNamesAndGameIds: readonly Promise<void>[] = [];
-if (UPDATE_CLIPS_ON_STARTUP === 'true') {
-  refreshClipsOrRefreshUniqueCreatorNamesAndGameIds = bot.guilds.map(async (guild) =>
-    guild.refreshClips(bot.twitchApi)
-  );
-} else {
-  refreshClipsOrRefreshUniqueCreatorNamesAndGameIds = bot.guilds.map(async (guild) =>
-    guild.refreshUniqueCreatorNamesAndGameIds()
-  );
-}
+const refreshClipsOrRefreshUniqueCreatorNamesAndGameIds: readonly Promise<void>[] =
+  UPDATE_CLIPS_ON_STARTUP === 'true'
+    ? bot.guilds.map(async (guild) => guild.refreshClips(bot.twitchApi))
+    : bot.guilds.map(async (guild) => guild.refreshUniqueCreatorNamesAndGameIds());
 
 scheduleJob('0 */4 * * * *', () => {
   bot.cleanupMessageBuilders();

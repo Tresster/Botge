@@ -54,6 +54,7 @@ export default tseslint.config(
         'warn',
         {
           allow: [
+            { from: 'lib', name: 'Array' },
             { from: 'package', name: 'RequestInit', package: 'node-fetch' },
             { from: 'package', name: ['MeiliSearch', 'Index'], package: 'meilisearch' },
             {
@@ -88,6 +89,7 @@ export default tseslint.config(
       '@typescript-eslint/no-misused-promises': ['warn', { checksVoidReturn: false }],
 
       '@typescript-eslint/consistent-type-definitions': ['warn', 'type'],
+      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^guild$' }],
 
       'eqeqeq': 'warn',
       'strict': 'warn',

@@ -163,8 +163,10 @@ export function buttonHandler(
         if (guild.broadcasterName !== null) BROADCASTER_NAME_TEXT_INPUT.setValue(guild.broadcasterName);
 
         const { personalEmoteSets } = guild.personalEmoteMatcherConstructor;
-        if (personalEmoteSets !== undefined && personalEmoteSets.sevenTv !== null)
-          SEVENTV_TEXT_INPUT.setValue(getSevenTvEmoteSetLinkFromSevenTvApiUlr(personalEmoteSets.sevenTv));
+        if (personalEmoteSets !== undefined) {
+          if (personalEmoteSets.sevenTv !== null)
+            SEVENTV_TEXT_INPUT.setValue(getSevenTvEmoteSetLinkFromSevenTvApiUlr(personalEmoteSets.sevenTv));
+        }
 
         await interaction.showModal(ASSIGN_EMOTE_SETS_MODAL);
         return undefined;

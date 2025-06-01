@@ -9,7 +9,6 @@
     "exactOptionalPropertyTypes": true,
     "noImplicitReturns": true,
     "noPropertyAccessFromIndexSignature": true,
-    "noUnusedLocals": true,
     "noUncheckedSideEffectImports": true,
     "rewriteRelativeImportExtensions": true
   },

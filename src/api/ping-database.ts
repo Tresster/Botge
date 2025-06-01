@@ -72,7 +72,7 @@ export class PingsDatabase {
       const pingSelectedUserIdRemoved = pingSelected.userIdRemoved;
       const pingUserIdRemoved = pingSelectedUserIdRemoved !== null ? Boolean(pingSelectedUserIdRemoved) : null;
 
-      return { ...pingSelected, userIds: pingUserIds, userIdRemoved: pingUserIdRemoved } as Ping;
+      return { ...pingSelected, userIds: pingUserIds, userIdRemoved: pingUserIdRemoved };
     });
   }
 

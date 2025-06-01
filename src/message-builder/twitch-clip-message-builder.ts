@@ -31,7 +31,7 @@ export class TwitchClipMessageBuilder extends BaseMessageBuilder<
       return {
         content: content,
         components: [this.row]
-      } as TwitchClipMessageBuilderTransformFunctionReturnType;
+      };
     };
 
     const transformFunctionWithoutEmbedServer = (
@@ -57,7 +57,7 @@ export class TwitchClipMessageBuilder extends BaseMessageBuilder<
       return {
         embeds: [embed],
         components: [this.row]
-      } as TwitchClipMessageBuilderTransformFunctionReturnType;
+      };
     };
 
     const getIdentifierFunction = (twitchClip: TwitchClip): string => {

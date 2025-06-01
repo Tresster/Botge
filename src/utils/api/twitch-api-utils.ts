@@ -29,7 +29,7 @@ async function transformClipsGameIdFromIdToNameAndTransformCreatedAt(
       ...twitchClip,
       created_at: twitchClip.created_at.split('T')[0],
       game_id: gameName ?? twitchClip.game_id
-    } as TwitchClip;
+    };
   });
 }
 

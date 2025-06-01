@@ -63,7 +63,7 @@ export function autocompleteHandler(
             return {
               name: match.name,
               value: match.name
-            } as ApplicationCommandOptionChoiceData<string>;
+            };
           });
 
           await interaction.respond(options);
@@ -77,7 +77,7 @@ export function autocompleteHandler(
               return {
                 name: applicableSize.toString(),
                 value: applicableSize
-              } as ApplicationCommandOptionChoiceData<number>;
+              };
             }
           );
 
@@ -102,7 +102,7 @@ export function autocompleteHandler(
             return {
               name: match.name.trim(),
               value: match.name.trim()
-            } as ApplicationCommandOptionChoiceData<string>;
+            };
           });
 
           await interaction.respond(options);
@@ -122,7 +122,7 @@ export function autocompleteHandler(
             return {
               name: platform,
               value: platform
-            } as ApplicationCommandOptionChoiceData<string>;
+            };
           });
 
           await interaction.respond(options);
@@ -155,7 +155,7 @@ export function autocompleteHandler(
             return {
               name: booleanToString(bool),
               value: booleanToString(bool)
-            } as ApplicationCommandOptionChoiceData<string>;
+            };
           });
 
           await interaction.respond(options);
@@ -184,7 +184,7 @@ export function autocompleteHandler(
           })();
 
           const options: readonly ApplicationCommandOptionChoiceData<string>[] = hits.map((clip) => {
-            return { name: clip.title, value: clip.title } as ApplicationCommandOptionChoiceData<string>;
+            return { name: clip.title, value: clip.title };
           });
 
           await interaction.respond(
@@ -209,7 +209,7 @@ export function autocompleteHandler(
               return {
                 name: uniqueCreatorName,
                 value: uniqueCreatorName
-              } as ApplicationCommandOptionChoiceData<string>;
+              };
             });
 
           await interaction.respond(
@@ -234,7 +234,7 @@ export function autocompleteHandler(
               return {
                 name: uniqueGameId,
                 value: uniqueGameId
-              } as ApplicationCommandOptionChoiceData<string>;
+              };
             });
 
           await interaction.respond(
@@ -271,7 +271,7 @@ export function autocompleteHandler(
             return {
               name: `${focusedOptionValueEverythingButLast} ${match.name}`.trim(),
               value: `${focusedOptionValueEverythingButLast} ${shortestUniqueSubstring}`.trim()
-            } as ApplicationCommandOptionChoiceData<string>;
+            };
           });
 
           if (options.some((option: ReadonlyApplicationCommandOptionChoiceDataString) => option.name.length > 100))

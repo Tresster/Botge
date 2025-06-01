@@ -198,9 +198,10 @@ export function emoteListHandler(emoteMessageBuilders: EmoteMessageBuilder[]) {
         return;
       }
 
-      const transformedMatches: readonly AssetInfo[] = matches.map(
-        (asset) => ({ ...asset, url: asset.url.replace('.gif', '.webp') }) as AssetInfo
-      );
+      const transformedMatches: readonly AssetInfo[] = matches.map((asset) => ({
+        ...asset,
+        url: asset.url.replace('.gif', '.webp')
+      }));
 
       const emoteMessageBuilder = new EmoteMessageBuilder(interaction, transformedMatches);
       const reply = emoteMessageBuilder.first();

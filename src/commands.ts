@@ -1,8 +1,4 @@
-import {
-  SlashCommandBuilder,
-  type RESTPostAPIChatInputApplicationCommandsJSONBody,
-  type ApplicationCommandOptionChoiceData
-} from 'discord.js';
+import { SlashCommandBuilder, type RESTPostAPIChatInputApplicationCommandsJSONBody } from 'discord.js';
 
 import type {
   ReadonlySlashCommandOptionsOnlyBuilder,
@@ -132,7 +128,7 @@ const shortestuniquesubstrings: ReadonlySlashCommandOptionsOnlyBuilder = new Sla
     option
       .setName('format')
       .setDescription('Text/emote browser. Default: text')
-      .setChoices([{ name: 'Emote browser', value: 'emoteBrowser' } as ApplicationCommandOptionChoiceData<string>])
+      .setChoices([{ name: 'Emote browser', value: 'emoteBrowser' }])
   )
   .addBooleanOption((option: ReadonlySlashCommandBooleanOption) =>
     option.setName('ephemeral').setDescription('whether to output the result so only you can see it')

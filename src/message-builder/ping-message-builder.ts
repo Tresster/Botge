@@ -48,11 +48,11 @@ export function getContent(ping: Ping, contentType: ContentType): string {
 
   let content = '';
   if (contentType === ContentType.PingRegistered) {
-    content = `The ping has been registered for ${contentTimePart}.`;
+    content += `The ping has been registered for ${contentTimePart}.`;
 
     if (userIdRemoved !== null && userIdRemoved) content += ' The original command user was removed from the ping.';
   } else {
-    content = `You have been pinged ${getPingableUserId(userId)} after ${contentTimePart}!`;
+    content += `You have been pinged ${getPingableUserId(userId)} after ${contentTimePart}!`;
 
     if (userIdRemoved !== null && userIdRemoved)
       content = `The original command user was removed from the ping. The ping was delivered after ${contentTimePart}!`;
@@ -74,16 +74,16 @@ const CLEANUP_MINUTES = 4;
 
 export class PingMessageBuilder {
   public static readonly messageBuilderType = 'Ping';
-  static readonly #emptyPingMessageBuilderReplies = {
+  static readonly #emptyPingMessageBuilderReplies: PingMessageBuilderReplies = {
     reply: undefined,
     buttonReply: undefined,
     deletionEvent: false
-  } as PingMessageBuilderReplies;
-  static readonly #pressedButtonPingMessageBuilderReplies = {
+  };
+  static readonly #pressedButtonPingMessageBuilderReplies: PingMessageBuilderReplies = {
     reply: undefined,
     buttonReply: `Please wait at least ${CLEANUP_MINUTES} minutes before pressing the same button again.`,
     deletionEvent: false
-  } as PingMessageBuilderReplies;
+  };
   static #staticCounter = 0;
 
   readonly #counter: number;
@@ -166,7 +166,7 @@ export class PingMessageBuilder {
         reply: this.#transformFunction(),
         buttonReply: undefined,
         deletionEvent: false
-      } as PingMessageBuilderReplies;
+      };
     }
 
     if (this.#pressedPingMeAsWell.has(userId)) return PingMessageBuilder.#pressedButtonPingMessageBuilderReplies;
@@ -185,7 +185,7 @@ export class PingMessageBuilder {
       reply: this.#transformFunction(),
       buttonReply: undefined,
       deletionEvent: false
-    } as PingMessageBuilderReplies;
+    };
   }
 
   public removeUserId(pingsDataBase: Readonly<PingsDatabase>, userId: string): PingMessageBuilderReplies {
@@ -202,7 +202,7 @@ export class PingMessageBuilder {
           buttonReply:
             "You cannot remove yourself from the ping if no one else is added to it.\nPlease use the 'Delete ping' button.",
           deletionEvent: false
-        } as PingMessageBuilderReplies;
+        };
 
       return emptyPingMessageBuilderReplies;
     }
@@ -215,7 +215,7 @@ export class PingMessageBuilder {
         reply: this.#transformFunction(),
         buttonReply: undefined,
         deletionEvent: false
-      } as PingMessageBuilderReplies;
+      };
     }
 
     if (this.#pressedRemoveMeFromPing.has(userId)) return PingMessageBuilder.#pressedButtonPingMessageBuilderReplies;
@@ -235,7 +235,7 @@ export class PingMessageBuilder {
       reply: this.#transformFunction(),
       buttonReply: undefined,
       deletionEvent: false
-    } as PingMessageBuilderReplies;
+    };
   }
 
   public deletePing(pingsDataBase: Readonly<PingsDatabase>): PingMessageBuilderReplies {
@@ -251,7 +251,7 @@ export class PingMessageBuilder {
         buttonReply:
           "You cannot delete the ping because people have been added to it.\nPlease use the 'Remove me from ping' button.",
         deletionEvent: false
-      } as PingMessageBuilderReplies;
+      };
 
     return this.#deletePing(pingsDataBase);
   }
@@ -281,11 +281,11 @@ export class PingMessageBuilder {
 
     const newUserIds_ = newUserIds !== undefined ? (newUserIds.length !== 0 ? newUserIds : null) : oldUserIds;
     const newUserIdRemoved_ = newUserIdRemoved ?? oldUserIdRemoved;
-    const newPing = {
+    const newPing: Ping = {
       ...this.#ping,
       userIds: newUserIds_,
       userIdRemoved: newUserIdRemoved_
-    } as Ping;
+    };
     this.#ping = newPing;
 
     this.#job.cancel();
@@ -304,17 +304,17 @@ export class PingMessageBuilder {
       reply: {
         content: '❌ This ping has been deleted.',
         components: []
-      } as PingMessageBuilderTransformFunctionReturnType,
+      },
       buttonReply: undefined,
       deletionEvent: true
-    } as PingMessageBuilderReplies;
+    };
   }
 
   #transformFunction(): PingMessageBuilderTransformFunctionReturnType {
     return {
       content: getContent(this.#ping, ContentType.PingRegistered),
       components: [this.#row]
-    } as PingMessageBuilderTransformFunctionReturnType;
+    };
   }
 
   #isCriticalTimeLeftOrIsPassed(): boolean {

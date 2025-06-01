@@ -68,7 +68,7 @@ export class EmoteMessageBuilder extends BaseMessageBuilder<AssetInfo, EmoteMess
       return {
         embeds: [embed],
         components: this.#extraRow !== undefined ? [this.row, this.#extraRow] : [this.row]
-      } as EmoteMessageBuilderTransformFunctionReturnType;
+      };
     };
 
     const getIdentifierFunction = (assetInfo: AssetInfo): string => {
@@ -111,7 +111,7 @@ export class EmoteMessageBuilder extends BaseMessageBuilder<AssetInfo, EmoteMess
     return {
       alias: currentEmote.name,
       url: emoteCdnUrlToEmoteApiCdnUrl_
-    } as AddedEmote;
+    };
   }
 
   public markCurrentAsDeleted(): EmoteMessageBuilderTransformFunctionReturnType | undefined {

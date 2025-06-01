@@ -1,5 +1,4 @@
-import dotenv from 'dotenv';
-import process from 'node:process';
+import { config } from 'dotenv';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { Md5 } from 'ts-md5';
 
@@ -7,7 +6,7 @@ import { REST, Routes } from 'discord.js';
 
 import { commands } from './commands.ts';
 
-dotenv.config();
+config();
 const { APP_ID, DISCORD_TOKEN } = process.env;
 
 export async function updateCommands(lockFilePath: string): Promise<void> {

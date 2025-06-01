@@ -1,12 +1,10 @@
-import dotenv from 'dotenv';
-import process from 'node:process';
+import { config } from 'dotenv';
 
 import { REST, Routes } from 'discord.js';
 
 import { commands } from './commands.ts';
 
-dotenv.config();
-
+config();
 const { APP_ID, DISCORD_TOKEN } = process.env;
 
 try {

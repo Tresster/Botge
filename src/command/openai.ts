@@ -67,7 +67,7 @@ export function chatgptHandler(openai: ReadonlyOpenAI | undefined) {
               ]
             : undefined;
 
-        return inputImage ?? ([{ role: 'user', content: prompt }] as openAiResponseInput);
+        return inputImage ?? [{ role: 'user', content: prompt }];
       })();
 
       //1 token is around 4 english characters

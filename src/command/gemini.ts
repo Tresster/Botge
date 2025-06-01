@@ -68,19 +68,6 @@ export function geminiHandler(googleGenAI: ReadonlyGoogleGenAI | undefined) {
         }
       });
       const messageContent = response.text;
-      const { usageMetadata } = response;
-      if (usageMetadata !== undefined) {
-        const { promptTokenCount, toolUsePromptTokenCount, totalTokenCount, thoughtsTokenCount, candidatesTokenCount } =
-          usageMetadata;
-        console.log(`totalTokenCount: ${totalTokenCount}`);
-        console.log(`promptTokenCount: ${promptTokenCount}`);
-        console.log(`toolUsePromptTokenCount: ${toolUsePromptTokenCount}`);
-        console.log(`thoughtsTokenCount: ${thoughtsTokenCount}`);
-        console.log(`candidatesTokenCount: ${candidatesTokenCount}`);
-        console.log(
-          `total?: ${(promptTokenCount ?? 0) + (toolUsePromptTokenCount ?? 0) + (thoughtsTokenCount ?? 0) + (candidatesTokenCount ?? 0)}`
-        );
-      }
 
       if (messageContent === undefined) {
         await defer;

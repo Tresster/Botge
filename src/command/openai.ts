@@ -75,7 +75,7 @@ export function chatgptHandler(openai: ReadonlyOpenAI | undefined) {
         model: 'gpt-4.1',
         input: input,
         max_output_tokens: 400,
-        instructions: instructions,
+        instructions: instructions ?? null,
         user: interaction.user.id
       });
 

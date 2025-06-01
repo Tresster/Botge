@@ -5,7 +5,7 @@ import {
   getSevenTvApiUrlFromSevenTvEmoteSetLink,
   getBttvApiUrlFromBroadcasterName,
   getFfzApiUrlFromBroadcasterName
-} from '../src/utils/get-api-url';
+} from '../src/utils/interaction/get-api-url';
 
 import { newTwitchApi } from '../src/utils/constructors/new-twitch-api';
 

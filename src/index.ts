@@ -68,7 +68,7 @@ const bot = await (async (): Promise<Readonly<Bot>> => {
   const openai: ReadonlyOpenAI | undefined =
     OPENAI_API_KEY !== undefined ? new OpenAI({ apiKey: OPENAI_API_KEY }) : undefined;
 
-  const googleGenAI = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
+  const googleGenAI = GEMINI_API_KEY !== undefined ? new GoogleGenAI({ apiKey: GEMINI_API_KEY }) : undefined;
 
   const translator: ReadonlyTranslator | undefined =
     DEEPL_API_KEY !== undefined ? new Translator(DEEPL_API_KEY) : undefined;

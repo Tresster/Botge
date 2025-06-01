@@ -6,8 +6,8 @@ const rules: readonly (readonly [Readonly<RegExp>, string])[] = [
 ];
 
 export class CachedUrl {
-  readonly #base?: string;
-  public constructor(base?: string) {
+  readonly #base: string | undefined;
+  public constructor(base: string | undefined) {
     this.#base = base;
   }
 

@@ -1,12 +1,16 @@
 {
   "compilerOptions": {
-    "module": "ESNext",
-    "esModuleInterop": true,
     "target": "ESNext",
+    "module": "ESNext",
     "moduleResolution": "bundler",
     "sourceMap": true,
     "outDir": "dist",
-    "strict": true
+    "strict": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitReturns": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUnusedLocals": true,
+    "noUncheckedSideEffectImports": true
   },
   "include": ["src"]
 }

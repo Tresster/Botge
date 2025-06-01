@@ -1,6 +1,6 @@
 # <img src="assets/peepoCute.png" alt="Botge Logo" width="36"> Botge
 
-![GitHub last commit](https://img.shields.io/github/last-commit/Tresster/Botge) ![GitHub License](https://img.shields.io/github/license/Tresster/Botge)
+![GitHub package.json version](https://img.shields.io/github/package-json/v/Tresster/Botge) ![GitHub last commit](https://img.shields.io/github/last-commit/Tresster/Botge) ![GitHub Created At](https://img.shields.io/github/created-at/Tresster/Botge) ![GitHub License](https://img.shields.io/github/license/Tresster/Botge)
 
 <img src="assets/peepoCute.png" alt="Botge Website Logo" width="18"> [Botge Website](https://botge.gitbook.io/)
 

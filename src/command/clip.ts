@@ -60,10 +60,10 @@ export function clipHandler(twitchClipMessageBuilders: TwitchClipMessageBuilder[
       const { maxTotalHits } = await twitchClipsMeiliSearchIndex.getPagination();
       if (maxTotalHits === null || maxTotalHits === undefined) throw new Error('pagination max total hits not set');
 
-      const search = await twitchClipsMeiliSearchIndex.search(title ?? '', {
+      const search = await twitchClipsMeiliSearchIndex.search(title ?? null, {
         filter: filter,
         matchingStrategy: 'all',
-        sort: sortByField !== 'shuffle' ? [sortByField] : undefined,
+        sort: sortByField !== 'shuffle' ? [sortByField] : [],
         limit: maxTotalHits
       });
       const hits: TwitchClip[] = search.hits.map((hit: ReadonlyHit) => hit as TwitchClip);

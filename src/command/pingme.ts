@@ -1,10 +1,10 @@
 import type { PermissionsBitField, Client, ChatInputCommandInteraction, TextChannel } from 'discord.js';
 
-import { PingMessageBuilder } from '../message-builder/ping-message-builder.js';
-import { getOptionValue } from '../utils/get-option-value.js';
-import type { PingsDatabase } from '../api/ping-database.js';
-import type { Guild } from '../guild.js';
-import type { Ping } from '../types.js';
+import { PingMessageBuilder } from '../message-builder/ping-message-builder.ts';
+import { getOptionValue } from '../utils/get-option-value.ts';
+import type { PingsDatabase } from '../api/ping-database.ts';
+import type { Guild } from '../guild.ts';
+import type { Ping } from '../types.ts';
 
 export function hoursAndMinutesToMiliseconds(hours: number, minutes: number): number {
   return (hours * 60 + minutes) * 60 * 1000;

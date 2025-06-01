@@ -15,7 +15,7 @@ import {
   PING_ME_AS_WELL_BUTTON_BASE_CUSTOM_ID,
   REMOVE_ME_FROM_PING_BUTTON_BASE_CUSTOM_ID,
   DELETE_PING_BUTTON_BASE_CUSTOM_ID
-} from '../message-builder/ping-message-builder.js';
+} from '../message-builder/ping-message-builder.ts';
 import {
   getBaseCustomIdFromCustomId,
   getMessageBuilderTypeFromCustomId,
@@ -26,28 +26,28 @@ import {
   NEXT_BUTTON_BASE_CUSTOM_ID,
   JUMP_TO_BUTTON_BASE_CUSTOM_ID,
   DELETE_BUTTON_BASE_CUSTOM_ID
-} from '../message-builder/base.js';
-import { TwitchClipMessageBuilder } from '../message-builder/twitch-clip-message-builder.js';
-import { EmoteMessageBuilder } from '../message-builder/emote-message-builder.js';
-import { getSevenTvEmoteSetLinkFromSevenTvApiUlr } from '../utils/interaction/get-api-url.js';
-import { booleanToAllowed } from '../utils/boolean-to-string.js';
-import type { PermittedRoleIdsDatabase } from '../api/permitted-role-ids-database.js';
-import type { AddedEmotesDatabase } from '../api/added-emotes-database.js';
-import type { PingsDatabase } from '../api/ping-database.js';
+} from '../message-builder/base.ts';
+import { TwitchClipMessageBuilder } from '../message-builder/twitch-clip-message-builder.ts';
+import { EmoteMessageBuilder } from '../message-builder/emote-message-builder.ts';
+import { getSevenTvEmoteSetLinkFromSevenTvApiUlr } from '../utils/interaction/get-api-url.ts';
+import { booleanToAllowed } from '../utils/boolean-to-string.ts';
+import type { PermittedRoleIdsDatabase } from '../api/permitted-role-ids-database.ts';
+import type { AddedEmotesDatabase } from '../api/added-emotes-database.ts';
+import type { PingsDatabase } from '../api/ping-database.ts';
 import {
   SETTINGS_PERMITTED_ROLES_BUTTON_CUSTOM_ID,
   ADD_EMOTE_PERMITTED_ROLES_BUTTON_CUSTOM_ID,
   ALLOW_EVERYONE_TO_ADD_EMOTE_BUTTON_CUSTOM_ID,
   ADDED_EMOTE_DELETION_MENU_BUTTON_CUSTOM_ID,
   CONFIGURATION_BUTTON_CUSTOM_ID
-} from '../command/settings.js';
+} from '../command/settings.ts';
 import type {
   TwitchClipMessageBuilderTransformFunctionReturnType,
   EmoteMessageBuilderTransformFunctionReturnType,
   PingMessageBuilderReplies
-} from '../types.js';
-import { Platform } from '../enums.js';
-import type { Guild } from '../guild.js';
+} from '../types.ts';
+import { Platform } from '../enums.ts';
+import type { Guild } from '../guild.ts';
 
 export const SELECT_SETTINGS_PERMITTED_ROLES_ROLE_SELECT_MENU_CUSTOM_ID = 'selectSettingsPermittedRolesRoleSelectMenu';
 export const SELECT_ADD_EMOTE_PERMITTED_ROLES_ROLE_SELECT_MENU_CUSTOM_ID = 'selectAddEmotePermittedRolesRoleSelectMenu';

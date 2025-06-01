@@ -1,9 +1,9 @@
 import type { ChatInputCommandInteraction } from 'discord.js';
 import type ResponseInput from 'openai';
 
-import { getOptionValue, getOptionValueWithoutUndefined } from '../utils/get-option-value.js';
-import type { ReadonlyOpenAI } from '../types.js';
-import type { Guild } from '../guild.js';
+import { getOptionValue, getOptionValueWithoutUndefined } from '../utils/get-option-value.ts';
+import type { ReadonlyOpenAI } from '../types.ts';
+import type { Guild } from '../guild.ts';
 
 type openAiResponseInput = ResponseInput.Responses.ResponseInput;
 

@@ -1,9 +1,9 @@
 import type { ChatInputCommandInteraction } from 'discord.js';
 
-import { TwitchClipMessageBuilder } from '../message-builder/twitch-clip-message-builder.js';
-import { getOptionValue } from '../utils/get-option-value.js';
-import type { TwitchClip, ReadonlyHit } from '../types.js';
-import type { Guild } from '../guild.js';
+import { TwitchClipMessageBuilder } from '../message-builder/twitch-clip-message-builder.ts';
+import { getOptionValue } from '../utils/get-option-value.ts';
+import type { TwitchClip, ReadonlyHit } from '../types.ts';
+import type { Guild } from '../guild.ts';
 
 const CLEANUP_MINUTES = 10;
 const MAX_TWITCH_CLIP_MESSAGE_BUILDERS_LENGTH = 15;

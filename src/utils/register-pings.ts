@@ -2,9 +2,9 @@ import scheduler from 'node-schedule';
 
 import type { Client, TextChannel } from 'discord.js';
 
-import { getContent, ContentType } from '../message-builder/ping-message-builder.js';
-import { hoursAndMinutesToMiliseconds } from '../command/pingme.js';
-import type { PingsDatabase } from '../api/ping-database.js';
+import { getContent, ContentType } from '../message-builder/ping-message-builder.ts';
+import { hoursAndMinutesToMiliseconds } from '../command/pingme.ts';
+import type { PingsDatabase } from '../api/ping-database.ts';
 
 function milisecondsToHoursAndMinutes(miliseconds: number): string {
   const hours = Math.floor(miliseconds / 3600000);

@@ -1,8 +1,8 @@
 import type { ChatInputCommandInteraction } from 'discord.js';
 
-import { getOptionValueWithoutUndefined } from '../utils/get-option-value.js';
-import type { ReadonlyTranslator } from '../types.js';
-import type { Guild } from '../guild.js';
+import { getOptionValueWithoutUndefined } from '../utils/get-option-value.ts';
+import type { ReadonlyTranslator } from '../types.ts';
+import type { Guild } from '../guild.ts';
 
 export function translateHandler(translator: ReadonlyTranslator | undefined) {
   return async (interaction: ChatInputCommandInteraction, guild: Readonly<Guild>): Promise<void> => {

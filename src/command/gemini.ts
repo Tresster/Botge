@@ -1,10 +1,10 @@
 import { HarmBlockThreshold, HarmCategory } from '@google/genai';
 import type { ChatInputCommandInteraction } from 'discord.js';
 
-import type { Guild } from '../guild.js';
-import type { ReadonlyGoogleGenAI } from '../types.js';
+import type { Guild } from '../guild.ts';
+import type { ReadonlyGoogleGenAI } from '../types.ts';
 
-import { getOptionValueWithoutUndefined } from '../utils/get-option-value.js';
+import { getOptionValueWithoutUndefined } from '../utils/get-option-value.ts';
 
 const MAX_DISCORD_MESSAGE_LENGTH = 2000;
 
@@ -68,6 +68,19 @@ export function geminiHandler(googleGenAI: ReadonlyGoogleGenAI | undefined) {
         }
       });
       const messageContent = response.text;
+      const { usageMetadata } = response;
+      if (usageMetadata !== undefined) {
+        const { promptTokenCount, toolUsePromptTokenCount, totalTokenCount, thoughtsTokenCount, candidatesTokenCount } =
+          usageMetadata;
+        console.log(`totalTokenCount: ${totalTokenCount}`);
+        console.log(`promptTokenCount: ${promptTokenCount}`);
+        console.log(`toolUsePromptTokenCount: ${toolUsePromptTokenCount}`);
+        console.log(`thoughtsTokenCount: ${thoughtsTokenCount}`);
+        console.log(`candidatesTokenCount: ${candidatesTokenCount}`);
+        console.log(
+          `total?: ${(promptTokenCount ?? 0) + (toolUsePromptTokenCount ?? 0) + (thoughtsTokenCount ?? 0) + (candidatesTokenCount ?? 0)}`
+        );
+      }
 
       if (messageContent === undefined) {
         await defer;

@@ -1,6 +1,6 @@
 import Database from 'better-sqlite3';
 
-import type { Ping } from '../types.js';
+import type { Ping } from '../types.ts';
 
 const TABLE_NAME = 'pings';
 

@@ -1,9 +1,9 @@
 import type { ChatInputCommandInteraction } from 'discord.js';
 
-import { getOptionValue, getOptionValueWithoutUndefined } from '../utils/get-option-value.js';
-import { EmoteMessageBuilder } from '../message-builder/emote-message-builder.js';
-import type { EmoteMatcher } from '../emote-matcher.js';
-import type { Guild } from '../guild.js';
+import { getOptionValue, getOptionValueWithoutUndefined } from '../utils/get-option-value.ts';
+import { EmoteMessageBuilder } from '../message-builder/emote-message-builder.ts';
+import type { EmoteMatcher } from '../emote-matcher.ts';
+import type { Guild } from '../guild.ts';
 
 export function getAllSubstrings(str: string): readonly string[] {
   const result: string[] = [];

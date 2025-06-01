@@ -1,4 +1,4 @@
-import { EmoteMatcher } from './emote-matcher.js';
+import { EmoteMatcher } from './emote-matcher.ts';
 import type {
   SevenTVEmoteNotInSet,
   BTTVEmote,
@@ -8,12 +8,12 @@ import type {
   SevenTVEmotes,
   TwitchGlobalEmotes,
   AddedEmote
-} from './types.js';
-import { GLOBAL_EMOTE_ENDPOINTS } from './paths-and-endpoints.js';
-import type { PersonalEmoteSets } from './personal-emote-sets.js';
-import type { TwitchApi } from './api/twitch-api.js';
-import type { AddedEmotesDatabase } from './api/added-emotes-database.js';
-import { fetchAndJson } from './utils/fetch-and-json.js';
+} from './types.ts';
+import { GLOBAL_EMOTE_ENDPOINTS } from './paths-and-endpoints.ts';
+import type { PersonalEmoteSets } from './personal-emote-sets.ts';
+import type { TwitchApi } from './api/twitch-api.ts';
+import type { AddedEmotesDatabase } from './api/added-emotes-database.ts';
+import { fetchAndJson } from './utils/fetch-and-json.ts';
 
 export class GlobalEmoteMatcherConstructor {
   static #instance: Readonly<GlobalEmoteMatcherConstructor> | undefined = undefined;

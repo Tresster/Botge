@@ -5,7 +5,7 @@ import { Md5 } from 'ts-md5';
 
 import { REST, Routes } from 'discord.js';
 
-import { commands } from './commands.js';
+import { commands } from './commands.ts';
 
 dotenv.config();
 const { APP_ID, DISCORD_TOKEN } = process.env;

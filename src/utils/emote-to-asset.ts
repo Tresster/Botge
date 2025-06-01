@@ -1,4 +1,4 @@
-import { Platform } from '../enums.js';
+import { Platform } from '../enums.ts';
 import type {
   SevenTVEmoteFile,
   SevenTVEmoteInSet,
@@ -7,8 +7,8 @@ import type {
   FFZEmote,
   TwitchEmote,
   AssetInfo
-} from '../types.js';
-import { CDN_ENDPOINTS } from '../paths-and-endpoints.js';
+} from '../types.ts';
+import { CDN_ENDPOINTS } from '../paths-and-endpoints.ts';
 
 const EMOTESIZE = 2;
 

@@ -1,4 +1,4 @@
-import type { ReadonlyRegExpExecArray } from '../types.js';
+import type { ReadonlyRegExpExecArray } from '../types.ts';
 
 const url =
   'https://docs.google.com/spreadsheets/u/0/d/e/2PACX-1vSWIkcAv-1T59HWffSdJwn1P4m5Kp4hjIahweIbinW2uO1TPbv2AoYH4QJL5hXL339ll3xua8ir9E8g/pub?output=html';

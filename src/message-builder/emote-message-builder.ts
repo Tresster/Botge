@@ -11,17 +11,17 @@ import {
 import {
   emoteCdnUrlToEmoteApiCdnUrl,
   emoteCdnUrlToEmoteUrl
-} from '../utils/message-builder/emote-cdn-url-to-emote-url.js';
-import { platformToString } from '../utils/platform-to-string.js';
-import { booleanToString } from '../utils/boolean-to-string.js';
+} from '../utils/message-builder/emote-cdn-url-to-emote-url.ts';
+import { platformToString } from '../utils/platform-to-string.ts';
+import { booleanToString } from '../utils/boolean-to-string.ts';
 import type {
   AddedEmote,
   AssetInfo,
   EmoteMessageBuilderTransformFunctionReturnType,
   ReadonlyActionRowBuilderMessageActionRowComponentBuilder
-} from '../types.js';
-import { BaseMessageBuilder, getCustomId, DELETE_BUTTON_BASE_CUSTOM_ID } from './base.js';
-import { Platform } from '../enums.js';
+} from '../types.ts';
+import { BaseMessageBuilder, getCustomId, DELETE_BUTTON_BASE_CUSTOM_ID } from './base.ts';
+import { Platform } from '../enums.ts';
 
 export class EmoteMessageBuilder extends BaseMessageBuilder<AssetInfo, EmoteMessageBuilderTransformFunctionReturnType> {
   public static readonly messageBuilderType = 'Emote';

@@ -1,6 +1,6 @@
 import Database from 'better-sqlite3';
 
-import type { AddedEmote } from '../types.js';
+import type { AddedEmote } from '../types.ts';
 
 const TABLE_NAME = 'addedEmotes';
 

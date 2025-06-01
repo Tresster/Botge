@@ -10,7 +10,7 @@ import type {
   ReadonlySlashCommandBooleanOption,
   ReadonlySlashCommandAttachmentOption,
   ReadonlySlashCommandIntegerOption
-} from './types.js';
+} from './types.ts';
 
 const emote: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
   .setName('emote')

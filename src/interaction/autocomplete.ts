@@ -1,13 +1,13 @@
 import type { Index } from 'meilisearch';
 import type { AutocompleteInteraction, ApplicationCommandOptionChoiceData } from 'discord.js';
 
-import { platformStrings, platformToString, stringToPlatform } from '../utils/platform-to-string.js';
-import { booleanToString, stringToBoolean } from '../utils/boolean-to-string.js';
-import { getOptionValue } from '../utils/get-option-value.js';
-import { getShortestUniqueSubstrings } from '../command/shortest-unique-substrings.js';
-import type { TwitchClip, ReadonlyHit, ReadonlyApplicationCommandOptionChoiceDataString, AssetInfo } from '../types.js';
-import type { EmoteMatcher } from '../emote-matcher.js';
-import { Platform } from '../enums.js';
+import { platformStrings, platformToString, stringToPlatform } from '../utils/platform-to-string.ts';
+import { booleanToString, stringToBoolean } from '../utils/boolean-to-string.ts';
+import { getOptionValue } from '../utils/get-option-value.ts';
+import { getShortestUniqueSubstrings } from '../command/shortest-unique-substrings.ts';
+import type { TwitchClip, ReadonlyHit, ReadonlyApplicationCommandOptionChoiceDataString, AssetInfo } from '../types.ts';
+import type { EmoteMatcher } from '../emote-matcher.ts';
+import { Platform } from '../enums.ts';
 
 const MAX_OPTIONS_LENGTH = 10; //THE MAXIMUM YOU CAN SET HERE IS 25
 

@@ -1,13 +1,13 @@
 import type { ChatInputCommandInteraction, GuildMember, Role } from 'discord.js';
 
-import { sevenTVUrlToSevenTVNotInSet, SPLITTER } from '../utils/command/platform-url-to-api-url.js';
-import { permitted, owner, globalAdministrator } from '../utils/command/permitted.js';
-import { getOptionValue, getOptionValueWithoutUndefined } from '../utils/get-option-value.js';
-import { fetchAndJson } from '../utils/fetch-and-json.js';
-import type { AddedEmotesDatabase } from '../api/added-emotes-database.js';
-import type { AddedEmote, SevenTVEmoteNotInSet } from '../types.js';
-import { CDN_ENDPOINTS } from '../paths-and-endpoints.js';
-import type { Guild } from '../guild.js';
+import { sevenTVUrlToSevenTVNotInSet, SPLITTER } from '../utils/command/platform-url-to-api-url.ts';
+import { permitted, owner, globalAdministrator } from '../utils/command/permitted.ts';
+import { getOptionValue, getOptionValueWithoutUndefined } from '../utils/get-option-value.ts';
+import { fetchAndJson } from '../utils/fetch-and-json.ts';
+import type { AddedEmotesDatabase } from '../api/added-emotes-database.ts';
+import type { AddedEmote, SevenTVEmoteNotInSet } from '../types.ts';
+import { CDN_ENDPOINTS } from '../paths-and-endpoints.ts';
+import type { Guild } from '../guild.ts';
 
 export function addEmoteHandlerSevenTVNotInSet(addedEmotesDatabase: Readonly<AddedEmotesDatabase>) {
   return async (interaction: ChatInputCommandInteraction, guild: Readonly<Guild>): Promise<void> => {

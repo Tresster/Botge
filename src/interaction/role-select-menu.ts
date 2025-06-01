@@ -2,9 +2,9 @@ import { MessageFlags, type RoleSelectMenuInteraction } from 'discord.js';
 import {
   SELECT_SETTINGS_PERMITTED_ROLES_ROLE_SELECT_MENU_CUSTOM_ID,
   SELECT_ADD_EMOTE_PERMITTED_ROLES_ROLE_SELECT_MENU_CUSTOM_ID
-} from './button.js';
-import type { Guild } from '../guild.js';
-import type { PermittedRoleIdsDatabase } from '../api/permitted-role-ids-database.js';
+} from './button.ts';
+import type { Guild } from '../guild.ts';
+import type { PermittedRoleIdsDatabase } from '../api/permitted-role-ids-database.ts';
 
 export function roleSelectMenuHandler(
   guild: Readonly<Guild>,

@@ -2,9 +2,9 @@ import { join, basename } from 'path';
 import fetch from 'node-fetch';
 import { writeFile } from 'node:fs/promises';
 
-import type { CachedUrl } from '../../../api/cached-url.js';
-import type { AssetInfo, DownloadedAsset } from '../../../types.js';
-import { getDimension, getDuration } from './ffprobe-utils.js';
+import type { CachedUrl } from '../../../api/cached-url.ts';
+import type { AssetInfo, DownloadedAsset } from '../../../types.ts';
+import { getDimension, getDuration } from './ffprobe-utils.ts';
 
 export const DEFAULTDURATION = 0;
 

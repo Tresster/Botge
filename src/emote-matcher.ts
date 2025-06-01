@@ -1,4 +1,4 @@
-import type { Platform } from './enums.js';
+import type { Platform } from './enums.ts';
 import type {
   SevenTVEmoteNotInSet,
   BTTVEmote,
@@ -8,7 +8,7 @@ import type {
   FFZGlobalEmotes,
   TwitchGlobalEmotes,
   AssetInfo
-} from './types.js';
+} from './types.ts';
 
 import {
   sevenTVInSetToAsset,
@@ -16,7 +16,7 @@ import {
   bttvToAsset,
   ffzToAsset,
   twitchToAsset
-} from './utils/emote-to-asset.js';
+} from './utils/emote-to-asset.ts';
 
 const FFZGLOBALSETSKEY = 3;
 

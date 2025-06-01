@@ -5,7 +5,7 @@ import type { GoogleGenAI } from '@google/genai';
 import type { Hit, RecordAny } from 'meilisearch';
 import type { Translator } from 'deepl-node';
 
-import type { Platform } from './enums.js';
+import type { Platform } from './enums.ts';
 
 import type {
   SlashCommandOptionsOnlyBuilder,

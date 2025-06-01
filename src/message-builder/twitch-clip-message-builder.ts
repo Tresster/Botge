@@ -4,8 +4,8 @@ import type {
   TwitchClip,
   TwitchClipMessageBuilderTransformFunctionReturnType,
   ReadonlyEmbedBuilder
-} from '../types.js';
-import { BaseMessageBuilder } from './base.js';
+} from '../types.ts';
+import { BaseMessageBuilder } from './base.ts';
 
 const { EMBED_SERVER_HOST } = process.env;
 

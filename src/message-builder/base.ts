@@ -18,7 +18,7 @@ import type {
   ReadonlyModalBuilder,
   TwitchClip,
   TwitchClipMessageBuilderTransformFunctionReturnType
-} from '../types.js';
+} from '../types.ts';
 
 export const PREVIOUS_BUTTON_BASE_CUSTOM_ID = 'previousButton';
 export const NEXT_BUTTON_BASE_CUSTOM_ID = 'nextButton';

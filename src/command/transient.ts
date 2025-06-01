@@ -1,7 +1,7 @@
 import { MessageFlags, type ChatInputCommandInteraction } from 'discord.js';
 
-import { getOptionValue } from '../utils/get-option-value.js';
-import type { Guild } from '../guild.js';
+import { getOptionValue } from '../utils/get-option-value.ts';
+import type { Guild } from '../guild.ts';
 
 async function sleep(seconds: number): Promise<void> {
   return new Promise((resolve) => {

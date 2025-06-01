@@ -1,4 +1,4 @@
-import { Platform } from '../enums.js';
+import { Platform } from '../enums.ts';
 
 const SEVEN_IN_SET_STRING = '7TV';
 const SEVEN_NOT_IN_SET_STRING = '7TV | Added Emote';

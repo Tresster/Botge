@@ -8,14 +8,14 @@ import {
   type TextChannel
 } from 'discord.js';
 
-import type { PingsDatabase } from '../api/ping-database.js';
+import type { PingsDatabase } from '../api/ping-database.ts';
 import type {
   Ping,
   ReadonlyActionRowBuilderMessageActionRowComponentBuilder,
   PingMessageBuilderTransformFunctionReturnType,
   PingMessageBuilderReplies
-} from '../types.js';
-import { getCustomId } from './base.js';
+} from '../types.ts';
+import { getCustomId } from './base.ts';
 
 export enum ContentType {
   PingRegistered = 0,

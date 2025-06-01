@@ -1,5 +1,5 @@
 import Database from 'better-sqlite3';
-import { PersonalEmoteSets } from '../personal-emote-sets.js';
+import { PersonalEmoteSets } from '../personal-emote-sets.ts';
 
 const TABLE_NAME = 'assignedEmoteSets';
 

@@ -1,9 +1,9 @@
-import { Guild } from '../../guild.js';
-import type { PersonalEmoteSets } from '../../personal-emote-sets.js';
-import { PersonalEmoteMatcherConstructor } from '../../emote-matcher-constructor.js';
-import type { TwitchClipsMeiliSearch } from '../../twitch-clips-meili-search.js';
-import type { AddedEmotesDatabase } from '../../api/added-emotes-database.js';
-import type { PermittedRoleIdsDatabase } from '../../api/permitted-role-ids-database.js';
+import { Guild } from '../../guild.ts';
+import type { PersonalEmoteSets } from '../../personal-emote-sets.ts';
+import { PersonalEmoteMatcherConstructor } from '../../emote-matcher-constructor.ts';
+import type { TwitchClipsMeiliSearch } from '../../twitch-clips-meili-search.ts';
+import type { AddedEmotesDatabase } from '../../api/added-emotes-database.ts';
+import type { PermittedRoleIdsDatabase } from '../../api/permitted-role-ids-database.ts';
 
 export async function newGuild(
   guildId: string,

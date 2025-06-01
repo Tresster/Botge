@@ -3,7 +3,7 @@ import process from 'node:process';
 
 import { REST, Routes } from 'discord.js';
 
-import { commands } from './commands.js';
+import { commands } from './commands.ts';
 
 dotenv.config();
 

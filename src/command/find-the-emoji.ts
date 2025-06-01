@@ -1,7 +1,7 @@
 import type { ChatInputCommandInteraction, GuildEmoji } from 'discord.js';
 
-import { getOptionValue } from '../utils/get-option-value.js';
-import type { Guild } from '../guild.js';
+import { getOptionValue } from '../utils/get-option-value.ts';
+import type { Guild } from '../guild.ts';
 
 const DEFAULT_SIZE = 5;
 

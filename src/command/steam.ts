@@ -1,9 +1,9 @@
 import fetch, { type Response } from 'node-fetch';
 import type { ChatInputCommandInteraction } from 'discord.js';
 
-import type { NumberOfCurrentPlayers } from '../types.js';
-import { GUILD_ID_CUTEDOG } from '../guilds.js';
-import type { Guild } from '../guild.js';
+import type { NumberOfCurrentPlayers } from '../types.ts';
+import { GUILD_ID_CUTEDOG } from '../guilds.ts';
+import type { Guild } from '../guild.ts';
 
 function getColor(percent: number): string {
   if (percent <= 39)

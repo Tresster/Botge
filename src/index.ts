@@ -9,22 +9,22 @@ import dotenv from 'dotenv';
 import OpenAI from 'openai';
 import { Client, GatewayIntentBits } from 'discord.js';
 
-import { BroadcasterNameAndPersonalEmoteSetsDatabase } from './api/broadcaster-name-and-personal-emote-sets-database.js';
-import { PermittedRoleIdsDatabase } from './api/permitted-role-ids-database.js';
-import { AddedEmotesDatabase } from './api/added-emotes-database.js';
-import { PingsDatabase } from './api/ping-database.js';
-import { CachedUrl } from './api/cached-url.js';
-import { newTwitchApi } from './utils/constructors/new-twitch-api.js';
-import { newGuild } from './utils/constructors/new-guild.js';
-import { registerPings } from './utils/register-pings.js';
-import { DATABASE_DIR, DATABASE_ENDPOINTS, TMP_DIR } from './paths-and-endpoints.js';
-import { GlobalEmoteMatcherConstructor } from './emote-matcher-constructor.js';
-import { TwitchClipsMeiliSearch } from './twitch-clips-meili-search.js';
-import type { ReadonlyOpenAI, ReadonlyTranslator } from './types.js';
-import type { PersonalEmoteSets } from './personal-emote-sets.js';
-import { updateCommands } from './update-commands-docker.js';
-import type { Guild } from './guild.js';
-import { Bot } from './bot.js';
+import { BroadcasterNameAndPersonalEmoteSetsDatabase } from './api/broadcaster-name-and-personal-emote-sets-database.ts';
+import { PermittedRoleIdsDatabase } from './api/permitted-role-ids-database.ts';
+import { AddedEmotesDatabase } from './api/added-emotes-database.ts';
+import { PingsDatabase } from './api/ping-database.ts';
+import { CachedUrl } from './api/cached-url.ts';
+import { newTwitchApi } from './utils/constructors/new-twitch-api.ts';
+import { newGuild } from './utils/constructors/new-guild.ts';
+import { registerPings } from './utils/register-pings.ts';
+import { DATABASE_DIR, DATABASE_ENDPOINTS, TMP_DIR } from './paths-and-endpoints.ts';
+import { GlobalEmoteMatcherConstructor } from './emote-matcher-constructor.ts';
+import { TwitchClipsMeiliSearch } from './twitch-clips-meili-search.ts';
+import type { ReadonlyOpenAI, ReadonlyTranslator } from './types.ts';
+import type { PersonalEmoteSets } from './personal-emote-sets.ts';
+import { updateCommands } from './update-commands-docker.ts';
+import type { Guild } from './guild.ts';
+import { Bot } from './bot.ts';
 
 dotenv.config();
 const {

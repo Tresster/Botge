@@ -10,7 +10,8 @@
     "noImplicitReturns": true,
     "noPropertyAccessFromIndexSignature": true,
     "noUnusedLocals": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+    "rewriteRelativeImportExtensions": true
   },
   "include": ["src"]
 }

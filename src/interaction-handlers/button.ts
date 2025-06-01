@@ -15,7 +15,7 @@ import {
   PING_ME_AS_WELL_BUTTON_BASE_CUSTOM_ID,
   REMOVE_ME_FROM_PING_BUTTON_BASE_CUSTOM_ID,
   DELETE_PING_BUTTON_BASE_CUSTOM_ID
-} from '../message-builder/ping-message-builder.ts';
+} from '../message-builders/ping-message-builder.ts';
 import {
   getBaseCustomIdFromCustomId,
   getMessageBuilderTypeFromCustomId,
@@ -26,10 +26,10 @@ import {
   NEXT_BUTTON_BASE_CUSTOM_ID,
   JUMP_TO_BUTTON_BASE_CUSTOM_ID,
   DELETE_BUTTON_BASE_CUSTOM_ID
-} from '../message-builder/base.ts';
-import { TwitchClipMessageBuilder } from '../message-builder/twitch-clip-message-builder.ts';
-import { EmoteMessageBuilder } from '../message-builder/emote-message-builder.ts';
-import { getSevenTvEmoteSetLinkFromSevenTvApiUlr } from '../utils/interaction/get-api-url.ts';
+} from '../message-builders/base.ts';
+import { TwitchClipMessageBuilder } from '../message-builders/twitch-clip-message-builder.ts';
+import { EmoteMessageBuilder } from '../message-builders/emote-message-builder.ts';
+import { getSevenTvEmoteSetLinkFromSevenTvApiUlr } from '../utils/interaction-handlers/get-api-url.ts';
 import { booleanToAllowed } from '../utils/boolean-to-string.ts';
 import type { PermittedRoleIdsDatabase } from '../api/permitted-role-ids-database.ts';
 import type { AddedEmotesDatabase } from '../api/added-emotes-database.ts';
@@ -40,7 +40,7 @@ import {
   ALLOW_EVERYONE_TO_ADD_EMOTE_BUTTON_CUSTOM_ID,
   ADDED_EMOTE_DELETION_MENU_BUTTON_CUSTOM_ID,
   CONFIGURATION_BUTTON_CUSTOM_ID
-} from '../command/settings.ts';
+} from '../command-handlers/settings.ts';
 import type {
   TwitchClipMessageBuilderTransformFunctionReturnType,
   EmoteMessageBuilderTransformFunctionReturnType,

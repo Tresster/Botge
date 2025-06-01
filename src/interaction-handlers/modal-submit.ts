@@ -4,9 +4,9 @@ import {
   getSevenTvApiUrlFromSevenTvEmoteSetLink,
   getBttvApiUrlFromBroadcasterName,
   getFfzApiUrlFromBroadcasterName
-} from '../utils/interaction/get-api-url.ts';
-import { TwitchClipMessageBuilder } from '../message-builder/twitch-clip-message-builder.ts';
-import { EmoteMessageBuilder } from '../message-builder/emote-message-builder.ts';
+} from '../utils/interaction-handlers/get-api-url.ts';
+import { TwitchClipMessageBuilder } from '../message-builders/twitch-clip-message-builder.ts';
+import { EmoteMessageBuilder } from '../message-builders/emote-message-builder.ts';
 import {
   getBaseCustomIdFromCustomId,
   getMessageBuilderTypeFromCustomId,
@@ -15,14 +15,14 @@ import {
   JUMP_TO_MODAL_BASE_CUSTOM_ID,
   JUMP_TO_TEXT_INPUT_BASE_CUSTOM_ID,
   JUMP_TO_IDENTIFIER_INPUT_BASE_CUSTOM_ID
-} from '../message-builder/base.ts';
+} from '../message-builders/base.ts';
 import type { BroadcasterNameAndPersonalEmoteSetsDatabase } from '../api/broadcaster-name-and-personal-emote-sets-database.ts';
 import type { TwitchApi } from '../api/twitch-api.ts';
 import {
   ASSIGN_EMOTE_SETS_MODAL_CUSTOM_ID,
   BROADCASTER_NAME_TEXT_INPUT_CUSTOM_ID,
   SEVENTV_TEXT_INPUT_CUSTOM_ID
-} from '../interaction/button.ts';
+} from './button.ts';
 import { PersonalEmoteSets } from '../personal-emote-sets.ts';
 import type { Guild } from '../guild.ts';
 

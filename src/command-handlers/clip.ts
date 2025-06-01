@@ -1,6 +1,6 @@
 import type { ChatInputCommandInteraction } from 'discord.js';
 
-import { TwitchClipMessageBuilder } from '../message-builder/twitch-clip-message-builder.ts';
+import { TwitchClipMessageBuilder } from '../message-builders/twitch-clip-message-builder.ts';
 import { getOptionValue } from '../utils/get-option-value.ts';
 import type { TwitchClip, ReadonlyHit } from '../types.ts';
 import type { Guild } from '../guild.ts';

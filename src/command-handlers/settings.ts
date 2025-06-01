@@ -9,7 +9,7 @@ import {
   type Role
 } from 'discord.js';
 
-import { permitted, administrator, owner, globalAdministrator } from '../utils/command/permitted.ts';
+import { permitted, administrator, owner, globalAdministrator } from '../utils/command-handlers/permitted.ts';
 import { booleanToAllowed } from '../utils/boolean-to-string.ts';
 import type { Guild } from '../guild.ts';
 

@@ -1,7 +1,7 @@
 import type { ChatInputCommandInteraction, GuildMember, Role } from 'discord.js';
 
-import { sevenTVUrlToSevenTVNotInSet, SPLITTER } from '../utils/command/platform-url-to-api-url.ts';
-import { permitted, owner, globalAdministrator } from '../utils/command/permitted.ts';
+import { sevenTVUrlToSevenTVNotInSet, SPLITTER } from '../utils/command-handlers/platform-url-to-api-url.ts';
+import { permitted, owner, globalAdministrator } from '../utils/command-handlers/permitted.ts';
 import { getOptionValue, getOptionValueWithoutUndefined } from '../utils/get-option-value.ts';
 import { fetchAndJson } from '../utils/fetch-and-json.ts';
 import type { AddedEmotesDatabase } from '../api/added-emotes-database.ts';

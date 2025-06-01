@@ -11,7 +11,7 @@ import {
 import {
   emoteCdnUrlToEmoteApiCdnUrl,
   emoteCdnUrlToEmoteUrl
-} from '../utils/message-builder/emote-cdn-url-to-emote-url.ts';
+} from '../utils/message-builders/emote-cdn-url-to-emote-url.ts';
 import { platformToString } from '../utils/platform-to-string.ts';
 import { booleanToString } from '../utils/boolean-to-string.ts';
 import type {

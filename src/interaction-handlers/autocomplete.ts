@@ -4,7 +4,7 @@ import type { AutocompleteInteraction, ApplicationCommandOptionChoiceData } from
 import { platformStrings, platformToString, stringToPlatform } from '../utils/platform-to-string.ts';
 import { booleanToString, stringToBoolean } from '../utils/boolean-to-string.ts';
 import { getOptionValue } from '../utils/get-option-value.ts';
-import { getShortestUniqueSubstrings } from '../command/shortest-unique-substrings.ts';
+import { getShortestUniqueSubstrings } from '../command-handlers/shortest-unique-substrings.ts';
 import type { TwitchClip, ReadonlyHit, ReadonlyApplicationCommandOptionChoiceDataString, AssetInfo } from '../types.ts';
 import type { EmoteMatcher } from '../emote-matcher.ts';
 import { Platform } from '../enums.ts';

@@ -5,14 +5,14 @@ import { rm } from 'node:fs/promises';
 
 import type { ChatInputCommandInteraction } from 'discord.js';
 
-import { maxPlatformSize, emoteSizeChange, assetSizeChange } from '../utils/command/emote/size-change.ts';
-import { downloadAsset } from '../utils/command/emote/download-asset.ts';
-import { parseToken } from '../utils/command/emote/parse-token.ts';
+import { maxPlatformSize, emoteSizeChange, assetSizeChange } from '../utils/command-handlers/emote/size-change.ts';
+import { downloadAsset } from '../utils/command-handlers/emote/download-asset.ts';
+import { parseToken } from '../utils/command-handlers/emote/parse-token.ts';
 import { getOptionValue, getOptionValueWithoutUndefined } from '../utils/get-option-value.ts';
 import { stringToPlatform } from '../utils/platform-to-string.ts';
 import { stringToBoolean } from '../utils/boolean-to-string.ts';
 import type { CachedUrl } from '../api/cached-url.ts';
-import { EmoteMessageBuilder } from '../message-builder/emote-message-builder.ts';
+import { EmoteMessageBuilder } from '../message-builders/emote-message-builder.ts';
 import type { AssetInfo, DownloadedAsset, HstackElement } from '../types.ts';
 import { TMP_DIR } from '../paths-and-endpoints.ts';
 import { GUILD_ID_CUTEDOG } from '../guilds.ts';

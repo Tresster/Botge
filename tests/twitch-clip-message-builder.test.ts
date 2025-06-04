@@ -1,8 +1,8 @@
 import type { ChatInputCommandInteraction } from 'discord.js';
 import { describe, expect, test } from 'vitest';
 
-import { getAllSubstrings } from '../src/command/shortest-unique-substrings';
-import { TwitchClipMessageBuilder } from '../src/message-builder/twitch-clip-message-builder';
+import { getAllSubstrings } from '../src/command-handlers/shortest-unique-substrings';
+import { TwitchClipMessageBuilder } from '../src/message-builders/twitch-clip-message-builder';
 import type { TwitchClip } from '../src/types';
 
 const TWITCH_CLIPS_LENGTH = 4;

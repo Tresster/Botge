@@ -1,8 +1,8 @@
 import type { ChatInputCommandInteraction } from 'discord.js';
 import { describe, expect, test } from 'vitest';
 
-import { getAllSubstrings } from '../src/command/shortest-unique-substrings';
-import { EmoteMessageBuilder } from '../src/message-builder/emote-message-builder';
+import { getAllSubstrings } from '../src/command-handlers/shortest-unique-substrings';
+import { EmoteMessageBuilder } from '../src/message-builders/emote-message-builder';
 import type { AssetInfo } from '../src/types';
 import { Platform } from '../src/enums';
 

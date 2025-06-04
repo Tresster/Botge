@@ -67,7 +67,7 @@ export type SevenTVEmoteNotInSet = {
     readonly url: string;
     readonly files: readonly SevenTVEmoteFile[];
   };
-  readonly error: string | undefined;
+  readonly error?: string;
 };
 export type BTTVEmote = {
   readonly id: string;
@@ -87,19 +87,19 @@ export type TwitchEmote = {
 };
 
 export type SevenTVEmotes = {
-  readonly error: string | undefined;
+  readonly error?: string;
   readonly emotes: readonly SevenTVEmoteInSet[];
   readonly owner: {
     readonly username: string;
   };
 };
 export type BTTVPersonalEmotes = {
-  readonly message: string | undefined;
+  readonly message?: string;
   readonly channelEmotes: readonly BTTVEmote[];
   readonly sharedEmotes: readonly BTTVEmote[];
 };
 export type FFZPersonalEmotes = {
-  readonly error: string | undefined;
+  readonly error?: string;
   readonly room: {
     readonly set: number;
   };

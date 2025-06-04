@@ -26,6 +26,7 @@ import { buttonHandler } from './interaction-handlers/button.ts';
 import type { TwitchClipMessageBuilder } from './message-builders/twitch-clip-message-builder.ts';
 import type { EmoteMessageBuilder } from './message-builders/emote-message-builder.ts';
 import type { PingMessageBuilder } from './message-builders/ping-message-builder.ts';
+import { messageCreateHandler } from './message-create-handlers/message-create-handler.ts';
 import type { ReadonlyGoogleGenAI, ReadonlyOpenAI, ReadonlyTranslator } from './types.ts';
 import type { TwitchClipsMeiliSearch } from './twitch-clips-meili-search.ts';
 import type { Guild } from './guild.ts';
@@ -132,6 +133,29 @@ export class Bot {
       console.log(`Logged in as ${user.tag}!`);
     });
 
+    this.#client.on(Events.MessageCreate, async (message): Promise<void> => {
+      const { guildId } = message;
+      if (guildId === null || message.author.bot) return;
+
+      const guild =
+        this.#guilds.find((guild_) => guild_.id === guildId) ??
+        (await (async (): Promise<Readonly<Guild>> => {
+          const newGuildWithoutPersonalEmotes_ = await newGuild(
+            guildId,
+            this.#twitchClipsMeiliSearch,
+            this.#addedEmotesDatabase,
+            this.#permittedRoleIdsDatabase,
+            null,
+            undefined
+          );
+          this.#guilds.push(newGuildWithoutPersonalEmotes_);
+
+          return newGuildWithoutPersonalEmotes_;
+        })());
+
+      void messageCreateHandler()(message, guild);
+    });
+
     //interaction
     this.#client.on(Events.InteractionCreate, async (interaction): Promise<void> => {
       //interaction not
@@ -162,7 +186,6 @@ export class Bot {
 
           return newGuildWithoutPersonalEmotes_;
         })());
-      const { emoteMatcher, twitchClipsMeiliSearchIndex, uniqueCreatorNames, uniqueGameIds } = guild;
 
       if (interaction.isModalSubmit()) {
         void modalSubmitHandler(
@@ -176,6 +199,8 @@ export class Bot {
       }
 
       if (interaction.isAutocomplete()) {
+        const { emoteMatcher, twitchClipsMeiliSearchIndex, uniqueCreatorNames, uniqueGameIds } = guild;
+
         void autocompleteHandler(
           emoteMatcher,
           twitchClipsMeiliSearchIndex,

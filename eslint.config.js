@@ -71,7 +71,8 @@ export default tseslint.config(
                 'Role',
                 'GuildMember',
                 'Guild',
-                'TextChannel'
+                'TextChannel',
+                'Message'
               ],
               package: 'discord.js'
             }

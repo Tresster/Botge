@@ -63,7 +63,9 @@ const updateCommands_ = (async (): Promise<void> => {
 })();
 
 const bot = await (async (): Promise<Readonly<Bot>> => {
-  const client: Client = new Client({ intents: [GatewayIntentBits.Guilds] });
+  const client: Client = new Client({
+    intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent]
+  });
 
   const openai: ReadonlyOpenAI | undefined =
     OPENAI_API_KEY !== undefined ? new OpenAI({ apiKey: OPENAI_API_KEY }) : undefined;

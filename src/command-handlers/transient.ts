@@ -1,13 +1,8 @@
 import { MessageFlags, type ChatInputCommandInteraction } from 'discord.js';
+import { setTimeout } from 'node:timers/promises';
 
 import { getOptionValue } from '../utils/get-option-value.ts';
 import type { Guild } from '../guild.ts';
-
-async function sleep(seconds: number): Promise<void> {
-  return new Promise((resolve) => {
-    setTimeout(resolve, seconds * 1000);
-  });
-}
 
 const MAXIMUM_DURATION_SECONDS = 600;
 
@@ -50,7 +45,7 @@ export function transientHandler() {
       if (reply === undefined) throw new Error('Either text or attachment must have been not undefined.');
 
       await interaction.reply(reply);
-      await sleep(duration);
+      await setTimeout(duration * 1000);
       await interaction.deleteReply();
     } catch (error: unknown) {
       console.log(`Error at transientHandler --> ${error instanceof Error ? error.message : String(error)}`);

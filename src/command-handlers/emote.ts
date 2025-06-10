@@ -16,7 +16,6 @@ import { EmoteMessageBuilder } from '../message-builders/emote-message-builder.t
 import type { AssetInfo, DownloadedAsset, HstackElement } from '../types.ts';
 import { TMP_DIR } from '../paths-and-endpoints.ts';
 import { GUILD_ID_CUTEDOG } from '../guilds.ts';
-import type { Platform } from '../enums.ts';
 import type { Guild } from '../guild.ts';
 
 const DEFAULTFPS = 25;
@@ -148,7 +147,7 @@ export function emoteHandler() {
     try {
       const emoteNotFoundReply = interaction.guildId === GUILD_ID_CUTEDOG ? 'jij' : 'emote not found';
 
-      const size = getOptionValue<number>(interaction, 'size');
+      const size = getOptionValue(interaction, 'size', Number);
 
       const match = emoteMatcher.matchSingle(emote);
 
@@ -180,21 +179,16 @@ export function emoteListHandler(emoteMessageBuilders: EmoteMessageBuilder[]) {
     try {
       const emoteNotFoundReply = interaction.guildId === GUILD_ID_CUTEDOG ? 'jij' : 'emote not found';
 
-      const query = getOptionValueWithoutUndefined<string>(interaction, 'query');
-      const platform = getOptionValue<Platform>(interaction, 'platform', stringToPlatform);
-      const animated = getOptionValue<boolean>(interaction, 'animated', stringToBoolean);
-      const zeroWidth = getOptionValue<boolean>(interaction, 'overlaying', stringToBoolean);
+      const query = getOptionValue<string>(interaction, 'query');
+      const platform = getOptionValue(interaction, 'platform', stringToPlatform);
+      const animated = getOptionValue(interaction, 'animated', stringToBoolean);
+      const zeroWidth = getOptionValue(interaction, 'overlaying', stringToBoolean);
 
-      const matches = emoteMatcher.matchSingleArray(query, platform, animated, zeroWidth, undefined, true);
+      const matches = emoteMatcher.matchSingleArray(query ?? '', platform, animated, zeroWidth, undefined, true);
 
       if (matches === undefined) {
         await defer;
-        try {
-          new URL(query);
-          await interaction.editReply('posting link through Botge wtf');
-        } catch {
-          await interaction.editReply(emoteNotFoundReply);
-        }
+        await interaction.editReply(emoteNotFoundReply);
         return;
       }
 
@@ -233,9 +227,9 @@ export function emotesHandler(cachedUrl: Readonly<CachedUrl>) {
       const emoteNotFoundReply = interaction.guildId === GUILD_ID_CUTEDOG ? 'jij' : 'emote not found';
 
       const emotes: readonly string[] = getOptionValueWithoutUndefined<string>(interaction, 'emotes').split(/\s+/);
-      const size = getOptionValue<number>(interaction, 'size');
-      const fullSize = getOptionValue<boolean>(interaction, 'fullsize') ?? false;
-      const stretch = getOptionValue<boolean>(interaction, 'stretch') ?? false;
+      const size = getOptionValue(interaction, 'size', Number);
+      const fullSize = getOptionValue(interaction, 'fullsize', Boolean) ?? false;
+      const stretch = getOptionValue(interaction, 'stretch', Boolean) ?? false;
 
       if (emotes.length === 1) {
         const [emote] = emotes;

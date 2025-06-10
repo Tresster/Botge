@@ -51,7 +51,7 @@ export function getShortestUniqueSubstrings(
 export function shortestuniquesubstringsHandler(emoteMessageBuilders: EmoteMessageBuilder[]) {
   return async (interaction: ChatInputCommandInteraction, guild: Readonly<Guild>): Promise<void> => {
     const { emoteMatcher } = guild;
-    const ephemeral = getOptionValue<boolean>(interaction, 'ephemeral') ?? false;
+    const ephemeral = getOptionValue(interaction, 'ephemeral', Boolean) ?? false;
     const defer = ephemeral ? interaction.deferReply({ flags: 'Ephemeral' }) : interaction.deferReply();
     try {
       const emotesOption: readonly string[] = getOptionValueWithoutUndefined<string>(interaction, 'emotes').split(

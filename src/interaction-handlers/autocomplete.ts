@@ -85,9 +85,9 @@ export function autocompleteHandler(
         }
       } else if (interactionCommandName === 'emotelist') {
         if (focusedOptionName === 'query') {
-          const platform = getOptionValue<Platform>(interaction, 'platform', stringToPlatform);
-          const animated = getOptionValue<boolean>(interaction, 'animated', stringToBoolean);
-          const overlaying = getOptionValue<boolean>(interaction, 'overlaying', stringToBoolean);
+          const platform = getOptionValue(interaction, 'platform', stringToPlatform);
+          const animated = getOptionValue(interaction, 'animated', stringToBoolean);
+          const overlaying = getOptionValue(interaction, 'overlaying', stringToBoolean);
 
           const matches =
             emoteMatcher.matchSingleArray(
@@ -108,8 +108,8 @@ export function autocompleteHandler(
           await interaction.respond(options);
         } else if (focusedOptionName === 'platform') {
           const query = getOptionValue<string>(interaction, 'query') ?? '';
-          const animated = getOptionValue<boolean>(interaction, 'animated', stringToBoolean);
-          const overlaying = getOptionValue<boolean>(interaction, 'overlaying', stringToBoolean);
+          const animated = getOptionValue(interaction, 'animated', stringToBoolean);
+          const overlaying = getOptionValue(interaction, 'overlaying', stringToBoolean);
 
           const matches =
             emoteMatcher.matchSingleArray(query, undefined, animated, overlaying) ?? emoteMatcher.matchSingleArray('');
@@ -129,14 +129,14 @@ export function autocompleteHandler(
         } else if (focusedOptionName === 'animated' || focusedOptionName === 'overlaying') {
           const query = getOptionValue<string>(interaction, 'query') ?? '';
           const matches = ((): readonly AssetInfo[] | undefined => {
-            const platform = getOptionValue<Platform>(interaction, 'platform', stringToPlatform);
+            const platform = getOptionValue(interaction, 'platform', stringToPlatform);
 
             if (focusedOptionName === 'animated') {
-              const overlaying = getOptionValue<boolean>(interaction, 'overlaying', stringToBoolean);
+              const overlaying = getOptionValue(interaction, 'overlaying', stringToBoolean);
 
               return emoteMatcher.matchSingleArray(query, platform, undefined, overlaying);
             } else {
-              const animated = getOptionValue<boolean>(interaction, 'animated', stringToBoolean);
+              const animated = getOptionValue(interaction, 'animated', stringToBoolean);
 
               return emoteMatcher.matchSingleArray(query, platform, animated);
             }

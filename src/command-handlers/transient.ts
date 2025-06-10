@@ -14,7 +14,7 @@ export function transientHandler() {
     try {
       const attachment = interaction.options.get('attachment')?.attachment;
       const text = getOptionValue<string>(interaction, 'text');
-      const duration = getOptionValue<number>(interaction, 'duration') ?? 3;
+      const duration = getOptionValue(interaction, 'duration', Number) ?? 3;
 
       if (text !== undefined && attachment !== undefined) {
         await interaction.reply({

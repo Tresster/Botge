@@ -10,7 +10,7 @@ export function findTheEmojiHandler() {
     const defer = interaction.deferReply();
     try {
       const emoji = getOptionValue<string>(interaction, 'emoji');
-      const size = getOptionValue<number>(interaction, 'size') ?? DEFAULT_SIZE;
+      const size = getOptionValue(interaction, 'size', Number) ?? DEFAULT_SIZE;
 
       if (size < 3) {
         await defer;

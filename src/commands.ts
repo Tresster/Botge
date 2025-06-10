@@ -161,6 +161,9 @@ const pingMe: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
   .setName('pingme')
   .setDescription('Pings you after the specified time')
   .addIntegerOption((option: ReadonlySlashCommandIntegerOption) =>
+    option.setName('days').setDescription('The days to wait before pinging you')
+  )
+  .addIntegerOption((option: ReadonlySlashCommandIntegerOption) =>
     option.setName('hours').setDescription('The hours to wait before pinging you')
   )
   .addIntegerOption((option: ReadonlySlashCommandIntegerOption) =>

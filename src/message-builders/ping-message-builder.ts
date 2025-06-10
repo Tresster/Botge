@@ -27,11 +27,15 @@ function getPingableUserId(userId: string): string {
 }
 
 export function getContent(ping: Ping, contentType: ContentType): string {
-  const { hours, minutes, userId, message, userIds, userIdRemoved } = ping;
+  const { days, hours, minutes, userId, message, userIds, userIdRemoved } = ping;
 
   const contentTimePart = ((): string => {
     let contentTimePart_ = '';
 
+    if (days !== null) {
+      if (days === 1) contentTimePart_ += '1 day';
+      else contentTimePart_ += `${days} days`;
+    }
     if (hours !== null) {
       if (hours === 1) contentTimePart_ += '1 hour';
       else contentTimePart_ += `${hours} hours`;

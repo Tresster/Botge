@@ -6,8 +6,8 @@ import type { PingsDatabase } from '../api/ping-database.ts';
 import type { Guild } from '../guild.ts';
 import type { Ping } from '../types.ts';
 
-export function hoursAndMinutesToMiliseconds(hours: number, minutes: number): number {
-  return (hours * 60 + minutes) * 60 * 1000;
+export function daysAndhoursAndMinutesToMiliseconds(days: number, hours: number, minutes: number): number {
+  return ((days * 24 + hours) * 60 + minutes) * 60 * 1000;
 }
 
 export function pingMeHandler(
@@ -18,8 +18,9 @@ export function pingMeHandler(
   return async (interaction: ChatInputCommandInteraction, guild: Readonly<Guild>): Promise<void> => {
     const defer = interaction.deferReply();
     try {
-      const hours = getOptionValue<number>(interaction, 'hours');
-      const minutes = getOptionValue<number>(interaction, 'minutes');
+      const days = getOptionValue(interaction, 'days', Number);
+      const hours = getOptionValue(interaction, 'hours', Number);
+      const minutes = getOptionValue(interaction, 'minutes', Number);
       const message = getOptionValue<string>(interaction, 'message');
 
       const interactionGuild = interaction.guild;
@@ -29,9 +30,15 @@ export function pingMeHandler(
         return;
       }
 
-      if (hours === undefined && minutes === undefined) {
+      if (days === undefined && hours === undefined && minutes === undefined) {
         await defer;
-        await interaction.editReply('Either hours or minutes must be specified.');
+        await interaction.editReply('Either days, hours or minutes must be specified.');
+        return;
+      }
+
+      if (days !== undefined && days < 1) {
+        await defer;
+        await interaction.editReply('Days must be at least 1.');
         return;
       }
 
@@ -54,7 +61,7 @@ export function pingMeHandler(
       }
 
       const timeNow = Date.now();
-      const pingDate = new Date(timeNow + hoursAndMinutesToMiliseconds(hours ?? 0, minutes ?? 0));
+      const pingDate = new Date(timeNow + daysAndhoursAndMinutesToMiliseconds(days ?? 0, hours ?? 0, minutes ?? 0));
 
       const { channelId } = interaction;
       let channel: TextChannel | undefined = undefined;
@@ -90,6 +97,7 @@ export function pingMeHandler(
       const userId = interaction.user.id;
       const ping: Ping = {
         time: timeNow,
+        days: days ?? null,
         hours: hours ?? null,
         minutes: minutes ?? null,
         userId: userId,

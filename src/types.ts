@@ -164,6 +164,7 @@ export type AddedEmote = {
 
 export type Ping = {
   readonly time: number;
+  readonly days: number | null;
   readonly hours: number | null;
   readonly minutes: number | null;
   readonly userId: string;

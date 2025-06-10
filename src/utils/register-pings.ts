@@ -3,7 +3,7 @@ import scheduler from 'node-schedule';
 import type { Client, TextChannel } from 'discord.js';
 
 import { getContent, ContentType } from '../message-builders/ping-message-builder.ts';
-import { hoursAndMinutesToMiliseconds } from '../command-handlers/pingme.ts';
+import { daysAndhoursAndMinutesToMiliseconds } from '../command-handlers/pingme.ts';
 import type { PingsDatabase } from '../api/ping-database.ts';
 
 function milisecondsToHoursAndMinutes(miliseconds: number): string {
@@ -20,9 +20,9 @@ export async function registerPings(client: Client, pingsDataBase: Readonly<Ping
   const pings = pingsDataBase.getAll();
 
   for (const ping of pings) {
-    const { time, hours, minutes, channelId } = ping;
+    const { time, days, hours, minutes, channelId } = ping;
 
-    const timeMilliseconds = time + hoursAndMinutesToMiliseconds(hours ?? 0, minutes ?? 0);
+    const timeMilliseconds = time + daysAndhoursAndMinutesToMiliseconds(days ?? 0, hours ?? 0, minutes ?? 0);
     const pingDate = new Date(timeMilliseconds);
 
     let channel: TextChannel | undefined = undefined;

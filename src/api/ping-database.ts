@@ -19,10 +19,10 @@ export class PingsDatabase {
 
   public insert(ping: Ping): void {
     const insert = this.#database.prepare(
-      `INSERT INTO ${TABLE_NAME} (id,time,hours,minutes,userId,channelId,message) VALUES (?,?,?,?,?,?,?)`
+      `INSERT INTO ${TABLE_NAME} (id,time,days,hours,minutes,userId,channelId,message) VALUES (?,?,?,?,?,?,?,?)`
     );
-    const { time, hours, minutes, userId, channelId, message } = ping;
-    insert.run(getId(ping), time, hours, minutes, userId, channelId, message);
+    const { time, days, hours, minutes, userId, channelId, message } = ping;
+    insert.run(getId(ping), time, days, hours, minutes, userId, channelId, message);
   }
 
   public delete(ping: Ping): void {
@@ -52,10 +52,11 @@ export class PingsDatabase {
 
   public getAll(): readonly Ping[] {
     const select = this.#database.prepare(
-      `SELECT time,hours,minutes,userId,channelId,message,userIds,userIdRemoved FROM ${TABLE_NAME}`
+      `SELECT time,days,hours,minutes,userId,channelId,message,userIds,userIdRemoved FROM ${TABLE_NAME}`
     );
     const pingsSelected = select.all() as readonly Readonly<{
       time: number;
+      days: number | null;
       hours: number | null;
       minutes: number | null;
       userId: string;
@@ -85,6 +86,7 @@ export class PingsDatabase {
       CREATE TABLE IF NOT EXISTS ${TABLE_NAME} (
         id TEXT NOT NULL PRIMARY KEY,
         time INTEGER NOT NULL,
+        days INTEGER,
         hours INTEGER,
         minutes INTEGER,
         userId TEXT NOT NULL,
@@ -100,22 +102,12 @@ export class PingsDatabase {
 
   #alterTable(): void {
     const columnExistsUserIds = this.#database.prepare(
-      `SELECT COUNT(*) AS CNTREC FROM pragma_table_info('${TABLE_NAME}') WHERE name='userIds'`
+      `SELECT COUNT(*) AS CNTREC FROM pragma_table_info('${TABLE_NAME}') WHERE name='days'`
     );
     const columnExistsUserIdsRan = columnExistsUserIds.get() as { CNTREC: number };
 
     if (columnExistsUserIdsRan.CNTREC === 0) {
-      const alterTable = this.#database.prepare(`ALTER TABLE ${TABLE_NAME} ADD userIds TEXT`);
-      alterTable.run();
-    }
-
-    const columnExistsUserIdRemoved = this.#database.prepare(
-      `SELECT COUNT(*) AS CNTREC FROM pragma_table_info('${TABLE_NAME}') WHERE name='userIdRemoved'`
-    );
-    const columnExistsUserIdRemovedRan = columnExistsUserIdRemoved.get() as { CNTREC: number };
-
-    if (columnExistsUserIdRemovedRan.CNTREC === 0) {
-      const alterTable = this.#database.prepare(`ALTER TABLE ${TABLE_NAME} ADD userIdRemoved INTEGER`);
+      const alterTable = this.#database.prepare(`ALTER TABLE ${TABLE_NAME} ADD days INTEGER`);
       alterTable.run();
     }
   }

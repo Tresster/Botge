@@ -3,6 +3,8 @@ import { Platform } from './enums.ts';
 export const DATABASE_DIR = 'data';
 export const TMP_DIR = 'tmp';
 
+export const TWITCH_ACCESS_TOKEN_PATH = `${DATABASE_DIR}/twitchAccessToken.txt`;
+
 export const DATABASE_ENDPOINTS = {
   addedEmotes: `${DATABASE_DIR}/addedEmotes.sqlite`,
   pings: `${DATABASE_DIR}/pings.sqlite`,

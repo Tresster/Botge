@@ -1,7 +1,9 @@
+import { writeFileSync } from 'node:fs';
+
 import { getTwitchAccessToken } from '../utils/api/twitch-api-utils.ts';
 import { fetchAndJson } from '../utils/fetch-and-json.ts';
 import type { TwitchClips, TwitchGames, TwitchGlobalEmotes, TwitchGlobalOptions, TwitchUsers } from '../types.ts';
-import { TWITCH_API_ENDPOINTS } from '../paths-and-endpoints.ts';
+import { TWITCH_API_ENDPOINTS, TWITCH_ACCESS_TOKEN_PATH } from '../paths-and-endpoints.ts';
 
 // raw twitch api methods
 export class TwitchApi {
@@ -27,7 +29,7 @@ export class TwitchApi {
     return optionsTwitchGlobal;
   }
 
-  public async validateAccessToken(): Promise<void> {
+  public async validateAndGetNewAccessTokenIfInvalid(): Promise<void> {
     const resp = await fetch(TWITCH_API_ENDPOINTS.accessTokenValidate, {
       method: 'GET',
       headers: {
@@ -35,7 +37,10 @@ export class TwitchApi {
       }
     });
 
-    if (resp.status === 401) this.#accessToken = await getTwitchAccessToken(this.#clientId, this.#secret);
+    if (resp.status === 401) {
+      this.#accessToken = await getTwitchAccessToken(this.#clientId, this.#secret);
+      writeFileSync(TWITCH_ACCESS_TOKEN_PATH, this.#accessToken, { encoding: 'utf8', flag: 'w' });
+    }
   }
 
   public async clipsFromIds(ids: Readonly<Iterable<string>>): Promise<TwitchClips> {

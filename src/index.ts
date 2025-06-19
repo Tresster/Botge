@@ -196,7 +196,7 @@ scheduleJob('0 */20 * * * *', async () => {
 // update every hour, in the 54th minute 0th second
 // this is because of the 300 second timeout of fetch + 1 minute, so twitch api is validated before use
 scheduleJob('0 54 * * * *', async () => {
-  await bot.twitchApi?.validateAccessToken();
+  await bot.twitchApi?.validateAndGetNewAccessTokenIfInvalid();
 });
 
 scheduleJob('0 */2 * * *', async () => {

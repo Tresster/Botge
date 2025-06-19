@@ -1,9 +1,8 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "sourceMap": true,
+    "target": "esnext",
+    "module": "nodenext",
+    "sourceMap": false,
     "outDir": "dist",
     "strict": true,
     "exactOptionalPropertyTypes": true,

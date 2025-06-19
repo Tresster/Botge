@@ -5,9 +5,6 @@ import { getOptionValue } from '../utils/get-option-value.ts';
 import type { TwitchClip, ReadonlyHit } from '../types.ts';
 import type { Guild } from '../guild.ts';
 
-const CLEANUP_MINUTES = 10;
-const MAX_TWITCH_CLIP_MESSAGE_BUILDERS_LENGTH = 15;
-
 function shuffle(array: unknown[]): void {
   let currentIndex = array.length;
   while (currentIndex !== 0) {
@@ -17,6 +14,10 @@ function shuffle(array: unknown[]): void {
     [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
   }
 }
+
+const CLEANUP_MINUTES = 10;
+const MAX_TWITCH_CLIP_MESSAGE_BUILDERS_LENGTH = 15;
+const { EMBED_SERVER_HOST } = process.env;
 
 export function clipHandler(twitchClipMessageBuilders: TwitchClipMessageBuilder[]) {
   return async (interaction: ChatInputCommandInteraction, guild: Readonly<Guild>): Promise<void> => {
@@ -74,8 +75,11 @@ export function clipHandler(twitchClipMessageBuilders: TwitchClipMessageBuilder[
         await interaction.editReply('Could not find clip.');
         return;
       } else if (hits.length === 1) {
+        const [hit] = hits;
+        const reply = EMBED_SERVER_HOST !== undefined ? `${EMBED_SERVER_HOST}${hit.id}` : hit.url;
+
         await defer;
-        await interaction.editReply(hits[0].url);
+        await interaction.editReply(reply);
         return;
       }
 

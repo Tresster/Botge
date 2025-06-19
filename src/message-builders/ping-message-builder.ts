@@ -160,7 +160,7 @@ export class PingMessageBuilder {
     if (this.#isCriticalTimeLeftOrIsPassed()) return emptyPingMessageBuilderReplies;
     if (this.#job === undefined) return emptyPingMessageBuilderReplies;
     if (this.#ping.userId === userId) {
-      if (this.#ping.userIdRemoved !== null && !this.#ping.userIdRemoved) return emptyPingMessageBuilderReplies;
+      if (this.#ping.userIdRemoved === null || !this.#ping.userIdRemoved) return emptyPingMessageBuilderReplies;
 
       if (this.#pressedPingMeAsWell.has(userId)) return PingMessageBuilder.#pressedButtonPingMessageBuilderReplies;
 

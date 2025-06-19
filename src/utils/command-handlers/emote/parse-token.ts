@@ -1,4 +1,8 @@
-import twemoji from '@twemoji/api';
+import type { Twemoji } from '@twemoji/api';
+const twemoji = await (async (): Promise<Twemoji> => {
+  const twemojiModule = await import('@twemoji/api');
+  return twemojiModule.default as unknown as Twemoji;
+})();
 
 import type { AssetInfo } from '../../../types.ts';
 import { Platform } from '../../../enums.ts';

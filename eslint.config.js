@@ -72,7 +72,8 @@ export default tseslint.config(
                 'GuildMember',
                 'Guild',
                 'TextChannel',
-                'Message'
+                'Message',
+                'MessageContextMenuCommandInteraction'
               ],
               package: 'discord.js'
             }

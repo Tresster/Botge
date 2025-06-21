@@ -17,7 +17,8 @@ import type {
   ActionRowBuilder,
   MessageActionRowComponentBuilder,
   ModalBuilder,
-  ApplicationCommandOptionChoiceData
+  ApplicationCommandOptionChoiceData,
+  ContextMenuCommandBuilder
 } from 'discord.js';
 
 export type ReadonlyOpenAI = DeepReadonly<OpenAI>;
@@ -31,6 +32,7 @@ export type ReadonlySlashCommandBooleanOption = DeepReadonly<SlashCommandBoolean
 export type ReadonlySlashCommandAttachmentOption = DeepReadonly<SlashCommandAttachmentOption>;
 export type ReadonlySlashCommandIntegerOption = DeepReadonly<SlashCommandIntegerOption>;
 export type ReadonlySlashCommandOptionsOnlyBuilder = DeepReadonly<SlashCommandOptionsOnlyBuilder>;
+export type ReadonlyContextMenuCommandBuilder = DeepReadonly<ContextMenuCommandBuilder>;
 export type ReadonlyEmbedBuilder = DeepReadonly<EmbedBuilder>;
 export type ReadonlyActionRowBuilderMessageActionRowComponentBuilder = DeepReadonly<
   ActionRowBuilder<MessageActionRowComponentBuilder>

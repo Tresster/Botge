@@ -19,6 +19,7 @@ import type { AddedEmotesDatabase } from './api/added-emotes-database.ts';
 import type { PingsDatabase } from './api/ping-database.ts';
 import type { TwitchApi } from './api/twitch-api.ts';
 import type { CachedUrl } from './api/cached-url.ts';
+import { messageContextMenuCommandHandler } from './interaction-handlers/message-context-menu-command.ts';
 import { roleSelectMenuHandler } from './interaction-handlers/role-select-menu.ts';
 import { autocompleteHandler } from './interaction-handlers/autocomplete.ts';
 import { modalSubmitHandler } from './interaction-handlers/modal-submit.ts';
@@ -164,7 +165,8 @@ export class Bot {
         !interaction.isButton() &&
         !interaction.isAutocomplete() &&
         !interaction.isModalSubmit() &&
-        !interaction.isRoleSelectMenu()
+        !interaction.isRoleSelectMenu() &&
+        !interaction.isMessageContextMenuCommand()
       )
         return;
 
@@ -227,6 +229,11 @@ export class Bot {
         )(interaction);
 
         if (emoteMessageBuilder !== undefined) this.#emoteMessageBuilders.push(emoteMessageBuilder);
+        return;
+      }
+
+      if (interaction.isMessageContextMenuCommand()) {
+        void messageContextMenuCommandHandler(this.#openai)(interaction);
         return;
       }
 

@@ -1,7 +1,14 @@
-import { SlashCommandBuilder, type RESTPostAPIChatInputApplicationCommandsJSONBody } from 'discord.js';
+import {
+  ApplicationCommandType,
+  SlashCommandBuilder,
+  ContextMenuCommandBuilder,
+  type RESTPostAPIChatInputApplicationCommandsJSONBody,
+  type RESTPostAPIContextMenuApplicationCommandsJSONBody
+} from 'discord.js';
 
 import type {
   ReadonlySlashCommandOptionsOnlyBuilder,
+  ReadonlyContextMenuCommandBuilder,
   ReadonlySlashCommandStringOption,
   ReadonlySlashCommandBooleanOption,
   ReadonlySlashCommandAttachmentOption,
@@ -181,7 +188,14 @@ const settings: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder
   .setName('settings')
   .setDescription('Settings for configuring the behavior of the bot in this server. Permission required');
 
-export const commands: readonly Readonly<RESTPostAPIChatInputApplicationCommandsJSONBody>[] = [
+const chatGptExplain: ReadonlyContextMenuCommandBuilder = new ContextMenuCommandBuilder()
+  .setName('ChatGPT Explain')
+  .setType(ApplicationCommandType.Message);
+
+export const commands: readonly (
+  | Readonly<RESTPostAPIChatInputApplicationCommandsJSONBody>
+  | Readonly<RESTPostAPIContextMenuApplicationCommandsJSONBody>
+)[] = [
   emote.toJSON(),
   emotes.toJSON(),
   emotelist.toJSON(),
@@ -195,5 +209,6 @@ export const commands: readonly Readonly<RESTPostAPIChatInputApplicationCommands
   findTheEmoji.toJSON(),
   pingMe.toJSON(),
   poe2.toJSON(),
-  settings.toJSON()
+  settings.toJSON(),
+  chatGptExplain.toJSON()
 ];

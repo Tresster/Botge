@@ -13,6 +13,7 @@ import { geminiHandler } from './command-handlers/gemini.ts';
 import { pingMeHandler } from './command-handlers/pingme.ts';
 import { steamHandler } from './command-handlers/steam.ts';
 import { clipHandler } from './command-handlers/clip.ts';
+import { bannedHandler } from './command-handlers/banned.ts';
 import type { BroadcasterNameAndPersonalEmoteSetsDatabase } from './api/broadcaster-name-and-personal-emote-sets-database.ts';
 import type { PermittedRoleIdsDatabase } from './api/permitted-role-ids-database.ts';
 import type { AddedEmotesDatabase } from './api/added-emotes-database.ts';
@@ -98,7 +99,8 @@ export class Bot {
       ['findtheemoji', findTheEmojiHandler()],
       ['pingme', pingMeHandler(this.#pingsDatabase, this.#pingMessageBuilders, this.#client)],
       ['poe2', steamHandler('2694490')],
-      ['settings', settingsHandler()]
+      ['settings', settingsHandler()],
+      ['banned', bannedHandler(this.#twitchApi)]
     ]);
   }
 

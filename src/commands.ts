@@ -192,6 +192,10 @@ const chatGptExplain: ReadonlyContextMenuCommandBuilder = new ContextMenuCommand
   .setName('ChatGPT Explain')
   .setType(ApplicationCommandType.Message);
 
+const banned: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
+  .setName('banned')
+  .setDescription('Check if CuteDog_ is banned on Twitch');
+
 export const commands: readonly (
   | Readonly<RESTPostAPIChatInputApplicationCommandsJSONBody>
   | Readonly<RESTPostAPIContextMenuApplicationCommandsJSONBody>
@@ -210,5 +214,6 @@ export const commands: readonly (
   pingMe.toJSON(),
   poe2.toJSON(),
   settings.toJSON(),
-  chatGptExplain.toJSON()
+  chatGptExplain.toJSON(),
+  banned.toJSON()
 ];

@@ -25,9 +25,13 @@ export function bannedHandler(twitchApi: Readonly<TwitchApi> | undefined) {
 
       await defer;
       if (banned) {
-        await interaction.editReply(`${escapeMarkdown(username)} is currently **BANNED** on Twitch`);
+        await interaction.editReply(
+          `${escapeMarkdown(username)} is currently **BANNED** on Twitch <:nooo:1254033129270804594>`
+        );
       } else {
-        await interaction.editReply(`${escapeMarkdown(username)} is currently **NOT BANNED** on Twitch`);
+        await interaction.editReply(
+          `${escapeMarkdown(username)} is currently **NOT BANNED** on Twitch <:wahoo:1323940324669919285>`
+        );
       }
     } catch (error) {
       console.error(error);

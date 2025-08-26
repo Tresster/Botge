@@ -39,7 +39,8 @@ import {
   ADD_EMOTE_PERMITTED_ROLES_BUTTON_CUSTOM_ID,
   ALLOW_EVERYONE_TO_ADD_EMOTE_BUTTON_CUSTOM_ID,
   ADDED_EMOTE_DELETION_MENU_BUTTON_CUSTOM_ID,
-  CONFIGURATION_BUTTON_CUSTOM_ID
+  CONFIGURATION_GUILD_BUTTON_CUSTOM_ID,
+  CONFIGURATION_USER_BUTTON_CUSTOM_ID
 } from '../command-handlers/settings.ts';
 import type {
   TwitchClipMessageBuilderTransformFunctionReturnType,
@@ -48,34 +49,16 @@ import type {
 } from '../types.ts';
 import { Platform } from '../enums.ts';
 import type { Guild } from '../guild.ts';
+import type { User } from '../user.ts';
 
 export const SELECT_SETTINGS_PERMITTED_ROLES_ROLE_SELECT_MENU_CUSTOM_ID = 'selectSettingsPermittedRolesRoleSelectMenu';
 export const SELECT_ADD_EMOTE_PERMITTED_ROLES_ROLE_SELECT_MENU_CUSTOM_ID = 'selectAddEmotePermittedRolesRoleSelectMenu';
 export const ASSIGN_EMOTE_SETS_MODAL_CUSTOM_ID = 'assignEmoteSetsModal';
+export const ASSIGN_GUILD_MODAL_CUSTOM_ID = 'assignGuildModal';
 
 export const BROADCASTER_NAME_TEXT_INPUT_CUSTOM_ID = 'broadcasterNameTextInput';
 export const SEVENTV_TEXT_INPUT_CUSTOM_ID = 'sevenTVTextInput';
-
-const BROADCASTER_NAME_TEXT_INPUT = new TextInputBuilder()
-  .setCustomId(BROADCASTER_NAME_TEXT_INPUT_CUSTOM_ID)
-  .setLabel('Streamer Twitch username')
-  .setStyle(TextInputStyle.Short)
-  .setRequired(false);
-const SEVENTV_TEXT_INPUT = new TextInputBuilder()
-  .setCustomId(SEVENTV_TEXT_INPUT_CUSTOM_ID)
-  .setLabel('7TV Emote Set Link')
-  .setStyle(TextInputStyle.Short)
-  .setRequired(false);
-
-const BROADCASTER_NAME_ACTION_ROW = new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
-  BROADCASTER_NAME_TEXT_INPUT
-);
-const SEVENTV_ACTION_ROW = new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(SEVENTV_TEXT_INPUT);
-
-const ASSIGN_EMOTE_SETS_MODAL = new ModalBuilder()
-  .setCustomId(ASSIGN_EMOTE_SETS_MODAL_CUSTOM_ID)
-  .setTitle('Configuration')
-  .addComponents(BROADCASTER_NAME_ACTION_ROW, SEVENTV_ACTION_ROW);
+export const GUILD_ID_TEXT_INPUT_CUSTOM_ID = 'guildIdTextInput';
 
 const MAX_ROLE_SELECT_MENU_VALUES = 10;
 
@@ -83,7 +66,8 @@ export function buttonHandler(
   twitchClipMessageBuilders: readonly Readonly<TwitchClipMessageBuilder>[],
   emoteMessageBuilders: readonly Readonly<EmoteMessageBuilder>[],
   pingMessageBuilders: Readonly<PingMessageBuilder>[],
-  guild: Readonly<Guild>,
+  guild: Readonly<Guild> | undefined,
+  user: Readonly<User> | undefined,
   addedEmotesDatabase: Readonly<AddedEmotesDatabase>,
   permittedRoleIdsDatabase: Readonly<PermittedRoleIdsDatabase>,
   pingsDataBase: Readonly<PingsDatabase>
@@ -91,6 +75,29 @@ export function buttonHandler(
   return async (interaction: ButtonInteraction): Promise<EmoteMessageBuilder | undefined> => {
     try {
       const { customId } = interaction;
+
+      if (customId === CONFIGURATION_USER_BUTTON_CUSTOM_ID) {
+        const GUILD_ID_TEXT_INPUT = new TextInputBuilder()
+          .setCustomId(GUILD_ID_TEXT_INPUT_CUSTOM_ID)
+          .setLabel('Guild ID')
+          .setStyle(TextInputStyle.Short)
+          .setRequired(true);
+
+        if (user !== undefined) GUILD_ID_TEXT_INPUT.setValue(user.guild.id);
+
+        const guildIdActionRow = new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
+          GUILD_ID_TEXT_INPUT
+        );
+        const assignGuildModal = new ModalBuilder()
+          .setCustomId(ASSIGN_GUILD_MODAL_CUSTOM_ID)
+          .setTitle('Configuration')
+          .addComponents(guildIdActionRow);
+
+        await interaction.showModal(assignGuildModal);
+        return undefined;
+      }
+
+      if (guild === undefined) return undefined;
 
       if (
         customId === SETTINGS_PERMITTED_ROLES_BUTTON_CUSTOM_ID ||
@@ -159,7 +166,30 @@ export function buttonHandler(
         if (reply === undefined) return undefined;
         await interaction.editReply(reply);
         return emoteMessageBuilder;
-      } else if (customId === CONFIGURATION_BUTTON_CUSTOM_ID) {
+      } else if (customId === CONFIGURATION_GUILD_BUTTON_CUSTOM_ID) {
+        const BROADCASTER_NAME_TEXT_INPUT = new TextInputBuilder()
+          .setCustomId(BROADCASTER_NAME_TEXT_INPUT_CUSTOM_ID)
+          .setLabel('Streamer Twitch username')
+          .setStyle(TextInputStyle.Short)
+          .setRequired(false);
+        const SEVENTV_TEXT_INPUT = new TextInputBuilder()
+          .setCustomId(SEVENTV_TEXT_INPUT_CUSTOM_ID)
+          .setLabel('7TV Emote Set Link')
+          .setStyle(TextInputStyle.Short)
+          .setRequired(false);
+
+        const BROADCASTER_NAME_ACTION_ROW = new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
+          BROADCASTER_NAME_TEXT_INPUT
+        );
+        const SEVENTV_ACTION_ROW = new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
+          SEVENTV_TEXT_INPUT
+        );
+
+        const ASSIGN_EMOTE_SETS_MODAL = new ModalBuilder()
+          .setCustomId(ASSIGN_EMOTE_SETS_MODAL_CUSTOM_ID)
+          .setTitle('Configuration')
+          .addComponents(BROADCASTER_NAME_ACTION_ROW, SEVENTV_ACTION_ROW);
+
         if (guild.broadcasterName !== null) BROADCASTER_NAME_TEXT_INPUT.setValue(guild.broadcasterName);
 
         const { personalEmoteSets } = guild.personalEmoteMatcherConstructor;

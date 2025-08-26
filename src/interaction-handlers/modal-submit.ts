@@ -18,29 +18,70 @@ import {
 } from '../message-builders/base.ts';
 import type { BroadcasterNameAndPersonalEmoteSetsDatabase } from '../api/broadcaster-name-and-personal-emote-sets-database.ts';
 import type { TwitchApi } from '../api/twitch-api.ts';
+import type { UsersDatabase } from '../api/user.js';
 import {
   ASSIGN_EMOTE_SETS_MODAL_CUSTOM_ID,
   BROADCASTER_NAME_TEXT_INPUT_CUSTOM_ID,
-  SEVENTV_TEXT_INPUT_CUSTOM_ID
+  SEVENTV_TEXT_INPUT_CUSTOM_ID,
+  ASSIGN_GUILD_MODAL_CUSTOM_ID,
+  GUILD_ID_TEXT_INPUT_CUSTOM_ID
 } from './button.ts';
 import { PersonalEmoteSets } from '../personal-emote-sets.ts';
 import type { Guild } from '../guild.ts';
+import { User } from '../user.js';
 
 export function modalSubmitHandler(
   twitchClipMessageBuilders: readonly Readonly<TwitchClipMessageBuilder>[],
   emoteMessageBuilders: readonly Readonly<EmoteMessageBuilder>[],
-  guild: Readonly<Guild>,
+  guild: Readonly<Guild> | undefined,
   broadcasterNameAndPersonalEmoteSetsDatabase: Readonly<BroadcasterNameAndPersonalEmoteSetsDatabase>,
-  twitchApi: Readonly<TwitchApi> | undefined
+  usersDatabase: Readonly<UsersDatabase>,
+  twitchApi: Readonly<TwitchApi> | undefined,
+  guilds: readonly Readonly<Guild>[],
+  users: Readonly<User>[]
 ) {
   return async (interaction: ModalSubmitInteraction): Promise<void> => {
     const { customId } = interaction;
     const deferReply =
-      customId === ASSIGN_EMOTE_SETS_MODAL_CUSTOM_ID
+      customId === ASSIGN_EMOTE_SETS_MODAL_CUSTOM_ID || customId === ASSIGN_GUILD_MODAL_CUSTOM_ID
         ? interaction.deferReply({ flags: MessageFlags.Ephemeral })
         : undefined;
 
     try {
+      if (customId === ASSIGN_GUILD_MODAL_CUSTOM_ID) {
+        const guildId = interaction.fields.getTextInputValue(GUILD_ID_TEXT_INPUT_CUSTOM_ID).trim();
+        const userId = interaction.user.id;
+
+        const guild_ = guilds.find((guildge) => guildge.id === guildId);
+        if (guild_ === undefined) {
+          await deferReply;
+          await interaction.editReply('There is no server with this ID in the database. Previous settings unchanged.');
+          return;
+        }
+
+        let user = users.find((user_) => user_.id === userId);
+        if (user !== undefined) {
+          await deferReply;
+          if (user.guild.id === guildId) {
+            await interaction.editReply('Nothing changed.');
+          } else {
+            usersDatabase.changeGuildId(userId, guildId);
+            user.changeGuild(guild_);
+            await interaction.editReply('Changed guild.');
+          }
+          return;
+        }
+
+        user = new User(userId, guild_);
+        users.push(user);
+        usersDatabase.changeGuildId(userId, guildId);
+        await deferReply;
+        await interaction.editReply('Changed guild.');
+        return;
+      }
+
+      if (guild === undefined) return;
+
       if (customId === ASSIGN_EMOTE_SETS_MODAL_CUSTOM_ID) {
         const { id } = guild;
 

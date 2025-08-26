@@ -14,6 +14,7 @@ import { PermittedRoleIdsDatabase } from './api/permitted-role-ids-database.ts';
 import { AddedEmotesDatabase } from './api/added-emotes-database.ts';
 import { PingsDatabase } from './api/ping-database.ts';
 import { CachedUrl } from './api/cached-url.ts';
+import { UsersDatabase } from './api/user.ts';
 import { newTwitchApi } from './utils/constructors/new-twitch-api.ts';
 import { newGuild } from './utils/constructors/new-guild.ts';
 import { registerPings } from './utils/register-pings.ts';
@@ -24,6 +25,7 @@ import type { ReadonlyOpenAI, ReadonlyTranslator } from './types.ts';
 import type { PersonalEmoteSets } from './personal-emote-sets.ts';
 import { updateCommands } from './update-commands-docker.ts';
 import type { Guild } from './guild.ts';
+import { User } from './user.js';
 import { Bot } from './bot.ts';
 
 config();
@@ -92,30 +94,44 @@ const bot = await (async (): Promise<Readonly<Bot>> => {
   );
   const broadcasterNameAndPersonalEmoteSetsDatabase: Readonly<BroadcasterNameAndPersonalEmoteSetsDatabase> =
     new BroadcasterNameAndPersonalEmoteSetsDatabase(DATABASE_ENDPOINTS.broadcasterNameAndpersonalEmoteSets);
+  const usersDatabase: Readonly<UsersDatabase> = new UsersDatabase(DATABASE_ENDPOINTS.users);
 
   const cachedUrl: Readonly<CachedUrl> = new CachedUrl(LOCAL_CACHE_BASE);
 
   await GlobalEmoteMatcherConstructor.createInstance(await twitchApi, addedEmotesDatabase);
 
-  const guilds: readonly Promise<Readonly<Guild>>[] = broadcasterNameAndPersonalEmoteSetsDatabase
-    .getAllBroadcasterNamesAndPersonalEmoteSets()
+  const guilds: readonly Readonly<Guild>[] = await Promise.all(
+    broadcasterNameAndPersonalEmoteSetsDatabase
+      .getAllBroadcasterNamesAndPersonalEmoteSets()
+      .entries()
+      .toArray()
+      .map(
+        async ([guildId, [broadcasterName, personalEmoteSets]]: readonly [
+          string,
+          readonly [string | null, PersonalEmoteSets]
+        ]) => {
+          return newGuild(
+            guildId,
+            twitchClipsMeiliSearch,
+            addedEmotesDatabase,
+            permittedRoleIdsDatabase,
+            broadcasterName,
+            personalEmoteSets
+          );
+        }
+      )
+  );
+
+  const users: readonly Readonly<User>[] = usersDatabase
+    .getAllUsers()
     .entries()
     .toArray()
-    .map(
-      async ([guildId, [broadcasterName, personalEmoteSets]]: readonly [
-        string,
-        readonly [string | null, PersonalEmoteSets]
-      ]) => {
-        return newGuild(
-          guildId,
-          twitchClipsMeiliSearch,
-          addedEmotesDatabase,
-          permittedRoleIdsDatabase,
-          broadcasterName,
-          personalEmoteSets
-        );
-      }
-    );
+    .map(([userId, [guildId]]: readonly [string, readonly [string]]) => {
+      const guild = guilds.find((guild_) => guild_.id === guildId);
+      if (guild === undefined) throw new Error('Undefined guild while searching for guild for user.');
+
+      return new User(userId, guild);
+    });
 
   return new Bot(
     client,
@@ -127,8 +143,10 @@ const bot = await (async (): Promise<Readonly<Bot>> => {
     pingsDatabase,
     permittedRoleIdsDatabase,
     broadcasterNameAndPersonalEmoteSetsDatabase,
+    usersDatabase,
     cachedUrl,
-    await Promise.all(guilds),
+    guilds,
+    users,
     twitchClipsMeiliSearch
   );
 })();

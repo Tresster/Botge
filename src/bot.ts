@@ -19,6 +19,7 @@ import type { AddedEmotesDatabase } from './api/added-emotes-database.ts';
 import type { PingsDatabase } from './api/ping-database.ts';
 import type { TwitchApi } from './api/twitch-api.ts';
 import type { CachedUrl } from './api/cached-url.ts';
+import type { UsersDatabase } from './api/user.ts';
 import { messageContextMenuCommandHandler } from './interaction-handlers/message-context-menu-command.ts';
 import { roleSelectMenuHandler } from './interaction-handlers/role-select-menu.ts';
 import { autocompleteHandler } from './interaction-handlers/autocomplete.ts';
@@ -31,6 +32,7 @@ import { messageCreateHandler } from './message-create-handlers/message-create-h
 import type { ReadonlyGoogleGenAI, ReadonlyOpenAI, ReadonlyTranslator } from './types.ts';
 import type { TwitchClipsMeiliSearch } from './twitch-clips-meili-search.ts';
 import type { Guild } from './guild.ts';
+import type { User } from './user.ts';
 
 const CLEANUP_MINUTES = 10;
 
@@ -44,8 +46,10 @@ export class Bot {
   readonly #pingsDatabase: Readonly<PingsDatabase>;
   readonly #permittedRoleIdsDatabase: Readonly<PermittedRoleIdsDatabase>;
   readonly #broadcasterNameAndPersonalEmoteSetsDatabase: Readonly<BroadcasterNameAndPersonalEmoteSetsDatabase>;
+  readonly #usersDatabase: Readonly<UsersDatabase>;
   readonly #cachedUrl: Readonly<CachedUrl>;
   readonly #guilds: Readonly<Guild>[];
+  readonly #users: Readonly<User>[];
   readonly #twitchClipMessageBuilders: TwitchClipMessageBuilder[] = [];
   readonly #emoteMessageBuilders: EmoteMessageBuilder[] = [];
   readonly #pingMessageBuilders: PingMessageBuilder[] = [];
@@ -65,8 +69,10 @@ export class Bot {
     pingsDatabase: Readonly<PingsDatabase>,
     permittedRoleIdsDatabase: Readonly<PermittedRoleIdsDatabase>,
     broadcasterNameAndPersonalEmoteSetsDatabase: Readonly<BroadcasterNameAndPersonalEmoteSetsDatabase>,
+    usersDatabase: Readonly<UsersDatabase>,
     cachedUrl: Readonly<CachedUrl>,
     guilds: readonly Readonly<Guild>[],
+    users: readonly Readonly<User>[],
     twitchClipsMeiliSearch: Readonly<TwitchClipsMeiliSearch> | undefined
   ) {
     this.#client = client;
@@ -78,8 +84,10 @@ export class Bot {
     this.#pingsDatabase = pingsDatabase;
     this.#permittedRoleIdsDatabase = permittedRoleIdsDatabase;
     this.#broadcasterNameAndPersonalEmoteSetsDatabase = broadcasterNameAndPersonalEmoteSetsDatabase;
+    this.#usersDatabase = usersDatabase;
     this.#cachedUrl = cachedUrl;
     this.#guilds = [...guilds];
+    this.#users = [...users];
     this.#twitchClipsMeiliSearch = twitchClipsMeiliSearch;
     this.#commandHandlers = new Map<
       string,
@@ -97,8 +105,7 @@ export class Bot {
       ['transient', transientHandler()],
       ['findtheemoji', findTheEmojiHandler()],
       ['pingme', pingMeHandler(this.#pingsDatabase, this.#pingMessageBuilders, this.#client)],
-      ['poe2', steamHandler('2694490')],
-      ['settings', settingsHandler()]
+      ['poe2', steamHandler('2694490')]
     ]);
   }
 
@@ -171,23 +178,40 @@ export class Bot {
         return;
 
       const { guildId, user } = interaction;
-      if (guildId === null || user.bot) return;
+      if (user.bot) return;
 
-      const guild =
-        this.#guilds.find((guild_) => guild_.id === guildId) ??
-        (await (async (): Promise<Readonly<Guild>> => {
-          const newGuildWithoutPersonalEmotes_ = await newGuild(
-            guildId,
-            this.#twitchClipsMeiliSearch,
-            this.#addedEmotesDatabase,
-            this.#permittedRoleIdsDatabase,
-            null,
-            undefined
-          );
-          this.#guilds.push(newGuildWithoutPersonalEmotes_);
+      const guild = await (async (): Promise<Readonly<Guild> | undefined> => {
+        if (guildId !== null) {
+          const guild_ =
+            this.#guilds.find((guildge) => guildge.id === guildId) ??
+            (await (async (): Promise<Readonly<Guild>> => {
+              const newGuildWithoutPersonalEmotes_ = await newGuild(
+                guildId,
+                this.#twitchClipsMeiliSearch,
+                this.#addedEmotesDatabase,
+                this.#permittedRoleIdsDatabase,
+                null,
+                undefined
+              );
+              this.#guilds.push(newGuildWithoutPersonalEmotes_);
 
-          return newGuildWithoutPersonalEmotes_;
-        })());
+              return newGuildWithoutPersonalEmotes_;
+            })());
+
+          return guild_;
+        }
+
+        const guildId_ = ((): string | undefined => {
+          const user_ = this.#users.find((userge) => userge.id === interaction.user.id);
+          if (user_ === undefined) return undefined;
+          return user_.guild.id;
+        })();
+        if (guildId_ === undefined) return undefined;
+        const guild_ = this.#guilds.find((guildge) => guildge.id === guildId_);
+        //there cannot be a case when we found a guildId from a user and we would need to create a guild without personal emotes
+        if (guild_ === undefined) throw new Error("Couldn't find guild.");
+        return guild_;
+      })();
 
       if (interaction.isModalSubmit()) {
         void modalSubmitHandler(
@@ -195,12 +219,16 @@ export class Bot {
           this.#emoteMessageBuilders,
           guild,
           this.#broadcasterNameAndPersonalEmoteSetsDatabase,
-          this.#twitchApi
+          this.#usersDatabase,
+          this.#twitchApi,
+          this.#guilds,
+          this.#users
         )(interaction);
         return;
       }
 
       if (interaction.isAutocomplete()) {
+        if (guild === undefined) return;
         const { emoteMatcher, twitchClipsMeiliSearchIndex, uniqueCreatorNames, uniqueGameIds } = guild;
 
         void autocompleteHandler(
@@ -213,16 +241,20 @@ export class Bot {
       }
 
       if (interaction.isRoleSelectMenu()) {
+        if (guild === undefined) return;
         void roleSelectMenuHandler(guild, this.#permittedRoleIdsDatabase)(interaction);
         return;
       }
 
       if (interaction.isButton()) {
+        const user_ = this.#users.find((userge) => userge.id === interaction.user.id);
+
         const emoteMessageBuilder = await buttonHandler(
           this.#twitchClipMessageBuilders,
           this.#emoteMessageBuilders,
           this.#pingMessageBuilders,
           guild,
+          user_,
           this.#addedEmotesDatabase,
           this.#permittedRoleIdsDatabase,
           this.#pingsDatabase
@@ -237,6 +269,12 @@ export class Bot {
         return;
       }
 
+      if (interaction.commandName === 'settings') {
+        void settingsHandler()(interaction, guild);
+        return;
+      }
+
+      if (guild === undefined) return;
       const commandHandler = this.#commandHandlers.get(interaction.commandName);
       if (commandHandler === undefined) return;
       void commandHandler(interaction, guild);

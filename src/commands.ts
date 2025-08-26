@@ -3,7 +3,8 @@ import {
   SlashCommandBuilder,
   ContextMenuCommandBuilder,
   type RESTPostAPIChatInputApplicationCommandsJSONBody,
-  type RESTPostAPIContextMenuApplicationCommandsJSONBody
+  type RESTPostAPIContextMenuApplicationCommandsJSONBody,
+  InteractionContextType
 } from 'discord.js';
 
 import type {
@@ -23,7 +24,8 @@ const emote: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
   )
   .addIntegerOption((option: ReadonlySlashCommandIntegerOption) =>
     option.setName('size').setDescription("The emote's size").setAutocomplete(true)
-  );
+  )
+  .setContexts(InteractionContextType.Guild, InteractionContextType.PrivateChannel);
 
 const emotes: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
   .setName('emotes')
@@ -45,7 +47,8 @@ const emotes: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
   )
   .addBooleanOption((option: ReadonlySlashCommandBooleanOption) =>
     option.setName('stretch').setDescription('Whether to stretch the overlaying emotes instead of centering them')
-  );
+  )
+  .setContexts(InteractionContextType.Guild, InteractionContextType.PrivateChannel);
 
 const emotelist: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
   .setName('emotelist')
@@ -64,7 +67,8 @@ const emotelist: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilde
       .setName('overlaying')
       .setDescription('Whether the queried emotes should be overlaying (zero-width)')
       .setAutocomplete(true)
-  );
+  )
+  .setContexts(InteractionContextType.Guild, InteractionContextType.PrivateChannel);
 
 const clip: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
   .setName('clip')
@@ -83,7 +87,8 @@ const clip: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
       .setName('sortby')
       .setDescription('Sort. Default: date created (newest first)')
       .addChoices({ name: 'Views', value: 'views' }, { name: 'Shuffle the list', value: 'shuffle' })
-  );
+  )
+  .setContexts(InteractionContextType.Guild, InteractionContextType.PrivateChannel);
 
 const addemote: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
   .setName('addemote')
@@ -109,7 +114,8 @@ const chatgpt: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder(
       .setName('instruction')
       .setDescription('High-level instruction for controlling response. Default: no instruction')
       .addChoices({ name: 'Be concise', value: 'Be concise.' })
-  );
+  )
+  .setContexts(InteractionContextType.Guild, InteractionContextType.PrivateChannel);
 
 const gemini: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
   .setName('gemini')
@@ -139,7 +145,8 @@ const shortestuniquesubstrings: ReadonlySlashCommandOptionsOnlyBuilder = new Sla
   )
   .addBooleanOption((option: ReadonlySlashCommandBooleanOption) =>
     option.setName('ephemeral').setDescription('whether to output the result so only you can see it')
-  );
+  )
+  .setContexts(InteractionContextType.Guild, InteractionContextType.PrivateChannel);
 
 const transient: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
   .setName('transient')
@@ -186,11 +193,13 @@ const poe2: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
 
 const settings: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
   .setName('settings')
-  .setDescription('Settings for configuring the behavior of the bot in this server. Permission required');
+  .setDescription('Settings for configuring the behavior of the bot in this server. Permission required')
+  .setContexts(InteractionContextType.Guild, InteractionContextType.PrivateChannel);
 
 const chatGptExplain: ReadonlyContextMenuCommandBuilder = new ContextMenuCommandBuilder()
   .setName('ChatGPT Explain')
-  .setType(ApplicationCommandType.Message);
+  .setType(ApplicationCommandType.Message)
+  .setContexts(InteractionContextType.Guild, InteractionContextType.PrivateChannel);
 
 export const commands: readonly (
   | Readonly<RESTPostAPIChatInputApplicationCommandsJSONBody>

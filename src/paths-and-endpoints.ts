@@ -9,7 +9,8 @@ export const DATABASE_ENDPOINTS = {
   addedEmotes: `${DATABASE_DIR}/addedEmotes.sqlite`,
   pings: `${DATABASE_DIR}/pings.sqlite`,
   permitRoleIds: `${DATABASE_DIR}/permitRoleIds.sqlite`,
-  broadcasterNameAndpersonalEmoteSets: `${DATABASE_DIR}/broadcasterNameAndPersonalEmoteSets.sqlite`
+  broadcasterNameAndpersonalEmoteSets: `${DATABASE_DIR}/broadcasterNameAndPersonalEmoteSets.sqlite`,
+  users: `${DATABASE_DIR}/users.sqlite`
 };
 
 export const CDN_ENDPOINTS = {

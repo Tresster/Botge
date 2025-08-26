@@ -1,11 +1,8 @@
 import type { ChatInputCommandInteraction } from 'discord.js';
-import type ResponseInput from 'openai';
 
 import { getOptionValue, getOptionValueWithoutUndefined } from '../utils/get-option-value.ts';
-import type { ReadonlyOpenAI } from '../types.ts';
+import type { ReadonlyOpenAI, OpenAIResponseInput } from '../types.ts';
 import type { Guild } from '../guild.ts';
-
-type openAiResponseInput = ResponseInput.Responses.ResponseInput;
 
 const MAX_DISCORD_MESSAGE_LENGTH = 2000;
 
@@ -55,8 +52,8 @@ export function chatgptHandler(openai: ReadonlyOpenAI | undefined) {
 
       //TODO: detect if img is png, jpg, webp, or non animated gif
 
-      const input = ((): openAiResponseInput => {
-        const inputImage: openAiResponseInput | undefined =
+      const input = ((): OpenAIResponseInput => {
+        const inputImage: OpenAIResponseInput | undefined =
           image !== undefined
             ? [
                 { role: 'user', content: prompt },

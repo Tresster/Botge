@@ -1,6 +1,6 @@
 import type { MessageContextMenuCommandInteraction } from 'discord.js';
 
-import type { ReadonlyOpenAI } from '../types.ts';
+import type { ReadonlyOpenAI, ReadonlyAttachment, OpenAIResponseInput, OpenAIResponseInputImage } from '../types.ts';
 
 const MAX_DISCORD_MESSAGE_LENGTH = 2000;
 
@@ -30,9 +30,37 @@ export function messageContextMenuCommandHandler(openai: ReadonlyOpenAI | undefi
         return instruction;
       })();
 
+      const input = ((): OpenAIResponseInput => {
+        const inputText = ((): string => {
+          const content_ = content !== '' ? `"${content}"` : '';
+          return `Explain ${content_}`;
+        })();
+
+        const inputImages = ((): OpenAIResponseInput | undefined => {
+          const { attachments } = interaction.targetMessage;
+          const images: OpenAIResponseInputImage[] = attachments.map((attachment: ReadonlyAttachment) => ({
+            type: 'input_image',
+            image_url: attachment.url,
+            detail: 'low'
+          }));
+
+          return images.length > 0
+            ? [
+                { role: 'user', content: inputText },
+                {
+                  role: 'user',
+                  content: images
+                }
+              ]
+            : undefined;
+        })();
+
+        return inputImages ?? [{ role: 'user', content: inputText }];
+      })();
+
       const response = await openai.responses.create({
         model: 'gpt-4.1',
-        input: `Explain "${content}".`,
+        input: input,
         max_output_tokens: 400,
         instructions: instructions,
         user: interaction.user.id

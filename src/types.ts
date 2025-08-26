@@ -18,7 +18,8 @@ import type {
   MessageActionRowComponentBuilder,
   ModalBuilder,
   ApplicationCommandOptionChoiceData,
-  ContextMenuCommandBuilder
+  ContextMenuCommandBuilder,
+  Attachment
 } from 'discord.js';
 
 export type ReadonlyOpenAI = DeepReadonly<OpenAI>;
@@ -39,6 +40,10 @@ export type ReadonlyActionRowBuilderMessageActionRowComponentBuilder = DeepReado
 >;
 export type ReadonlyModalBuilder = DeepReadonly<ModalBuilder>;
 export type ReadonlyApplicationCommandOptionChoiceDataString = DeepReadonly<ApplicationCommandOptionChoiceData<string>>;
+
+export type ReadonlyAttachment = DeepReadonly<Attachment>;
+export type OpenAIResponseInput = OpenAI.Responses.ResponseInput;
+export type OpenAIResponseInputImage = OpenAI.Responses.ResponseInputImage;
 
 export type SevenTVEmoteFile = {
   readonly name: string;

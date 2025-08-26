@@ -1,6 +1,12 @@
 import type { MessageContextMenuCommandInteraction } from 'discord.js';
 
-import type { ReadonlyOpenAI, ReadonlyAttachment, OpenAIResponseInput, OpenAIResponseInputImage } from '../types.ts';
+import type {
+  ReadonlyOpenAI,
+  ReadonlyEmbed,
+  ReadonlyAttachment,
+  OpenAIResponseInput,
+  OpenAIResponseInputImage
+} from '../types.ts';
 
 const MAX_DISCORD_MESSAGE_LENGTH = 2000;
 
@@ -37,10 +43,14 @@ export function messageContextMenuCommandHandler(openai: ReadonlyOpenAI | undefi
         })();
 
         const inputImages = ((): OpenAIResponseInput | undefined => {
-          const { attachments } = interaction.targetMessage;
-          const images: OpenAIResponseInputImage[] = attachments.map((attachment: ReadonlyAttachment) => ({
+          const { embeds, attachments } = interaction.targetMessage;
+
+          const embeds_ = embeds.map((embed: ReadonlyEmbed) => embed.url).filter((embedUrl) => embedUrl !== null);
+          const imageUrls =
+            embeds_.length > 0 ? embeds_ : attachments.map((attachment: ReadonlyAttachment) => attachment.url);
+          const images: OpenAIResponseInputImage[] = imageUrls.map((imageUrl) => ({
             type: 'input_image',
-            image_url: attachment.url,
+            image_url: imageUrl,
             detail: 'low'
           }));
 

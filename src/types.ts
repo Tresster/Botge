@@ -19,6 +19,7 @@ import type {
   ModalBuilder,
   ApplicationCommandOptionChoiceData,
   ContextMenuCommandBuilder,
+  Embed,
   Attachment
 } from 'discord.js';
 
@@ -41,6 +42,7 @@ export type ReadonlyActionRowBuilderMessageActionRowComponentBuilder = DeepReado
 export type ReadonlyModalBuilder = DeepReadonly<ModalBuilder>;
 export type ReadonlyApplicationCommandOptionChoiceDataString = DeepReadonly<ApplicationCommandOptionChoiceData<string>>;
 
+export type ReadonlyEmbed = DeepReadonly<Embed>;
 export type ReadonlyAttachment = DeepReadonly<Attachment>;
 export type OpenAIResponseInput = OpenAI.Responses.ResponseInput;
 export type OpenAIResponseInputImage = OpenAI.Responses.ResponseInputImage;

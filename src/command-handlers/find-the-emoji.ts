@@ -32,7 +32,7 @@ export function findTheEmojiHandler() {
       const emojiArray: readonly string[] = Array.from(
         (await (await interactionGuild.fetch()).emojis.fetch()).entries()
       )
-        .filter((emoji_: readonly [string, GuildEmoji]) => emoji_[1].animated === false)
+        .filter((emoji_: readonly [string, GuildEmoji]) => !emoji_[1].animated)
         .map((emoji_: readonly [string, GuildEmoji]) => `<:${emoji_[1].name}:${emoji_[0]}>`);
 
       if (emojiArray.length < 2) {

@@ -221,7 +221,7 @@ export function emotesHandler(cachedUrl: Readonly<CachedUrl>) {
 
     const ephemeral = Boolean(interaction.options.get('ephemeral')?.value);
     const defer = ephemeral ? interaction.deferReply({ flags: 'Ephemeral' }) : interaction.deferReply();
-    const outdir = join(TMP_DIR, String(interaction.id));
+    const outdir = join(TMP_DIR, interaction.id);
 
     try {
       const emoteNotFoundReply = interaction.guildId === GUILD_ID_CUTEDOG ? 'jij' : 'emote not found';

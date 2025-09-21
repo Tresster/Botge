@@ -1,6 +1,7 @@
-import tseslint from 'typescript-eslint';
+import { defineConfig } from 'eslint/config';
+import { configs } from 'typescript-eslint';
 
-export default tseslint.config(
+export default defineConfig(
   {
     languageOptions: {
       parserOptions: {
@@ -10,8 +11,8 @@ export default tseslint.config(
       }
     }
   },
-  tseslint.configs.strictTypeChecked,
-  tseslint.configs.stylisticTypeChecked,
+  configs.strictTypeChecked,
+  configs.stylisticTypeChecked,
   {
     rules: {
       '@typescript-eslint/class-methods-use-this': 'warn',

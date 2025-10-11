@@ -77,7 +77,8 @@ export default defineConfig(
                 'MessageContextMenuCommandInteraction'
               ],
               package: 'discord.js'
-            }
+            },
+            { from: 'package', name: ['VoiceConnection'], package: '@discordjs/voice' }
           ]
         }
       ],

@@ -45,6 +45,7 @@
     "tests-prettier-format": "prettier --config .prettierrc tests --write"
   },
   "dependencies": {
+    "@discordjs/voice": "^0.19.0",
     "@google/genai": "^1.20.0",
     "@twemoji/api": "^16.0.1",
     "better-sqlite3": "^12.2.0",

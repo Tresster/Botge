@@ -1,4 +1,5 @@
 import { type ChatInputCommandInteraction, Events, type Client } from 'discord.js';
+import { joinVoiceChannel } from '@discordjs/voice';
 
 import { newGuild } from './utils/constructors/new-guild.ts';
 import { shortestuniquesubstringsHandler } from './command-handlers/shortest-unique-substrings.ts';
@@ -31,6 +32,7 @@ import type { PingMessageBuilder } from './message-builders/ping-message-builder
 import { messageCreateHandler } from './message-create-handlers/message-create-handler.ts';
 import type { ReadonlyGoogleGenAI, ReadonlyOpenAI, ReadonlyTranslator } from './types.ts';
 import type { TwitchClipsMeiliSearch } from './twitch-clips-meili-search.ts';
+import { GENERAL_CHANNEL_ID_CUTEDOG } from './guilds.ts';
 import type { Guild } from './guild.ts';
 import type { User } from './user.ts';
 
@@ -133,11 +135,36 @@ export class Bot {
 
   public registerHandlers(): void {
     this.#client.on(Events.ClientReady, (): void => {
-      const { user } = this.#client;
+      const { user, channels } = this.#client;
       if (user === null) throw new Error('Bot client user is empty.');
 
       user.setStatus('online');
       user.setActivity('botge.gitbook.io');
+
+      try {
+        const { JOIN_VOICE_CHANNEL } = process.env;
+
+        if (JOIN_VOICE_CHANNEL === 'true') {
+          const cuteDogGeneralChannel = channels.cache.find((channel) => channel.id === GENERAL_CHANNEL_ID_CUTEDOG);
+
+          if (
+            cuteDogGeneralChannel !== undefined &&
+            cuteDogGeneralChannel.isVoiceBased() &&
+            cuteDogGeneralChannel.joinable
+          ) {
+            joinVoiceChannel({
+              channelId: cuteDogGeneralChannel.id,
+              guildId: cuteDogGeneralChannel.guild.id,
+              adapterCreator: cuteDogGeneralChannel.guild.voiceAdapterCreator,
+              selfDeaf: true,
+              selfMute: true
+            });
+          }
+        }
+      } catch (error) {
+        console.log(`Error at joining voice channel --> ${error instanceof Error ? error.message : String(error)}`);
+      }
+
       console.log(`Logged in as ${user.tag}!`);
     });
 

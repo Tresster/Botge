@@ -8,6 +8,7 @@ import { join } from 'node:path';
 import { config } from 'dotenv';
 import OpenAI from 'openai';
 import { Client, GatewayIntentBits } from 'discord.js';
+import { getVoiceConnections } from '@discordjs/voice';
 
 import { BroadcasterNameAndPersonalEmoteSetsDatabase } from './api/broadcaster-name-and-personal-emote-sets-database.ts';
 import { PermittedRoleIdsDatabase } from './api/permitted-role-ids-database.ts';
@@ -171,6 +172,16 @@ function closeFunction(): void {
   } catch (error) {
     console.log(
       `Error at closeFunction - setting invisible status: ${error instanceof Error ? error.message : String(error)}`
+    );
+  }
+
+  try {
+    getVoiceConnections().forEach((connection) => {
+      connection.destroy();
+    });
+  } catch (error) {
+    console.log(
+      `Error at closeFunction - destroying voice connections: ${error instanceof Error ? error.message : String(error)}`
     );
   }
 }

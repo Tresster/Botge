@@ -61,6 +61,9 @@ services:
 
       # Discord emojis. format: <:emoteName1:emoteId1>,<:emoteName2:emoteId2>
       #- DISCORD_EMOJIS=
+
+      # join voice channel
+      - JOIN_VOICE_CHANNEL=true
     volumes:
       - ./tmp:/app/tmp
       - ./data:/app/data

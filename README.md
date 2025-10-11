@@ -1,6 +1,12 @@
 # <img src="assets/peepoCute.png" alt="Botge Logo" width="36"> Botge
 
-![GitHub package.json version](https://img.shields.io/github/package-json/v/Tresster/Botge) ![GitHub last commit](https://img.shields.io/github/last-commit/Tresster/Botge) ![GitHub Created At](https://img.shields.io/github/created-at/Tresster/Botge) ![GitHub License](https://img.shields.io/github/license/Tresster/Botge)
+![GitHub package.json version](https://img.shields.io/github/package-json/v/Tresster/Botge)
+![GitHub last commit](https://img.shields.io/github/last-commit/Tresster/Botge)
+![GitHub Created At](https://img.shields.io/github/created-at/Tresster/Botge)
+![GitHub License](https://img.shields.io/github/license/Tresster/Botge)  
+![GitHub issue custom search in repo enhancement](https://img.shields.io/github/issues-search/Tresster/Botge?query=label%3Aenhancement&label=enhancement%20issues)
+![GitHub issue custom search in repo help wanted](https://img.shields.io/github/issues-search/Tresster/Botge?query=label%3A%22help%20wanted%22&label=help%20wanted%20issues)
+![GitHub issue custom search in repo good first issue](https://img.shields.io/github/issues-search/Tresster/Botge?query=label%3A%22good%20first%20issue%22&label=good%20first%20issues)
 
 <img src="assets/peepoCute.png" alt="Botge Website Logo" width="18"> [Botge Website](https://botge.gitbook.io/)
 

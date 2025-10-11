@@ -53,7 +53,7 @@ We reserve the right, at our discretion, to **limit, suspend, or terminate** acc
 ## Updates to These Terms
 
 We may revise or update these Terms from time to time.  
-The most current version will always be available on the official Botge documentation or repository.
+The most current version will always be available on the official Botge documentation or repository.  
 By continuing to use the Service after updates are posted, you agree to the revised Terms.
 
 ## Severability

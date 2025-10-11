@@ -11,6 +11,7 @@ export function messageCreateHandler() {
     try {
       const { content } = message;
       if (!content.startsWith(COMMAND_IDENTIFIER)) return;
+      if (content.split(' ').length > 1) return;
 
       const emote = ((): AssetInfo | undefined => {
         const { emoteMatcher } = guild;

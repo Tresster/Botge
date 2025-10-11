@@ -96,7 +96,6 @@ export class Bot {
       (interaction: ChatInputCommandInteraction, guild: Readonly<Guild>) => Promise<void>
     >([
       ['emote', emoteHandler()],
-      ['emotes', emotesHandler(this.#cachedUrl)],
       ['emotelist', emoteListHandler(this.#emoteMessageBuilders)],
       ['gemini', geminiHandler(this.#googleGenAI)],
       ['clip', clipHandler(this.#twitchClipMessageBuilders)],
@@ -188,7 +187,7 @@ export class Bot {
           return newGuildWithoutPersonalEmotes_;
         })());
 
-      void messageCreateHandler()(message, guild);
+      void messageCreateHandler()(this.#cachedUrl, message, guild);
     });
 
     //interaction
@@ -302,6 +301,12 @@ export class Bot {
       }
 
       if (guild === undefined) return;
+
+      if (interaction.commandName === 'emotes') {
+        void emotesHandler(this.#cachedUrl)(guild, interaction);
+        return;
+      }
+
       const commandHandler = this.#commandHandlers.get(interaction.commandName);
       if (commandHandler === undefined) return;
       void commandHandler(interaction, guild);

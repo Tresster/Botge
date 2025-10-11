@@ -3,7 +3,7 @@ import { join } from 'path';
 import { ensureDirSync } from 'fs-extra';
 import { rm } from 'node:fs/promises';
 
-import type { ChatInputCommandInteraction } from 'discord.js';
+import type { ChatInputCommandInteraction, OmitPartialGroupDMChannel, Message } from 'discord.js';
 
 import { maxPlatformSize, emoteSizeChange, assetSizeChange } from '../utils/command-handlers/emote/size-change.ts';
 import { downloadAsset } from '../utils/command-handlers/emote/download-asset.ts';
@@ -17,6 +17,8 @@ import type { AssetInfo, DownloadedAsset, HstackElement } from '../types.ts';
 import { TMP_DIR } from '../paths-and-endpoints.ts';
 import { GUILD_ID_CUTEDOG } from '../guilds.ts';
 import type { Guild } from '../guild.ts';
+
+export const EMOTE_COMMAND_IDENTIFIER = '+';
 
 const DEFAULTFPS = 25;
 const MAXWIDTH = 192;
@@ -216,20 +218,39 @@ export function emoteListHandler(emoteMessageBuilders: EmoteMessageBuilder[]) {
 }
 
 export function emotesHandler(cachedUrl: Readonly<CachedUrl>) {
-  return async (interaction: ChatInputCommandInteraction, guild: Readonly<Guild>): Promise<void> => {
+  return async (
+    guild: Readonly<Guild>,
+    interaction?: ChatInputCommandInteraction,
+    message?: OmitPartialGroupDMChannel<Message>
+  ): Promise<void> => {
     const { emoteMatcher } = guild;
 
-    const ephemeral = Boolean(interaction.options.get('ephemeral')?.value);
-    const defer = ephemeral ? interaction.deferReply({ flags: 'Ephemeral' }) : interaction.deferReply();
-    const outdir = join(TMP_DIR, interaction.id);
+    const ephemeral = interaction !== undefined ? Boolean(interaction.options.get('ephemeral')?.value) : false;
+    const defer =
+      interaction !== undefined
+        ? ephemeral
+          ? interaction.deferReply({ flags: 'Ephemeral' })
+          : interaction.deferReply()
+        : undefined;
+    const outdir = ((): string => {
+      if (interaction !== undefined) return join(TMP_DIR, interaction.id);
+      else if (message !== undefined) return join(TMP_DIR, message.id);
+      throw new Error('Interaction and Message undefined.');
+    })();
 
     try {
-      const emoteNotFoundReply = interaction.guildId === GUILD_ID_CUTEDOG ? 'jij' : 'emote not found';
+      const emoteNotFoundReply =
+        interaction !== undefined && interaction.guildId === GUILD_ID_CUTEDOG ? 'jij' : 'emote not found';
 
-      const emotes: readonly string[] = getOptionValueWithoutUndefined<string>(interaction, 'emotes').split(/\s+/);
-      const size = getOptionValue(interaction, 'size', Number);
-      const fullSize = getOptionValue(interaction, 'fullsize', Boolean) ?? false;
-      const stretch = getOptionValue(interaction, 'stretch', Boolean) ?? false;
+      const emotes = ((): readonly string[] => {
+        if (interaction !== undefined)
+          return getOptionValueWithoutUndefined<string>(interaction, 'emotes').split(/\s+/);
+        else if (message !== undefined) return message.content.slice(EMOTE_COMMAND_IDENTIFIER.length).split(/\s+/);
+        throw new Error('Interaction and Message undefined.');
+      })();
+      const size = interaction !== undefined ? getOptionValue(interaction, 'size', Number) : undefined;
+      const fullSize = interaction !== undefined ? (getOptionValue(interaction, 'fullsize', Boolean) ?? false) : false;
+      const stretch = interaction !== undefined ? (getOptionValue(interaction, 'stretch', Boolean) ?? false) : false;
 
       if (emotes.length === 1) {
         const [emote] = emotes;
@@ -239,9 +260,16 @@ export function emotesHandler(cachedUrl: Readonly<CachedUrl>) {
           await defer;
           try {
             new URL(emote);
-            await interaction.editReply('posting link through Botge wtf');
+            if (interaction !== undefined) await interaction.editReply('posting link through Botge wtf');
           } catch {
-            await interaction.editReply(emoteNotFoundReply);
+            if (interaction !== undefined) await interaction.editReply(emoteNotFoundReply);
+            else if (message !== undefined) {
+              if (guild.id === GUILD_ID_CUTEDOG) {
+                await message.react('<:HAH1:1236635745570127892>');
+                await message.react('<:HAH2:1236635747449045003>');
+                await message.react('<:HAH3:1236635749290610740>');
+              } else await message.react('❌');
+            }
           }
           return;
         }
@@ -256,7 +284,9 @@ export function emotesHandler(cachedUrl: Readonly<CachedUrl>) {
         ).replace('.gif', '.webp');
 
         await defer;
-        await interaction.editReply(reply);
+        if (interaction !== undefined) await interaction.editReply(reply);
+        else if (message !== undefined)
+          await message.reply({ content: reply, allowedMentions: { repliedUser: false } });
         return;
       }
 
@@ -289,12 +319,24 @@ export function emotesHandler(cachedUrl: Readonly<CachedUrl>) {
 
       if (uniqueAssetsWithNullAndUndefined.some((asset) => asset === null)) {
         await defer;
-        await interaction.editReply(FAILED_TO_DOWNLOAD_OR_GET_EMOJI_MESSAGE);
+        if (interaction !== undefined) await interaction.editReply(FAILED_TO_DOWNLOAD_OR_GET_EMOJI_MESSAGE);
+        else if (message !== undefined)
+          await message.reply({
+            content: FAILED_TO_DOWNLOAD_OR_GET_EMOJI_MESSAGE,
+            allowedMentions: { repliedUser: false }
+          });
         return;
       }
       if (uniqueAssetsWithNullAndUndefined.some((asset) => asset === undefined)) {
         await defer;
-        await interaction.editReply(emoteNotFoundReply);
+        if (interaction !== undefined) await interaction.editReply(emoteNotFoundReply);
+        else if (message !== undefined) {
+          if (guild.id === GUILD_ID_CUTEDOG) {
+            await message.react('<:HAH1:1236635745570127892>');
+            await message.react('<:HAH2:1236635747449045003>');
+            await message.react('<:HAH3:1236635749290610740>');
+          } else await message.react('❌');
+        }
         return;
       }
 
@@ -438,8 +480,15 @@ export function emotesHandler(cachedUrl: Readonly<CachedUrl>) {
           //Here you can get the exit code of the script
           return async function (code: number): Promise<void> {
             await defer;
-            if (code === 0) await interaction.editReply({ files: [outfile] });
-            else await interaction.editReply('gif creation failed');
+            if (code === 0) {
+              if (interaction !== undefined) await interaction.editReply({ files: [outfile] });
+              else if (message !== undefined)
+                await message.reply({ files: [outfile], allowedMentions: { repliedUser: false } });
+            } else {
+              if (interaction !== undefined) await interaction.editReply('gif creation failed');
+              else if (message !== undefined)
+                await message.reply({ content: 'gif creation failed', allowedMentions: { repliedUser: false } });
+            }
             void rm(outdir, { recursive: true });
           };
         })()
@@ -455,7 +504,9 @@ export function emotesHandler(cachedUrl: Readonly<CachedUrl>) {
           : 'gif creation failed.';
 
       await defer;
-      await interaction.editReply(editReplyMessage);
+      if (interaction !== undefined) await interaction.editReply(editReplyMessage);
+      else if (message !== undefined)
+        await message.reply({ content: editReplyMessage, allowedMentions: { repliedUser: false } });
       void rm(outdir, { recursive: true });
     }
   };

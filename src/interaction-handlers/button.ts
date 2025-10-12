@@ -5,8 +5,8 @@ import {
   TextInputStyle,
   TextInputBuilder,
   ModalBuilder,
+  LabelBuilder,
   type ButtonInteraction,
-  type ModalActionRowComponentBuilder,
   type MessageActionRowComponentBuilder
 } from 'discord.js';
 
@@ -79,19 +79,19 @@ export function buttonHandler(
       if (customId === CONFIGURATION_USER_BUTTON_CUSTOM_ID) {
         const GUILD_ID_TEXT_INPUT = new TextInputBuilder()
           .setCustomId(GUILD_ID_TEXT_INPUT_CUSTOM_ID)
-          .setLabel('Guild ID')
           .setStyle(TextInputStyle.Short)
           .setRequired(true);
-
         if (user !== undefined) GUILD_ID_TEXT_INPUT.setValue(user.guild.id);
 
-        const guildIdActionRow = new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
-          GUILD_ID_TEXT_INPUT
-        );
+        const GUILD_ID_TEXT_INPUT_LABEL = new LabelBuilder()
+          .setLabel('Guild ID')
+          .setDescription('The ID of the Disord server where you want to get the emotes from.')
+          .setTextInputComponent(GUILD_ID_TEXT_INPUT);
+
         const assignGuildModal = new ModalBuilder()
           .setCustomId(ASSIGN_GUILD_MODAL_CUSTOM_ID)
           .setTitle('Configuration')
-          .addComponents(guildIdActionRow);
+          .addLabelComponents(GUILD_ID_TEXT_INPUT_LABEL);
 
         await interaction.showModal(assignGuildModal);
         return undefined;
@@ -169,26 +169,26 @@ export function buttonHandler(
       } else if (customId === CONFIGURATION_GUILD_BUTTON_CUSTOM_ID) {
         const BROADCASTER_NAME_TEXT_INPUT = new TextInputBuilder()
           .setCustomId(BROADCASTER_NAME_TEXT_INPUT_CUSTOM_ID)
-          .setLabel('Streamer Twitch username')
           .setStyle(TextInputStyle.Short)
           .setRequired(false);
+        const BROADCASTER_NAME_TEXT_INPUT_LABEL = new LabelBuilder()
+          .setLabel('Streamer Twitch username')
+          .setDescription('The Twitch username of the streamer.')
+          .setTextInputComponent(BROADCASTER_NAME_TEXT_INPUT);
+
         const SEVENTV_TEXT_INPUT = new TextInputBuilder()
           .setCustomId(SEVENTV_TEXT_INPUT_CUSTOM_ID)
-          .setLabel('7TV Emote Set Link')
           .setStyle(TextInputStyle.Short)
           .setRequired(false);
-
-        const BROADCASTER_NAME_ACTION_ROW = new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
-          BROADCASTER_NAME_TEXT_INPUT
-        );
-        const SEVENTV_ACTION_ROW = new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
-          SEVENTV_TEXT_INPUT
-        );
+        const SEVENTV_TEXT_INPUT_LABEL = new LabelBuilder()
+          .setLabel('7TV Emote Set Link')
+          .setDescription("The URL of the streamer's 7TV emote set.")
+          .setTextInputComponent(SEVENTV_TEXT_INPUT);
 
         const ASSIGN_EMOTE_SETS_MODAL = new ModalBuilder()
           .setCustomId(ASSIGN_EMOTE_SETS_MODAL_CUSTOM_ID)
           .setTitle('Configuration')
-          .addComponents(BROADCASTER_NAME_ACTION_ROW, SEVENTV_ACTION_ROW);
+          .addLabelComponents(BROADCASTER_NAME_TEXT_INPUT_LABEL, SEVENTV_TEXT_INPUT_LABEL);
 
         if (guild.broadcasterName !== null) BROADCASTER_NAME_TEXT_INPUT.setValue(guild.broadcasterName);
 

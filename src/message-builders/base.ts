@@ -5,10 +5,10 @@ import {
   ModalBuilder,
   TextInputBuilder,
   TextInputStyle,
+  LabelBuilder,
   type ChatInputCommandInteraction,
   type ButtonInteraction,
-  type MessageActionRowComponentBuilder,
-  type ModalActionRowComponentBuilder
+  type MessageActionRowComponentBuilder
 } from 'discord.js';
 
 import type {
@@ -109,24 +109,28 @@ export class BaseMessageBuilder<
     this.#modal = new ModalBuilder()
       .setCustomId(getCustomId(JUMP_TO_MODAL_BASE_CUSTOM_ID, messageBuilderType, this.#counter))
       .setTitle('Jump to')
-      .addComponents(
-        new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
-          new TextInputBuilder()
-            .setCustomId(getCustomId(JUMP_TO_TEXT_INPUT_BASE_CUSTOM_ID, messageBuilderType, this.#counter))
-            .setLabel('Jump to index')
-            .setMaxLength(6)
-            .setStyle(TextInputStyle.Short)
-            .setPlaceholder('random')
-            .setRequired(false)
-        ),
-        new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
-          new TextInputBuilder()
-            .setCustomId(getCustomId(JUMP_TO_IDENTIFIER_INPUT_BASE_CUSTOM_ID, messageBuilderType, this.#counter))
-            .setLabel(`Jump to ${identifierName}`)
-            .setMaxLength(20)
-            .setStyle(TextInputStyle.Short)
-            .setRequired(false)
-        )
+      .addLabelComponents(
+        new LabelBuilder()
+          .setLabel('Jump to index')
+          .setDescription('If empty it jumps to a random index.')
+          .setTextInputComponent(
+            new TextInputBuilder()
+              .setCustomId(getCustomId(JUMP_TO_TEXT_INPUT_BASE_CUSTOM_ID, messageBuilderType, this.#counter))
+              .setMaxLength(6)
+              .setStyle(TextInputStyle.Short)
+              .setPlaceholder('random')
+              .setRequired(false)
+          ),
+        new LabelBuilder()
+          .setLabel(`Jump to ${identifierName}`)
+          .setDescription(`The ${identifierName} of the item you wish to jump to.`)
+          .setTextInputComponent(
+            new TextInputBuilder()
+              .setCustomId(getCustomId(JUMP_TO_IDENTIFIER_INPUT_BASE_CUSTOM_ID, messageBuilderType, this.#counter))
+              .setMaxLength(20)
+              .setStyle(TextInputStyle.Short)
+              .setRequired(false)
+          )
       );
   }
 

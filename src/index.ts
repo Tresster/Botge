@@ -65,6 +65,7 @@ const updateCommands_ = (async (): Promise<void> => {
   await updateCommands(process.argv[2]);
 })();
 
+//bot object
 const bot = await (async (): Promise<Readonly<Bot>> => {
   const client: Client = new Client({
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent]

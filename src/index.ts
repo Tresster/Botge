@@ -242,6 +242,7 @@ scheduleJob('12 */12 * * *', async () => {
   await GlobalEmoteMatcherConstructor.instance.refreshGlobalEmotes();
 });
 
+//main
 bot.registerHandlers();
 await ensureDirs;
 await updateCommands_;

@@ -154,7 +154,7 @@ export class Bot {
       if (user === null) throw new Error('Bot client user is empty.');
 
       user.setStatus('online');
-      user.setActivity('botge.gitbook.io');
+      user.setActivity('💟 botge.gitbook.io');
 
       try {
         const { JOIN_VOICE_CHANNEL } = process.env;

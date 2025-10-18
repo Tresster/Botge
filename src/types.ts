@@ -239,13 +239,18 @@ export type EmoteMessageBuilderTransformFunctionReturnType = {
   readonly components: readonly ReadonlyActionRowBuilderMessageActionRowComponentBuilder[];
 };
 
-export type PingMessageBuilderTransformFunctionReturnType = {
+export type PingForPingMeMessageBuilderTransformFunctionReturnType = {
   readonly content: string;
   readonly components: readonly ReadonlyActionRowBuilderMessageActionRowComponentBuilder[];
 };
 
-export type PingMessageBuilderReplies = {
-  readonly reply: PingMessageBuilderTransformFunctionReturnType | undefined;
+export type PingForPingMeMessageBuilderReplies = {
+  readonly reply: PingForPingMeMessageBuilderTransformFunctionReturnType | undefined;
   readonly buttonReply: string | undefined;
   readonly deletionEvent: boolean;
+};
+
+export type PingForPingListMessageBuilderTransformFunctionReturnType = {
+  readonly embeds: readonly ReadonlyEmbedBuilder[];
+  readonly components: readonly ReadonlyActionRowBuilderMessageActionRowComponentBuilder[];
 };

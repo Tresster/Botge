@@ -1,8 +1,8 @@
-import scheduler from 'node-schedule';
+import scheduler, { type Job } from 'node-schedule';
 
 import type { Client, TextChannel } from 'discord.js';
 
-import { getContent, ContentType } from '../message-builders/ping-message-builder.ts';
+import { getContent, ContentType } from '../message-builders/ping-for-ping-me-message-builder.ts';
 import { daysAndhoursAndMinutesToMiliseconds } from '../command-handlers/pingme.ts';
 import type { PingsDatabase } from '../api/ping-database.ts';
 
@@ -16,7 +16,11 @@ function milisecondsToHoursAndMinutes(miliseconds: number): string {
   return `${hoursText}${minutesText}`;
 }
 
-export async function registerPings(client: Client, pingsDataBase: Readonly<PingsDatabase>): Promise<void> {
+export async function registerPings(
+  client: Client,
+  pingsDataBase: Readonly<PingsDatabase>,
+  scheduledJobs: Readonly<Job>[]
+): Promise<void> {
   const pings = pingsDataBase.getAll();
 
   for (const ping of pings) {
@@ -35,14 +39,19 @@ export async function registerPings(client: Client, pingsDataBase: Readonly<Ping
     const difference = timeMilliseconds - Date.now();
     const pingedContent = getContent(ping, ContentType.Pinged);
     if (difference > 0) {
-      scheduler.scheduleJob(pingDate, async () => {
+      const scheduledJob = scheduler.scheduleJob(pingDate, async () => {
         try {
           await channel.send(pingedContent);
           pingsDataBase.delete(ping);
+          const scheduledJobIndex = scheduledJobs.findIndex(
+            (scheduledJob_) => scheduledJob_.name === scheduledJob.name
+          );
+          if (scheduledJobIndex !== -1) scheduledJobs.splice(scheduledJobIndex, 1);
         } catch (error) {
           console.log(`Error at a scheduled job --> ${error instanceof Error ? error.message : String(error)}`);
         }
       });
+      scheduledJobs.push(scheduledJob);
     } else {
       await channel.send(
         `${pingedContent}\nSorry for the bot downtime! The ping was delivered with a ${milisecondsToHoursAndMinutes(-difference)} delay!`

@@ -12,8 +12,8 @@ import type { PingsDatabase } from '../api/ping-database.ts';
 import type {
   Ping,
   ReadonlyActionRowBuilderMessageActionRowComponentBuilder,
-  PingMessageBuilderTransformFunctionReturnType,
-  PingMessageBuilderReplies
+  PingForPingMeMessageBuilderTransformFunctionReturnType,
+  PingForPingMeMessageBuilderReplies
 } from '../types.ts';
 import { getCustomId } from './base.ts';
 
@@ -71,19 +71,20 @@ export function getContent(ping: Ping, contentType: ContentType): string {
   return content;
 }
 
-export const PING_ME_AS_WELL_BUTTON_BASE_CUSTOM_ID = 'pingMeAsWellButton';
-export const REMOVE_ME_FROM_PING_BUTTON_BASE_CUSTOM_ID = 'removeMeFromPingListButton';
-export const DELETE_PING_BUTTON_BASE_CUSTOM_ID = 'deletePingButton';
+export const PING_ME_AS_WELL_BUTTON_FOR_PING_ME_BASE_CUSTOM_ID = 'pingMeAsWellButtonForPingMe';
+export const REMOVE_ME_FROM_PING_BUTTON_FOR_PING_ME_BASE_CUSTOM_ID = 'removeMeFromPingButtonForPingMe';
+export const DELETE_PING_BUTTON_FOR_PING_ME_BASE_CUSTOM_ID = 'deletePingButtonForPingMe';
 const CLEANUP_MINUTES = 4;
 
-export class PingMessageBuilder {
-  public static readonly messageBuilderType = 'Ping';
-  static readonly #emptyPingMessageBuilderReplies: PingMessageBuilderReplies = {
+export class PingForPingMeMessageBuilder {
+  public static readonly messageBuilderTypeForPingMe = 'PingForPingMeForPingMe';
+  public static readonly messageBuilderTypeForPingList = 'PingForPingMeForPingList';
+  static readonly #emptyPingMessageBuilderReplies: PingForPingMeMessageBuilderReplies = {
     reply: undefined,
     buttonReply: undefined,
     deletionEvent: false
   };
-  static readonly #pressedButtonPingMessageBuilderReplies: PingMessageBuilderReplies = {
+  static readonly #pressedButtonPingMessageBuilderReplies: PingForPingMeMessageBuilderReplies = {
     reply: undefined,
     buttonReply: `Please wait at least ${CLEANUP_MINUTES} minutes before pressing the same button again.`,
     deletionEvent: false
@@ -100,6 +101,7 @@ export class PingMessageBuilder {
   readonly #cleanupPressedMapsJob: Readonly<Job> = scheduleJob('0 */1 * * * *', () => {
     this.#cleanUpPressedMaps();
   });
+  readonly #scheduledJobs: Readonly<Job>[];
   #ping: Ping;
   #job: Readonly<Job> | undefined = undefined;
 
@@ -107,31 +109,47 @@ export class PingMessageBuilder {
     interaction: ChatInputCommandInteraction,
     ping: Ping,
     pingDate: Readonly<Date>,
-    channel: TextChannel
+    channel: TextChannel,
+    scheduleJobs: Readonly<Job>[],
+    messageBuilderType: string
   ) {
-    this.#counter = PingMessageBuilder.#staticCounter++;
+    if (
+      messageBuilderType !== PingForPingMeMessageBuilder.messageBuilderTypeForPingMe &&
+      messageBuilderType !== PingForPingMeMessageBuilder.messageBuilderTypeForPingList
+    )
+      throw new Error('Wrong messageBuilderType.');
+
+    this.#counter = PingForPingMeMessageBuilder.#staticCounter++;
     this.#interaction = interaction;
     this.#ping = ping;
     this.#pingDate = pingDate;
     this.#channel = channel;
+    this.#scheduledJobs = scheduleJobs;
 
-    const { messageBuilderType } = PingMessageBuilder;
     this.#row = new ActionRowBuilder<MessageActionRowComponentBuilder>().addComponents(
       new ButtonBuilder()
-        .setCustomId(getCustomId(PING_ME_AS_WELL_BUTTON_BASE_CUSTOM_ID, messageBuilderType, this.#counter))
+        .setCustomId(getCustomId(PING_ME_AS_WELL_BUTTON_FOR_PING_ME_BASE_CUSTOM_ID, messageBuilderType, this.#counter))
         .setLabel('Ping me as well!')
         .setStyle(ButtonStyle.Primary),
       new ButtonBuilder()
-        .setCustomId(getCustomId(REMOVE_ME_FROM_PING_BUTTON_BASE_CUSTOM_ID, messageBuilderType, this.#counter))
+        .setCustomId(
+          getCustomId(REMOVE_ME_FROM_PING_BUTTON_FOR_PING_ME_BASE_CUSTOM_ID, messageBuilderType, this.#counter)
+        )
         .setLabel('Remove me from ping')
         .setStyle(ButtonStyle.Secondary),
       new ButtonBuilder()
-        .setCustomId(getCustomId(DELETE_PING_BUTTON_BASE_CUSTOM_ID, messageBuilderType, this.#counter))
+        .setCustomId(getCustomId(DELETE_PING_BUTTON_FOR_PING_ME_BASE_CUSTOM_ID, messageBuilderType, this.#counter))
         .setLabel('Delete ping')
         .setStyle(ButtonStyle.Danger)
     );
   }
 
+  public get ping(): Ping {
+    return this.#ping;
+  }
+  public get row(): ReadonlyActionRowBuilderMessageActionRowComponentBuilder {
+    return this.#row;
+  }
   public get counter(): number {
     return this.#counter;
   }
@@ -144,9 +162,17 @@ export class PingMessageBuilder {
 
   public registerPing(
     pingsDataBase: Readonly<PingsDatabase>
-  ): PingMessageBuilderTransformFunctionReturnType | undefined {
+  ): PingForPingMeMessageBuilderTransformFunctionReturnType | undefined {
     if (this.#isCriticalTimeLeftOrIsPassed()) return undefined;
     if (this.#job !== undefined) return undefined;
+
+    const sceduledJob = this.#scheduledJobs.find(
+      (scheduledJob_) => scheduledJob_.nextInvocation()?.toString() === this.#pingDate.toString()
+    );
+    if (sceduledJob !== undefined) {
+      this.#job = sceduledJob;
+      return this.#transformFunction();
+    }
 
     this.#job = this.#schedulePing(pingsDataBase);
     pingsDataBase.insert(this.#ping);
@@ -154,15 +180,16 @@ export class PingMessageBuilder {
     return this.#transformFunction();
   }
 
-  public addUserId(pingsDataBase: Readonly<PingsDatabase>, userId: string): PingMessageBuilderReplies {
-    const emptyPingMessageBuilderReplies = PingMessageBuilder.#emptyPingMessageBuilderReplies;
+  public addUserId(pingsDataBase: Readonly<PingsDatabase>, userId: string): PingForPingMeMessageBuilderReplies {
+    const emptyPingMessageBuilderReplies = PingForPingMeMessageBuilder.#emptyPingMessageBuilderReplies;
 
     if (this.#isCriticalTimeLeftOrIsPassed()) return emptyPingMessageBuilderReplies;
     if (this.#job === undefined) return emptyPingMessageBuilderReplies;
     if (this.#ping.userId === userId) {
       if (this.#ping.userIdRemoved === null || !this.#ping.userIdRemoved) return emptyPingMessageBuilderReplies;
 
-      if (this.#pressedPingMeAsWell.has(userId)) return PingMessageBuilder.#pressedButtonPingMessageBuilderReplies;
+      if (this.#pressedPingMeAsWell.has(userId))
+        return PingForPingMeMessageBuilder.#pressedButtonPingMessageBuilderReplies;
 
       this.#updatePing(pingsDataBase, undefined, false);
       this.#pressedPingMeAsWell.set(userId, Date.now());
@@ -173,7 +200,8 @@ export class PingMessageBuilder {
       };
     }
 
-    if (this.#pressedPingMeAsWell.has(userId)) return PingMessageBuilder.#pressedButtonPingMessageBuilderReplies;
+    if (this.#pressedPingMeAsWell.has(userId))
+      return PingForPingMeMessageBuilder.#pressedButtonPingMessageBuilderReplies;
 
     const { userIds } = this.#ping;
     const newUserIds: string[] = [userId];
@@ -192,8 +220,8 @@ export class PingMessageBuilder {
     };
   }
 
-  public removeUserId(pingsDataBase: Readonly<PingsDatabase>, userId: string): PingMessageBuilderReplies {
-    const emptyPingMessageBuilderReplies = PingMessageBuilder.#emptyPingMessageBuilderReplies;
+  public removeUserId(pingsDataBase: Readonly<PingsDatabase>, userId: string): PingForPingMeMessageBuilderReplies {
+    const emptyPingMessageBuilderReplies = PingForPingMeMessageBuilder.#emptyPingMessageBuilderReplies;
 
     if (this.#isCriticalTimeLeftOrIsPassed()) return emptyPingMessageBuilderReplies;
     if (this.#job === undefined) return emptyPingMessageBuilderReplies;
@@ -211,7 +239,8 @@ export class PingMessageBuilder {
       return emptyPingMessageBuilderReplies;
     }
     if (this.#ping.userId === userId) {
-      if (this.#pressedRemoveMeFromPing.has(userId)) return PingMessageBuilder.#pressedButtonPingMessageBuilderReplies;
+      if (this.#pressedRemoveMeFromPing.has(userId))
+        return PingForPingMeMessageBuilder.#pressedButtonPingMessageBuilderReplies;
 
       this.#updatePing(pingsDataBase, undefined, true);
       this.#pressedRemoveMeFromPing.set(userId, Date.now());
@@ -222,7 +251,8 @@ export class PingMessageBuilder {
       };
     }
 
-    if (this.#pressedRemoveMeFromPing.has(userId)) return PingMessageBuilder.#pressedButtonPingMessageBuilderReplies;
+    if (this.#pressedRemoveMeFromPing.has(userId))
+      return PingForPingMeMessageBuilder.#pressedButtonPingMessageBuilderReplies;
 
     const userIdIndex = userIds.findIndex((userId_) => userId_ === userId);
     if (userIdIndex === -1) return emptyPingMessageBuilderReplies;
@@ -242,8 +272,8 @@ export class PingMessageBuilder {
     };
   }
 
-  public deletePing(pingsDataBase: Readonly<PingsDatabase>): PingMessageBuilderReplies {
-    const emptyPingMessageBuilderReplies = PingMessageBuilder.#emptyPingMessageBuilderReplies;
+  public deletePing(pingsDataBase: Readonly<PingsDatabase>): PingForPingMeMessageBuilderReplies {
+    const emptyPingMessageBuilderReplies = PingForPingMeMessageBuilder.#emptyPingMessageBuilderReplies;
 
     if (this.#isCriticalTimeLeftOrIsPassed()) return emptyPingMessageBuilderReplies;
     if (this.#job === undefined) return emptyPingMessageBuilderReplies;
@@ -263,14 +293,21 @@ export class PingMessageBuilder {
   #schedulePing(pingsDataBase: Readonly<PingsDatabase>): Readonly<Job> {
     const pingedContent = getContent(this.#ping, ContentType.Pinged);
 
-    return scheduleJob(this.#pingDate, async () => {
+    const scheduledJob = scheduleJob(this.#pingDate, async () => {
       try {
         await this.#channel.send(pingedContent);
         pingsDataBase.delete(this.#ping);
+        const scheduledJobIndex = this.#scheduledJobs.findIndex(
+          (scheduledJob_) => scheduledJob_.name === scheduledJob.name
+        );
+        if (scheduledJobIndex !== -1) this.#scheduledJobs.splice(scheduledJobIndex, 1);
       } catch (error) {
         console.log(`Error at a scheduled job --> ${error instanceof Error ? error.message : String(error)}`);
       }
     });
+
+    this.#scheduledJobs.push(scheduledJob);
+    return scheduledJob;
   }
 
   #updatePing(
@@ -298,8 +335,8 @@ export class PingMessageBuilder {
     if (newUserIdRemoved !== undefined) pingsDataBase.updateUserIdRemoved(this.#ping);
   }
 
-  #deletePing(pingsDataBase: Readonly<PingsDatabase>): PingMessageBuilderReplies {
-    if (this.#job === undefined) return PingMessageBuilder.#emptyPingMessageBuilderReplies;
+  #deletePing(pingsDataBase: Readonly<PingsDatabase>): PingForPingMeMessageBuilderReplies {
+    if (this.#job === undefined) return PingForPingMeMessageBuilder.#emptyPingMessageBuilderReplies;
 
     this.#job.cancel();
     pingsDataBase.delete(this.#ping);
@@ -314,7 +351,7 @@ export class PingMessageBuilder {
     };
   }
 
-  #transformFunction(): PingMessageBuilderTransformFunctionReturnType {
+  #transformFunction(): PingForPingMeMessageBuilderTransformFunctionReturnType {
     return {
       content: getContent(this.#ping, ContentType.PingRegistered),
       components: [this.#row]

@@ -38,6 +38,14 @@ export const CONTEXT_MENU_COMMAND_NAMES = {
   chatGptExplain: 'ChatGPT Explain'
 } as const;
 
+export const PING_LIST = {
+  type: {
+    own: 'own',
+    every: 'every'
+  },
+  timezone: 'timezone'
+} as const;
+
 const emote: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
   .setName(COMMAND_NAMES.emote)
   .setDescription('Get an emote')
@@ -223,6 +231,19 @@ const chatGptExplain: ReadonlyContextMenuCommandBuilder = new ContextMenuCommand
   .setType(ApplicationCommandType.Message)
   .setContexts(InteractionContextType.Guild, InteractionContextType.PrivateChannel);
 
+const pingList: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
+  .setName(COMMAND_NAMES.pingList)
+  .setDescription('Ping list')
+  .addStringOption((option: ReadonlySlashCommandStringOption) =>
+    option
+      .setName('type')
+      .setDescription('Show either only own pings or every ping')
+      .addChoices({ name: 'Own', value: PING_LIST.type.own }, { name: 'Every', value: PING_LIST.type.every })
+  )
+  .addStringOption((option: ReadonlySlashCommandStringOption) =>
+    option.setName(PING_LIST.timezone).setDescription('The timezone to display the ping date in').setAutocomplete(true)
+  );
+
 export const commands: readonly (
   | Readonly<RESTPostAPIChatInputApplicationCommandsJSONBody>
   | Readonly<RESTPostAPIContextMenuApplicationCommandsJSONBody>
@@ -241,7 +262,8 @@ export const commands: readonly (
     findTheEmoji.toJSON(),
     pingMe.toJSON(),
     poe2.toJSON(),
-    settings.toJSON()
+    settings.toJSON(),
+    pingList.toJSON()
   ],
   ...[chatGptExplain.toJSON()]
 ];

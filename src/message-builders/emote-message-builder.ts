@@ -20,8 +20,10 @@ import type {
   EmoteMessageBuilderTransformFunctionReturnType,
   ReadonlyActionRowBuilderMessageActionRowComponentBuilder
 } from '../types.ts';
-import { BaseMessageBuilder, getCustomId, DELETE_BUTTON_BASE_CUSTOM_ID } from './base.ts';
+import { BaseMessageBuilder, getCustomId } from './base.ts';
 import { Platform } from '../enums.ts';
+
+export const DELETE_EMOTE_BUTTON_BASE_CUSTOM_ID = 'deleteEmoteButton';
 
 export class EmoteMessageBuilder extends BaseMessageBuilder<AssetInfo, EmoteMessageBuilderTransformFunctionReturnType> {
   public static readonly messageBuilderType = 'Emote';
@@ -88,7 +90,9 @@ export class EmoteMessageBuilder extends BaseMessageBuilder<AssetInfo, EmoteMess
     if (isAddedEmoteDeleteMode) {
       this.#extraRow = new ActionRowBuilder<MessageActionRowComponentBuilder>().addComponents(
         new ButtonBuilder()
-          .setCustomId(getCustomId(DELETE_BUTTON_BASE_CUSTOM_ID, EmoteMessageBuilder.messageBuilderType, this.counter))
+          .setCustomId(
+            getCustomId(DELETE_EMOTE_BUTTON_BASE_CUSTOM_ID, EmoteMessageBuilder.messageBuilderType, this.counter)
+          )
           .setLabel('Delete')
           .setStyle(ButtonStyle.Danger)
       );

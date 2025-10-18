@@ -5,6 +5,7 @@ import {
   getBttvApiUrlFromBroadcasterName,
   getFfzApiUrlFromBroadcasterName
 } from '../utils/interaction-handlers/get-api-url.ts';
+import { PingForPingListMessageBuilder } from '../message-builders/ping-for-ping-list-message-builder.ts';
 import { TwitchClipMessageBuilder } from '../message-builders/twitch-clip-message-builder.ts';
 import { EmoteMessageBuilder } from '../message-builders/emote-message-builder.ts';
 import {
@@ -33,6 +34,7 @@ import { User } from '../user.js';
 export function modalSubmitHandler(
   twitchClipMessageBuilders: readonly Readonly<TwitchClipMessageBuilder>[],
   emoteMessageBuilders: readonly Readonly<EmoteMessageBuilder>[],
+  pingForPingListMessageBuilders: readonly Readonly<PingForPingListMessageBuilder>[],
   guild: Readonly<Guild> | undefined,
   broadcasterNameAndPersonalEmoteSetsDatabase: Readonly<BroadcasterNameAndPersonalEmoteSetsDatabase>,
   usersDatabase: Readonly<UsersDatabase>,
@@ -193,17 +195,24 @@ export function modalSubmitHandler(
       const messageBuilders = (():
         | readonly Readonly<TwitchClipMessageBuilder>[]
         | readonly Readonly<EmoteMessageBuilder>[]
+        | readonly Readonly<PingForPingListMessageBuilder>[]
         | undefined => {
         if (messageBuilderType === TwitchClipMessageBuilder.messageBuilderType) return twitchClipMessageBuilders;
         else if (messageBuilderType === EmoteMessageBuilder.messageBuilderType) return emoteMessageBuilders;
+        else if (messageBuilderType === PingForPingListMessageBuilder.messageBuilderType)
+          return pingForPingListMessageBuilders;
         return undefined;
       })();
       if (messageBuilders === undefined) return;
 
       const counter = getCounterFromCustomId(customId);
       const messageBuilderIndex = messageBuilders.findIndex(
-        (messageBuilder: Readonly<TwitchClipMessageBuilder> | Readonly<EmoteMessageBuilder>) =>
-          messageBuilder.counter === counter
+        (
+          messageBuilder:
+            | Readonly<TwitchClipMessageBuilder>
+            | Readonly<EmoteMessageBuilder>
+            | Readonly<PingForPingListMessageBuilder>
+        ) => messageBuilder.counter === counter
       );
       if (messageBuilderIndex === -1) return;
 
@@ -217,19 +226,27 @@ export function modalSubmitHandler(
       const jumpToTextInputValue = interaction.fields
         .getTextInputValue(getCustomId(JUMP_TO_TEXT_INPUT_BASE_CUSTOM_ID, messageBuilderType, messageBuilder.counter))
         .trim();
-      const jumpToIdentifierTextInputValue = interaction.fields
-        .getTextInputValue(
-          getCustomId(JUMP_TO_IDENTIFIER_INPUT_BASE_CUSTOM_ID, messageBuilderType, messageBuilder.counter)
-        )
-        .trim();
 
-      if (jumpToTextInputValue !== '' && jumpToIdentifierTextInputValue !== '') {
+      let jumpToIdentifierTextInputValue: string | undefined = undefined;
+      try {
+        jumpToIdentifierTextInputValue = interaction.fields
+          .getTextInputValue(
+            getCustomId(JUMP_TO_IDENTIFIER_INPUT_BASE_CUSTOM_ID, messageBuilderType, messageBuilder.counter)
+          )
+          .trim();
+      } catch {}
+
+      if (
+        jumpToTextInputValue !== '' &&
+        jumpToIdentifierTextInputValue !== undefined &&
+        jumpToIdentifierTextInputValue !== ''
+      ) {
         //can't set both
         await defer;
         return;
       }
 
-      if (jumpToIdentifierTextInputValue !== '') {
+      if (jumpToIdentifierTextInputValue !== undefined && jumpToIdentifierTextInputValue !== '') {
         const reply = messageBuilder.jumpToIdentifer(jumpToIdentifierTextInputValue);
         await defer;
 

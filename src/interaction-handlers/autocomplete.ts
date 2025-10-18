@@ -1,5 +1,6 @@
 import type { Index } from 'meilisearch';
 import type { AutocompleteInteraction, ApplicationCommandOptionChoiceData } from 'discord.js';
+import timezones, { type TimeZone } from 'timezones-list';
 
 import { platformStrings, platformToString, stringToPlatform } from '../utils/platform-to-string.ts';
 import { booleanToString, stringToBoolean } from '../utils/boolean-to-string.ts';
@@ -8,6 +9,7 @@ import { getShortestUniqueSubstrings } from '../command-handlers/shortest-unique
 import type { TwitchClip, ReadonlyHit, ReadonlyApplicationCommandOptionChoiceDataString, AssetInfo } from '../types.ts';
 import type { EmoteMatcher } from '../emote-matcher.ts';
 import { Platform } from '../enums.ts';
+import { COMMAND_NAMES } from '../commands.ts';
 
 const MAX_OPTIONS_LENGTH = 10; //THE MAXIMUM YOU CAN SET HERE IS 25
 
@@ -48,7 +50,7 @@ export function autocompleteHandler(
       const focusedOptionName = focusedOption.name;
       const focusedOptionValue = focusedOption.value;
 
-      if (interactionCommandName === 'emote') {
+      if (interactionCommandName === COMMAND_NAMES.emote) {
         if (focusedOptionName === 'name') {
           const matches =
             emoteMatcher.matchSingleArray(
@@ -83,7 +85,7 @@ export function autocompleteHandler(
 
           await interaction.respond(options);
         }
-      } else if (interactionCommandName === 'emotelist') {
+      } else if (interactionCommandName === COMMAND_NAMES.emoteList) {
         if (focusedOptionName === 'query') {
           const platform = getOptionValue(interaction, 'platform', stringToPlatform);
           const animated = getOptionValue(interaction, 'animated', stringToBoolean);
@@ -160,7 +162,7 @@ export function autocompleteHandler(
 
           await interaction.respond(options);
         }
-      } else if (interactionCommandName === 'clip') {
+      } else if (interactionCommandName === COMMAND_NAMES.clip) {
         if (
           twitchClipsMeiliSearchIndex === undefined ||
           uniqueCreatorNames === undefined ||
@@ -241,7 +243,7 @@ export function autocompleteHandler(
             options.slice(0, MAX_OPTIONS_LENGTH) as readonly ApplicationCommandOptionChoiceData<string>[]
           );
         }
-      } else if (interactionCommandName === 'shortestuniquesubstrings') {
+      } else if (interactionCommandName === COMMAND_NAMES.shortestUniqueSubstrings) {
         if (focusedOptionName === 'emotes') {
           const focusedOptionValueSplit: readonly string[] = focusedOptionValue.split(/\s+/);
           const focusedOptionValueLast = focusedOptionValueSplit.at(-1) ?? '';
@@ -276,6 +278,26 @@ export function autocompleteHandler(
 
           if (options.some((option: ReadonlyApplicationCommandOptionChoiceDataString) => option.name.length > 100))
             return;
+
+          await interaction.respond(
+            options.slice(0, MAX_OPTIONS_LENGTH) as readonly ApplicationCommandOptionChoiceData<string>[]
+          );
+        }
+      } else if (interactionCommandName === COMMAND_NAMES.pingList) {
+        if (focusedOptionName === 'timezone') {
+          //const timezones = Intl.supportedValuesOf('timeZone').filter(timezone => timezone.includes(focusedOptionValue.trim()));
+          const timezones_ = timezones.default.filter((timezone: Readonly<TimeZone>) =>
+            timezone.name.toLowerCase().includes(focusedOptionValue.trim().toLowerCase())
+          );
+
+          const options: readonly ApplicationCommandOptionChoiceData<string>[] = timezones_.map(
+            (timezone: Readonly<TimeZone>) => {
+              return {
+                name: timezone.name,
+                value: timezone.utc
+              };
+            }
+          );
 
           await interaction.respond(
             options.slice(0, MAX_OPTIONS_LENGTH) as readonly ApplicationCommandOptionChoiceData<string>[]

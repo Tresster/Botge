@@ -1,3 +1,4 @@
+import type { Job } from 'node-schedule';
 import { Events, type ChatInputCommandInteraction, type Client } from 'discord.js';
 import { joinVoiceChannel } from '@discordjs/voice';
 
@@ -8,6 +9,7 @@ import { addEmoteHandlerSevenTVNotInSet } from './command-handlers/add-emote.ts'
 import { findTheEmojiHandler } from './command-handlers/find-the-emoji.ts';
 import { translateHandler } from './command-handlers/translate.ts';
 import { transientHandler } from './command-handlers/transient.ts';
+import { pingListHandler } from './command-handlers/ping-list.ts';
 import { settingsHandler } from './command-handlers/settings.ts';
 import { chatgptHandler } from './command-handlers/openai.ts';
 import { geminiHandler } from './command-handlers/gemini.ts';
@@ -28,7 +30,8 @@ import { modalSubmitHandler } from './interaction-handlers/modal-submit.ts';
 import { buttonHandler } from './interaction-handlers/button.ts';
 import type { TwitchClipMessageBuilder } from './message-builders/twitch-clip-message-builder.ts';
 import type { EmoteMessageBuilder } from './message-builders/emote-message-builder.ts';
-import type { PingMessageBuilder } from './message-builders/ping-message-builder.ts';
+import type { PingForPingListMessageBuilder } from './message-builders/ping-for-ping-list-message-builder.ts';
+import type { PingForPingMeMessageBuilder } from './message-builders/ping-for-ping-me-message-builder.ts';
 import { messageCreateHandler } from './message-create-handlers/message-create-handler.ts';
 import type { ReadonlyGoogleGenAI, ReadonlyOpenAI, ReadonlyTranslator } from './types.ts';
 import type { TwitchClipsMeiliSearch } from './twitch-clips-meili-search.ts';
@@ -55,12 +58,14 @@ export class Bot {
   readonly #users: Readonly<User>[];
   readonly #twitchClipMessageBuilders: TwitchClipMessageBuilder[] = [];
   readonly #emoteMessageBuilders: EmoteMessageBuilder[] = [];
-  readonly #pingMessageBuilders: PingMessageBuilder[] = [];
+  readonly #pingForPingMeMessageBuilders: PingForPingMeMessageBuilder[] = [];
+  readonly #pingForPingListMessageBuilders: PingForPingListMessageBuilder[] = [];
   readonly #twitchClipsMeiliSearch: Readonly<TwitchClipsMeiliSearch> | undefined;
   readonly #commandHandlers: Map<
     string,
     (interaction: ChatInputCommandInteraction, guild: Readonly<Guild>) => Promise<void>
   >;
+  readonly #scheduledJobs: Readonly<Job>[] = [];
 
   public constructor(
     client: Client,
@@ -106,8 +111,15 @@ export class Bot {
       [COMMAND_NAMES.translate, translateHandler(this.#translator)],
       [COMMAND_NAMES.transient, transientHandler()],
       [COMMAND_NAMES.findTheEmoji, findTheEmojiHandler()],
-      [COMMAND_NAMES.pingMe, pingMeHandler(this.#pingsDatabase, this.#pingMessageBuilders, this.#client)],
-      [COMMAND_NAMES.poe2, steamHandler('2694490')]
+      [
+        COMMAND_NAMES.pingMe,
+        pingMeHandler(this.#pingsDatabase, this.#pingForPingMeMessageBuilders, this.#client, this.#scheduledJobs)
+      ],
+      [COMMAND_NAMES.poe2, steamHandler('2694490')],
+      [
+        COMMAND_NAMES.pingList,
+        pingListHandler(this.#pingsDatabase, this.#pingForPingListMessageBuilders, this.#client, this.#scheduledJobs)
+      ]
     ]);
   }
 
@@ -131,6 +143,9 @@ export class Bot {
   }
   public get broadcasterNameAndPersonalEmoteSetsDatabase(): Readonly<BroadcasterNameAndPersonalEmoteSetsDatabase> {
     return this.#broadcasterNameAndPersonalEmoteSetsDatabase;
+  }
+  public get scheduledJobs(): Readonly<Job>[] {
+    return this.#scheduledJobs;
   }
 
   public registerHandlers(): void {
@@ -244,6 +259,7 @@ export class Bot {
         void modalSubmitHandler(
           this.#twitchClipMessageBuilders,
           this.#emoteMessageBuilders,
+          this.#pingForPingListMessageBuilders,
           guild,
           this.#broadcasterNameAndPersonalEmoteSetsDatabase,
           this.#usersDatabase,
@@ -279,7 +295,8 @@ export class Bot {
         const emoteMessageBuilder = await buttonHandler(
           this.#twitchClipMessageBuilders,
           this.#emoteMessageBuilders,
-          this.#pingMessageBuilders,
+          this.#pingForPingMeMessageBuilders,
+          this.#pingForPingListMessageBuilders,
           guild,
           user_,
           this.#addedEmotesDatabase,
@@ -322,6 +339,7 @@ export class Bot {
 
     this.#cleanupMessageBuilders(this.#twitchClipMessageBuilders, timeNow);
     this.#cleanupMessageBuilders(this.#emoteMessageBuilders, timeNow);
+    this.#cleanupMessageBuilders(this.#pingForPingListMessageBuilders, timeNow);
     this.#cleanupPingMessageBuilders(timeNow);
   }
 
@@ -329,7 +347,10 @@ export class Bot {
     await this.#client.login(discordToken);
   }
 
-  #cleanupMessageBuilders(messageBuilders: (TwitchClipMessageBuilder | EmoteMessageBuilder)[], timeNow: number): void {
+  #cleanupMessageBuilders(
+    messageBuilders: (TwitchClipMessageBuilder | EmoteMessageBuilder | PingForPingListMessageBuilder)[],
+    timeNow: number
+  ): void {
     for (const [index, messageBuilder] of messageBuilders.entries()) {
       const difference = timeNow - messageBuilder.interaction.createdAt.getTime();
 
@@ -342,12 +363,12 @@ export class Bot {
   }
 
   #cleanupPingMessageBuilders(timeNow: number): void {
-    for (const [index, pingMessageBuilder] of this.#pingMessageBuilders.entries()) {
+    for (const [index, pingMessageBuilder] of this.#pingForPingMeMessageBuilders.entries()) {
       const difference = timeNow - pingMessageBuilder.interaction.createdAt.getTime();
 
       if (difference > CLEANUP_MINUTES * 60000) {
         pingMessageBuilder.cleanupPressedMapsJob.cancel();
-        this.#pingMessageBuilders.splice(index, 1);
+        this.#pingForPingMeMessageBuilders.splice(index, 1);
         this.#cleanupPingMessageBuilders(timeNow);
         return;
       }

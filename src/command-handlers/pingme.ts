@@ -1,10 +1,11 @@
 import type { PermissionsBitField, Client, ChatInputCommandInteraction, TextChannel } from 'discord.js';
 
-import { PingMessageBuilder } from '../message-builders/ping-message-builder.ts';
+import { PingForPingMeMessageBuilder } from '../message-builders/ping-for-ping-me-message-builder.ts';
 import { getOptionValue } from '../utils/get-option-value.ts';
 import type { PingsDatabase } from '../api/ping-database.ts';
 import type { Guild } from '../guild.ts';
 import type { Ping } from '../types.ts';
+import type { Job } from 'node-schedule';
 
 export function daysAndhoursAndMinutesToMiliseconds(days: number, hours: number, minutes: number): number {
   return ((days * 24 + hours) * 60 + minutes) * 60 * 1000;
@@ -12,8 +13,9 @@ export function daysAndhoursAndMinutesToMiliseconds(days: number, hours: number,
 
 export function pingMeHandler(
   pingsDataBase: Readonly<PingsDatabase>,
-  pingMessageBuilders: Readonly<PingMessageBuilder>[],
-  client: Client
+  pingMessageBuilders: Readonly<PingForPingMeMessageBuilder>[],
+  client: Client,
+  scheduledJobs: Readonly<Job>[]
 ) {
   return async (interaction: ChatInputCommandInteraction, guild: Readonly<Guild>): Promise<void> => {
     const defer = interaction.deferReply();
@@ -107,7 +109,14 @@ export function pingMeHandler(
         userIdRemoved: null
       };
 
-      const pingMessageBuilder = new PingMessageBuilder(interaction, ping, pingDate, channel);
+      const pingMessageBuilder = new PingForPingMeMessageBuilder(
+        interaction,
+        ping,
+        pingDate,
+        channel,
+        scheduledJobs,
+        PingForPingMeMessageBuilder.messageBuilderTypeForPingMe
+      );
       const reply = pingMessageBuilder.registerPing(pingsDataBase);
       await defer;
 

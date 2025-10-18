@@ -17,14 +17,15 @@ import type {
   ReadonlyActionRowBuilderMessageActionRowComponentBuilder,
   ReadonlyModalBuilder,
   TwitchClip,
-  TwitchClipMessageBuilderTransformFunctionReturnType
+  TwitchClipMessageBuilderTransformFunctionReturnType,
+  Ping,
+  PingForPingListMessageBuilderTransformFunctionReturnType
 } from '../types.ts';
 
 export const PREVIOUS_BUTTON_BASE_CUSTOM_ID = 'previousButton';
 export const NEXT_BUTTON_BASE_CUSTOM_ID = 'nextButton';
 export const FIRST_BUTTON_BASE_CUSTOM_ID = 'firstButton';
 export const LAST_BUTTON_BASE_CUSTOM_ID = 'lastButton';
-export const DELETE_BUTTON_BASE_CUSTOM_ID = 'deleteButton';
 export const JUMP_TO_BUTTON_BASE_CUSTOM_ID = 'jumpToButton';
 export const JUMP_TO_MODAL_BASE_CUSTOM_ID = 'jumpToModal';
 export const JUMP_TO_TEXT_INPUT_BASE_CUSTOM_ID = 'jumpToTextInput';
@@ -53,10 +54,11 @@ function randomNumberInInterval(min: number, max: number): number {
 }
 
 export class BaseMessageBuilder<
-  ArrayItemType = AssetInfo | TwitchClip,
+  ArrayItemType = AssetInfo | TwitchClip | Ping,
   TransformFunctionReturnType =
     | TwitchClipMessageBuilderTransformFunctionReturnType
     | EmoteMessageBuilderTransformFunctionReturnType
+    | PingForPingListMessageBuilderTransformFunctionReturnType
 > {
   readonly #counter: number;
   readonly #interaction: ChatInputCommandInteraction | ButtonInteraction;
@@ -64,7 +66,7 @@ export class BaseMessageBuilder<
   readonly #row: ReadonlyActionRowBuilderMessageActionRowComponentBuilder;
   readonly #modal: ReadonlyModalBuilder;
   readonly #transformFunction: (arrayItem: ArrayItemType) => TransformFunctionReturnType;
-  readonly #getIdentifierFunction: (arrayItem: ArrayItemType) => string;
+  readonly #getIdentifierFunction: ((arrayItem: ArrayItemType) => string) | undefined;
   #currentIndex: number;
 
   protected constructor(
@@ -73,8 +75,8 @@ export class BaseMessageBuilder<
     interaction: ChatInputCommandInteraction | ButtonInteraction,
     array: readonly ArrayItemType[],
     transformFunction: (arrayItem: ArrayItemType) => TransformFunctionReturnType,
-    getIdentifierFunction: (arrayItem: ArrayItemType) => string,
-    identifierName: string
+    getIdentifierFunction: ((arrayItem: ArrayItemType) => string) | undefined,
+    identifierName: string | undefined
   ) {
     this.#counter = counter;
     this.#interaction = interaction;
@@ -120,7 +122,11 @@ export class BaseMessageBuilder<
               .setStyle(TextInputStyle.Short)
               .setPlaceholder('random')
               .setRequired(false)
-          ),
+          )
+      );
+
+    if (identifierName !== undefined && getIdentifierFunction !== undefined) {
+      this.#modal.addLabelComponents(
         new LabelBuilder()
           .setLabel(`Jump to ${identifierName}`)
           .setDescription(`The ${identifierName} of the item you wish to jump to.`)
@@ -132,6 +138,7 @@ export class BaseMessageBuilder<
               .setRequired(false)
           )
       );
+    }
   }
 
   public get counter(): number {
@@ -203,7 +210,7 @@ export class BaseMessageBuilder<
   }
 
   public jumpToIdentifer(jumpTo: string): TransformFunctionReturnType | undefined {
-    if (jumpTo === '') return undefined;
+    if (jumpTo === '' || this.#getIdentifierFunction === undefined) return undefined;
 
     for (const [index, arrayItem] of this.#array.entries()) {
       const identifier = this.#getIdentifierFunction(arrayItem);

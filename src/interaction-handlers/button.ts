@@ -11,11 +11,12 @@ import {
 } from 'discord.js';
 
 import {
-  PingMessageBuilder,
-  PING_ME_AS_WELL_BUTTON_BASE_CUSTOM_ID,
-  REMOVE_ME_FROM_PING_BUTTON_BASE_CUSTOM_ID,
-  DELETE_PING_BUTTON_BASE_CUSTOM_ID
-} from '../message-builders/ping-message-builder.ts';
+  PingForPingMeMessageBuilder,
+  PING_ME_AS_WELL_BUTTON_FOR_PING_ME_BASE_CUSTOM_ID,
+  REMOVE_ME_FROM_PING_BUTTON_FOR_PING_ME_BASE_CUSTOM_ID,
+  DELETE_PING_BUTTON_FOR_PING_ME_BASE_CUSTOM_ID
+} from '../message-builders/ping-for-ping-me-message-builder.ts';
+import { PingForPingListMessageBuilder } from '../message-builders/ping-for-ping-list-message-builder.ts';
 import {
   getBaseCustomIdFromCustomId,
   getMessageBuilderTypeFromCustomId,
@@ -24,11 +25,10 @@ import {
   LAST_BUTTON_BASE_CUSTOM_ID,
   PREVIOUS_BUTTON_BASE_CUSTOM_ID,
   NEXT_BUTTON_BASE_CUSTOM_ID,
-  JUMP_TO_BUTTON_BASE_CUSTOM_ID,
-  DELETE_BUTTON_BASE_CUSTOM_ID
+  JUMP_TO_BUTTON_BASE_CUSTOM_ID
 } from '../message-builders/base.ts';
 import { TwitchClipMessageBuilder } from '../message-builders/twitch-clip-message-builder.ts';
-import { EmoteMessageBuilder } from '../message-builders/emote-message-builder.ts';
+import { EmoteMessageBuilder, DELETE_EMOTE_BUTTON_BASE_CUSTOM_ID } from '../message-builders/emote-message-builder.ts';
 import { getSevenTvEmoteSetLinkFromSevenTvApiUlr } from '../utils/interaction-handlers/get-api-url.ts';
 import { booleanToAllowed } from '../utils/boolean-to-string.ts';
 import type { PermittedRoleIdsDatabase } from '../api/permitted-role-ids-database.ts';
@@ -45,7 +45,8 @@ import {
 import type {
   TwitchClipMessageBuilderTransformFunctionReturnType,
   EmoteMessageBuilderTransformFunctionReturnType,
-  PingMessageBuilderReplies
+  PingForPingMeMessageBuilderReplies,
+  PingForPingListMessageBuilderTransformFunctionReturnType
 } from '../types.ts';
 import { Platform } from '../enums.ts';
 import type { Guild } from '../guild.ts';
@@ -65,7 +66,8 @@ const MAX_ROLE_SELECT_MENU_VALUES = 10;
 export function buttonHandler(
   twitchClipMessageBuilders: readonly Readonly<TwitchClipMessageBuilder>[],
   emoteMessageBuilders: readonly Readonly<EmoteMessageBuilder>[],
-  pingMessageBuilders: Readonly<PingMessageBuilder>[],
+  pingForPingMeMessageBuilders: Readonly<PingForPingMeMessageBuilder>[],
+  pingForPingListMessageBuilders: Readonly<PingForPingListMessageBuilder>[],
   guild: Readonly<Guild> | undefined,
   user: Readonly<User> | undefined,
   addedEmotesDatabase: Readonly<AddedEmotesDatabase>,
@@ -207,24 +209,47 @@ export function buttonHandler(
       const baseCustomId = getBaseCustomIdFromCustomId(customId);
       const interactionUserId = interaction.user.id;
 
-      if (messageBuilderType === PingMessageBuilder.messageBuilderType) {
-        const pingMessageBuilderIndex = pingMessageBuilders.findIndex(
-          (pingMessageBuilder_) => pingMessageBuilder_.counter === counter
+      if (
+        messageBuilderType === PingForPingMeMessageBuilder.messageBuilderTypeForPingMe ||
+        messageBuilderType === PingForPingMeMessageBuilder.messageBuilderTypeForPingList
+      ) {
+        const messageBuilders = (():
+          | readonly Readonly<PingForPingMeMessageBuilder>[]
+          | readonly Readonly<PingForPingListMessageBuilder>[]
+          | undefined => {
+          if (messageBuilderType === PingForPingMeMessageBuilder.messageBuilderTypeForPingMe)
+            return pingForPingMeMessageBuilders;
+          else return pingForPingListMessageBuilders;
+        })();
+        if (messageBuilders === undefined) {
+          await interaction.deferUpdate();
+          return undefined;
+        }
+        const messageBuilderIndex = messageBuilders.findIndex(
+          (messageBuilder_: Readonly<PingForPingMeMessageBuilder> | Readonly<PingForPingListMessageBuilder>) =>
+            messageBuilder_.counter === counter
         );
-        if (pingMessageBuilderIndex === -1) {
+        if (messageBuilderIndex === -1) {
           await interaction.deferUpdate();
           return undefined;
         }
 
-        const pingMessageBuilder = pingMessageBuilders[pingMessageBuilderIndex];
+        const pingMessageBuilder =
+          messageBuilderType === PingForPingMeMessageBuilder.messageBuilderTypeForPingMe
+            ? pingForPingMeMessageBuilders[messageBuilderIndex]
+            : pingForPingListMessageBuilders[messageBuilderIndex].currentPingForPingMeMessageBuilder;
+        if (pingMessageBuilder === undefined) {
+          await interaction.deferUpdate();
+          return undefined;
+        }
         const pingMessageBuilderInteraction = pingMessageBuilder.interaction;
 
-        let pingMessageBuilderReplies: PingMessageBuilderReplies | undefined = undefined;
-        if (baseCustomId === PING_ME_AS_WELL_BUTTON_BASE_CUSTOM_ID) {
+        let pingMessageBuilderReplies: PingForPingMeMessageBuilderReplies | undefined = undefined;
+        if (baseCustomId === PING_ME_AS_WELL_BUTTON_FOR_PING_ME_BASE_CUSTOM_ID) {
           pingMessageBuilderReplies = pingMessageBuilder.addUserId(pingsDataBase, interactionUserId);
-        } else if (baseCustomId === REMOVE_ME_FROM_PING_BUTTON_BASE_CUSTOM_ID) {
+        } else if (baseCustomId === REMOVE_ME_FROM_PING_BUTTON_FOR_PING_ME_BASE_CUSTOM_ID) {
           pingMessageBuilderReplies = pingMessageBuilder.removeUserId(pingsDataBase, interactionUserId);
-        } else if (baseCustomId === DELETE_PING_BUTTON_BASE_CUSTOM_ID) {
+        } else if (baseCustomId === DELETE_PING_BUTTON_FOR_PING_ME_BASE_CUSTOM_ID) {
           if (pingMessageBuilderInteraction.user.id !== interactionUserId) {
             await interaction.deferUpdate();
             return undefined;
@@ -248,7 +273,8 @@ export function buttonHandler(
 
           if (deletionEvent) {
             pingMessageBuilder.cleanupPressedMapsJob.cancel();
-            pingMessageBuilders.splice(pingMessageBuilderIndex, 1);
+            if (messageBuilderType === PingForPingMeMessageBuilder.messageBuilderTypeForPingMe)
+              pingForPingMeMessageBuilders.splice(messageBuilderIndex, 1);
           }
         }
         return undefined;
@@ -257,9 +283,12 @@ export function buttonHandler(
       const messageBuilders = (():
         | readonly Readonly<TwitchClipMessageBuilder>[]
         | readonly Readonly<EmoteMessageBuilder>[]
+        | readonly Readonly<PingForPingListMessageBuilder>[]
         | undefined => {
         if (messageBuilderType === TwitchClipMessageBuilder.messageBuilderType) return twitchClipMessageBuilders;
         else if (messageBuilderType === EmoteMessageBuilder.messageBuilderType) return emoteMessageBuilders;
+        else if (messageBuilderType === PingForPingListMessageBuilder.messageBuilderType)
+          return pingForPingListMessageBuilders;
         return undefined;
       })();
       if (messageBuilders === undefined) {
@@ -268,8 +297,12 @@ export function buttonHandler(
       }
 
       const messageBuilderIndex = messageBuilders.findIndex(
-        (messageBuilder_: Readonly<TwitchClipMessageBuilder> | Readonly<EmoteMessageBuilder>) =>
-          messageBuilder_.counter === counter
+        (
+          messageBuilder_:
+            | Readonly<TwitchClipMessageBuilder>
+            | Readonly<EmoteMessageBuilder>
+            | Readonly<PingForPingListMessageBuilder>
+        ) => messageBuilder_.counter === counter
       );
       if (messageBuilderIndex === -1) {
         await interaction.deferUpdate();
@@ -286,6 +319,7 @@ export function buttonHandler(
       let reply:
         | EmoteMessageBuilderTransformFunctionReturnType
         | TwitchClipMessageBuilderTransformFunctionReturnType
+        | PingForPingListMessageBuilderTransformFunctionReturnType
         | undefined = undefined;
       if (baseCustomId === PREVIOUS_BUTTON_BASE_CUSTOM_ID) {
         reply = messageBuilder.previous();
@@ -299,7 +333,7 @@ export function buttonHandler(
         //can't defer, when showing modal
         await interaction.showModal(messageBuilder.modal);
         return undefined;
-      } else if (baseCustomId === DELETE_BUTTON_BASE_CUSTOM_ID) {
+      } else if (baseCustomId === DELETE_EMOTE_BUTTON_BASE_CUSTOM_ID) {
         const messageBuilder_ = messageBuilder as Readonly<EmoteMessageBuilder>;
         const { currentAddedEmote } = messageBuilder_;
 

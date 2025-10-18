@@ -239,8 +239,7 @@ export function emotesHandler(cachedUrl: Readonly<CachedUrl>) {
     })();
 
     try {
-      const emoteNotFoundReply =
-        interaction !== undefined && interaction.guildId === GUILD_ID_CUTEDOG ? 'jij' : 'emote not found';
+      const emoteNotFoundReply = interaction?.guildId === GUILD_ID_CUTEDOG ? 'jij' : 'emote not found';
 
       const emotes = ((): readonly string[] => {
         if (interaction !== undefined)

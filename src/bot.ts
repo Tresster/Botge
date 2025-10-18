@@ -1,4 +1,4 @@
-import { type ChatInputCommandInteraction, Events, type Client } from 'discord.js';
+import { Events, type ChatInputCommandInteraction, type Client } from 'discord.js';
 import { joinVoiceChannel } from '@discordjs/voice';
 
 import { newGuild } from './utils/constructors/new-guild.ts';

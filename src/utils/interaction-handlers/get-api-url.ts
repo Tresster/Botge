@@ -26,7 +26,7 @@ export async function getSevenTvApiUrlFromSevenTvEmoteSetLink(sevenTvEmoteSetLin
   const emoteSetId = sevenTvEmoteSetLink.split('/').at(-1);
   const sevenTvApiUrl = `https://7tv.io/v3/emote-sets/${emoteSetId}`;
 
-  const fetched = await fetchAndJson(sevenTvApiUrl, undefined, true).catch(() => undefined);
+  const fetched = await fetchAndJson(sevenTvApiUrl).catch(() => undefined);
   if (fetched === undefined) return { type: 'error', message: 'Unknown error at getting 7TV emote set.' };
 
   const sevenTVEmotes = fetched as SevenTVEmotes;
@@ -53,7 +53,7 @@ export async function getBttvApiUrlFromBroadcasterName(
   const userId = users.data[0].id;
   const apiUrl = `https://api.betterttv.net/3/cached/users/twitch/${userId}`;
 
-  const fetched = await fetchAndJson(apiUrl, undefined, true).catch(() => undefined);
+  const fetched = await fetchAndJson(apiUrl).catch(() => undefined);
   if (fetched === undefined) return { type: 'error', message: 'Unknown error at getting BTTV emote set.' };
 
   const bttvPersonalEmotes = fetched as BTTVPersonalEmotes;
@@ -65,7 +65,7 @@ export async function getBttvApiUrlFromBroadcasterName(
 export async function getFfzApiUrlFromBroadcasterName(broadcasterName: string): Promise<ApiUrlMessage> {
   const apiUrl = `https://api.frankerfacez.com/v1/room/${broadcasterName.toLowerCase()}`;
 
-  const fetched = await fetchAndJson(apiUrl, undefined, true).catch(() => undefined);
+  const fetched = await fetchAndJson(apiUrl).catch(() => undefined);
   if (fetched === undefined) return { type: 'error', message: 'Unknown error at getting FFZ emote set.' };
 
   const ffzPersonalEmotes = fetched as FFZPersonalEmotes;

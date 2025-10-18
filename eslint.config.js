@@ -11,8 +11,8 @@ export default defineConfig(
       }
     }
   },
-  configs.strictTypeChecked,
   configs.stylisticTypeChecked,
+  configs.strictTypeChecked,
   {
     rules: {
       '@typescript-eslint/class-methods-use-this': 'warn',

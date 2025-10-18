@@ -33,6 +33,7 @@ import { messageCreateHandler } from './message-create-handlers/message-create-h
 import type { ReadonlyGoogleGenAI, ReadonlyOpenAI, ReadonlyTranslator } from './types.ts';
 import type { TwitchClipsMeiliSearch } from './twitch-clips-meili-search.ts';
 import { GENERAL_CHANNEL_ID_CUTEDOG } from './guilds.ts';
+import { COMMAND_NAMES } from './commands.ts';
 import type { Guild } from './guild.ts';
 import type { User } from './user.ts';
 
@@ -95,18 +96,18 @@ export class Bot {
       string,
       (interaction: ChatInputCommandInteraction, guild: Readonly<Guild>) => Promise<void>
     >([
-      ['emote', emoteHandler()],
-      ['emotelist', emoteListHandler(this.#emoteMessageBuilders)],
-      ['gemini', geminiHandler(this.#googleGenAI)],
-      ['clip', clipHandler(this.#twitchClipMessageBuilders)],
-      ['addemote', addEmoteHandlerSevenTVNotInSet(this.#addedEmotesDatabase)],
-      ['shortestuniquesubstrings', shortestuniquesubstringsHandler(this.#emoteMessageBuilders)],
-      ['chatgpt', chatgptHandler(this.#openai)],
-      ['translate', translateHandler(this.#translator)],
-      ['transient', transientHandler()],
-      ['findtheemoji', findTheEmojiHandler()],
-      ['pingme', pingMeHandler(this.#pingsDatabase, this.#pingMessageBuilders, this.#client)],
-      ['poe2', steamHandler('2694490')]
+      [COMMAND_NAMES.emote, emoteHandler()],
+      [COMMAND_NAMES.emoteList, emoteListHandler(this.#emoteMessageBuilders)],
+      [COMMAND_NAMES.gemini, geminiHandler(this.#googleGenAI)],
+      [COMMAND_NAMES.clip, clipHandler(this.#twitchClipMessageBuilders)],
+      [COMMAND_NAMES.addEmote, addEmoteHandlerSevenTVNotInSet(this.#addedEmotesDatabase)],
+      [COMMAND_NAMES.shortestUniqueSubstrings, shortestuniquesubstringsHandler(this.#emoteMessageBuilders)],
+      [COMMAND_NAMES.chatGpt, chatgptHandler(this.#openai)],
+      [COMMAND_NAMES.translate, translateHandler(this.#translator)],
+      [COMMAND_NAMES.transient, transientHandler()],
+      [COMMAND_NAMES.findTheEmoji, findTheEmojiHandler()],
+      [COMMAND_NAMES.pingMe, pingMeHandler(this.#pingsDatabase, this.#pingMessageBuilders, this.#client)],
+      [COMMAND_NAMES.poe2, steamHandler('2694490')]
     ]);
   }
 
@@ -295,14 +296,14 @@ export class Bot {
         return;
       }
 
-      if (interaction.commandName === 'settings') {
+      if (interaction.commandName === COMMAND_NAMES.settings) {
         void settingsHandler()(interaction, guild);
         return;
       }
 
       if (guild === undefined) return;
 
-      if (interaction.commandName === 'emotes') {
+      if (interaction.commandName === COMMAND_NAMES.emotes) {
         void emotesHandler(this.#cachedUrl)(guild, interaction);
         return;
       }

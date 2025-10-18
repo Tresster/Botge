@@ -16,8 +16,30 @@ import type {
   ReadonlySlashCommandIntegerOption
 } from './types.ts';
 
+export const COMMAND_NAMES = {
+  emote: 'emote',
+  emotes: 'emotes',
+  emoteList: 'emotelist',
+  clip: 'clip',
+  addEmote: 'addemote',
+  chatGpt: 'chatgpt',
+  gemini: 'gemini',
+  translate: 'translate',
+  shortestUniqueSubstrings: 'shortestuniquesubstrings',
+  transient: 'transient',
+  findTheEmoji: 'findtheemoji',
+  pingMe: 'pingme',
+  poe2: 'poe2',
+  settings: 'settings',
+  pingList: 'pinglist'
+} as const;
+
+export const CONTEXT_MENU_COMMAND_NAMES = {
+  chatGptExplain: 'ChatGPT Explain'
+} as const;
+
 const emote: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
-  .setName('emote')
+  .setName(COMMAND_NAMES.emote)
   .setDescription('Get an emote')
   .addStringOption((option: ReadonlySlashCommandStringOption) =>
     option.setName('name').setDescription("The emote's name").setRequired(true).setAutocomplete(true)
@@ -28,7 +50,7 @@ const emote: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
   .setContexts(InteractionContextType.Guild, InteractionContextType.PrivateChannel);
 
 const emotes: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
-  .setName('emotes')
+  .setName(COMMAND_NAMES.emotes)
   .setDescription(
     'Overlay and/or create a horizontal stack of emotes/Discord built-in emojis/external images (png/gif)'
   )
@@ -51,7 +73,7 @@ const emotes: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
   .setContexts(InteractionContextType.Guild, InteractionContextType.PrivateChannel);
 
 const emotelist: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
-  .setName('emotelist')
+  .setName(COMMAND_NAMES.emoteList)
   .setDescription('Browse through the queried emotes')
   .addStringOption((option: ReadonlySlashCommandStringOption) =>
     option.setName('query').setDescription('The query').setAutocomplete(true)
@@ -71,7 +93,7 @@ const emotelist: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilde
   .setContexts(InteractionContextType.Guild, InteractionContextType.PrivateChannel);
 
 const clip: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
-  .setName('clip')
+  .setName(COMMAND_NAMES.clip)
   .setDescription('Get a single clip or browse through multiple clips')
   .addStringOption((option: ReadonlySlashCommandStringOption) =>
     option.setName('title').setDescription('The clip title').setAutocomplete(true)
@@ -91,7 +113,7 @@ const clip: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
   .setContexts(InteractionContextType.Guild, InteractionContextType.PrivateChannel);
 
 const addemote: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
-  .setName('addemote')
+  .setName(COMMAND_NAMES.addEmote)
   .setDescription('Add an emote')
   .addStringOption((option: ReadonlySlashCommandStringOption) =>
     option.setName('url').setDescription('The 7TV link of the emote').setRequired(true)
@@ -101,7 +123,7 @@ const addemote: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder
   );
 
 const chatgpt: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
-  .setName('chatgpt')
+  .setName(COMMAND_NAMES.chatGpt)
   .setDescription('Send a prompt to ChatGPT and receive a response')
   .addStringOption((option: ReadonlySlashCommandStringOption) =>
     option.setName('prompt').setDescription('The prompt to send').setRequired(true)
@@ -118,21 +140,21 @@ const chatgpt: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder(
   .setContexts(InteractionContextType.Guild, InteractionContextType.PrivateChannel);
 
 const gemini: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
-  .setName('gemini')
+  .setName(COMMAND_NAMES.gemini)
   .setDescription('Send a prompt to Gemini and receive a response')
   .addStringOption((option: ReadonlySlashCommandStringOption) =>
     option.setName('prompt').setDescription('The prompt to send').setRequired(true)
   );
 
 const translate: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
-  .setName('translate')
+  .setName(COMMAND_NAMES.translate)
   .setDescription('Translate text to english. Auto-detects language')
   .addStringOption((option: ReadonlySlashCommandStringOption) =>
     option.setName('text').setDescription('The text to translate').setRequired(true)
   );
 
 const shortestuniquesubstrings: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
-  .setName('shortestuniquesubstrings')
+  .setName(COMMAND_NAMES.shortestUniqueSubstrings)
   .setDescription('Get the shortest unique substring(s) of emote(s)')
   .addStringOption((option: ReadonlySlashCommandStringOption) =>
     option.setName('emotes').setDescription('Emote name(s). Separated by space').setRequired(true).setAutocomplete(true)
@@ -149,7 +171,7 @@ const shortestuniquesubstrings: ReadonlySlashCommandOptionsOnlyBuilder = new Sla
   .setContexts(InteractionContextType.Guild, InteractionContextType.PrivateChannel);
 
 const transient: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
-  .setName('transient')
+  .setName(COMMAND_NAMES.transient)
   .setDescription('Send a message and delete it after the specified time')
   .addStringOption((option: ReadonlySlashCommandStringOption) =>
     option.setName('text').setDescription('The text to send')
@@ -162,7 +184,7 @@ const transient: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilde
   );
 
 const findTheEmoji: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
-  .setName('findtheemoji')
+  .setName(COMMAND_NAMES.findTheEmoji)
   .setDescription('Generates an emoji grid, where each emoji is in a spoiler tag')
   .addStringOption((option: ReadonlySlashCommandStringOption) =>
     option.setName('emoji').setDescription('The emoji to find. Non-animated server emoji')
@@ -172,7 +194,7 @@ const findTheEmoji: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBui
   );
 
 const pingMe: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
-  .setName('pingme')
+  .setName(COMMAND_NAMES.pingMe)
   .setDescription('Pings you after the specified time')
   .addIntegerOption((option: ReadonlySlashCommandIntegerOption) =>
     option.setName('days').setDescription('The days to wait before pinging you')
@@ -188,16 +210,16 @@ const pingMe: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
   );
 
 const poe2: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
-  .setName('poe2')
+  .setName(COMMAND_NAMES.poe2)
   .setDescription('Get POE2 steam stats');
 
 const settings: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
-  .setName('settings')
+  .setName(COMMAND_NAMES.settings)
   .setDescription('Settings for configuring the behavior of the bot in this server. Permission required')
   .setContexts(InteractionContextType.Guild, InteractionContextType.PrivateChannel);
 
 const chatGptExplain: ReadonlyContextMenuCommandBuilder = new ContextMenuCommandBuilder()
-  .setName('ChatGPT Explain')
+  .setName(CONTEXT_MENU_COMMAND_NAMES.chatGptExplain)
   .setType(ApplicationCommandType.Message)
   .setContexts(InteractionContextType.Guild, InteractionContextType.PrivateChannel);
 
@@ -205,19 +227,21 @@ export const commands: readonly (
   | Readonly<RESTPostAPIChatInputApplicationCommandsJSONBody>
   | Readonly<RESTPostAPIContextMenuApplicationCommandsJSONBody>
 )[] = [
-  emote.toJSON(),
-  emotes.toJSON(),
-  emotelist.toJSON(),
-  clip.toJSON(),
-  addemote.toJSON(),
-  chatgpt.toJSON(),
-  gemini.toJSON(),
-  translate.toJSON(),
-  shortestuniquesubstrings.toJSON(),
-  transient.toJSON(),
-  findTheEmoji.toJSON(),
-  pingMe.toJSON(),
-  poe2.toJSON(),
-  settings.toJSON(),
-  chatGptExplain.toJSON()
+  ...[
+    emote.toJSON(),
+    emotes.toJSON(),
+    emotelist.toJSON(),
+    clip.toJSON(),
+    addemote.toJSON(),
+    chatgpt.toJSON(),
+    gemini.toJSON(),
+    translate.toJSON(),
+    shortestuniquesubstrings.toJSON(),
+    transient.toJSON(),
+    findTheEmoji.toJSON(),
+    pingMe.toJSON(),
+    poe2.toJSON(),
+    settings.toJSON()
+  ],
+  ...[chatGptExplain.toJSON()]
 ];

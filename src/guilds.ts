@@ -1,2 +1,4 @@
+/** @format */
+
 export const GUILD_ID_CUTEDOG = '251211223012474880';
 export const GENERAL_CHANNEL_ID_CUTEDOG = '251211223012474883';

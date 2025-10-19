@@ -1,3 +1,5 @@
+/** @format */
+
 import { MessageFlags, type ModalSubmitInteraction } from 'discord.js';
 
 import {

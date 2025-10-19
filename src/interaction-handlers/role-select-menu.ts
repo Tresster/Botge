@@ -1,3 +1,5 @@
+/** @format */
+
 import { MessageFlags, type RoleSelectMenuInteraction } from 'discord.js';
 import {
   SELECT_SETTINGS_PERMITTED_ROLES_ROLE_SELECT_MENU_CUSTOM_ID,

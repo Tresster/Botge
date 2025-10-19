@@ -1,3 +1,5 @@
+/** @format */
+
 import type { TwitchApi } from '../../api/twitch-api.ts';
 import type { BTTVPersonalEmotes, FFZPersonalEmotes, SevenTVEmotes } from '../../types.ts';
 import { fetchAndJson } from '../fetch-and-json.ts';

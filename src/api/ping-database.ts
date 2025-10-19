@@ -1,3 +1,5 @@
+/** @format */
+
 import Database from 'better-sqlite3';
 
 import type { Ping } from '../types.ts';

@@ -1,3 +1,5 @@
+/** @format */
+
 import { config } from 'dotenv';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { Md5 } from 'ts-md5';

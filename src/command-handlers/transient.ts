@@ -1,3 +1,5 @@
+/** @format */
+
 import { MessageFlags, type ChatInputCommandInteraction } from 'discord.js';
 import { setTimeout } from 'node:timers/promises';
 

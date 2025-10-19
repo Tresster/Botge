@@ -1,3 +1,5 @@
+/** @format */
+
 import { ensureDir, type Dirent } from 'fs-extra';
 import { readdir, rm } from 'node:fs/promises';
 import { scheduleJob } from 'node-schedule';

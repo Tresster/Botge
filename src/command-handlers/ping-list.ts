@@ -1,3 +1,5 @@
+/** @format */
+
 import type { Job } from 'node-schedule';
 import type { ChatInputCommandInteraction, Client, TextChannel } from 'discord.js';
 

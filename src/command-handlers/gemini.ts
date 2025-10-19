@@ -1,3 +1,5 @@
+/** @format */
+
 import { HarmBlockThreshold, HarmCategory } from '@google/genai';
 import type { ChatInputCommandInteraction } from 'discord.js';
 

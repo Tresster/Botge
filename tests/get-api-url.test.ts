@@ -1,3 +1,5 @@
+/** @format */
+
 import { config } from 'dotenv';
 import { describe, expect, test } from 'vitest';
 

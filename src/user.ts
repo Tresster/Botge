@@ -1,3 +1,5 @@
+/** @format */
+
 import type { Guild } from './guild.ts';
 
 export class User {

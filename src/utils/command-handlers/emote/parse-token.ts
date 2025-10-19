@@ -1,3 +1,5 @@
+/** @format */
+
 import type { Twemoji } from '@twemoji/api';
 const twemoji = await (async (): Promise<Twemoji> => {
   const twemojiModule = await import('@twemoji/api');

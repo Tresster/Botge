@@ -1,3 +1,5 @@
+/** @format */
+
 import type { Job } from 'node-schedule';
 import { Events, type ChatInputCommandInteraction, type Client } from 'discord.js';
 import { joinVoiceChannel } from '@discordjs/voice';

@@ -1,3 +1,5 @@
+/** @format */
+
 import type { Index } from 'meilisearch';
 
 import { getClipsWithGameNameFromBroadcasterName, getClipsWithGameNameFromIds } from './utils/api/twitch-api-utils.ts';

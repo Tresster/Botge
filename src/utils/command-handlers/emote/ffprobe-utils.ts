@@ -1,3 +1,5 @@
+/** @format */
+
 import { exec, type ExecException } from 'child_process';
 
 import { DEFAULTDURATION } from './download-asset.ts';

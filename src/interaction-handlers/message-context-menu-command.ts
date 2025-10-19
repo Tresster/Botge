@@ -1,3 +1,5 @@
+/** @format */
+
 import type { MessageContextMenuCommandInteraction } from 'discord.js';
 
 import type {

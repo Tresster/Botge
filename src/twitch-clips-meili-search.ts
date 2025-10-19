@@ -1,3 +1,5 @@
+/** @format */
+
 import type { MeiliSearch, Index } from 'meilisearch';
 
 const INDEX_NAME = 'twitchClips';

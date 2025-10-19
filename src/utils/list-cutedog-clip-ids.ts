@@ -1,3 +1,5 @@
+/** @format */
+
 import type { ReadonlyRegExpExecArray } from '../types.ts';
 
 const url =

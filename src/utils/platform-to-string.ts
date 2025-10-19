@@ -1,3 +1,5 @@
+/** @format */
+
 import { Platform } from '../enums.ts';
 
 const SEVEN_IN_SET_STRING = '7TV';

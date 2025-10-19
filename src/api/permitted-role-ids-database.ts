@@ -1,3 +1,5 @@
+/** @format */
+
 import Database from 'better-sqlite3';
 const TABLE_NAME = 'settingsPermittedRoleIds';
 

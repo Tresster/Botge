@@ -1,3 +1,5 @@
+/** @format */
+
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 
 import { TwitchApi } from '../../api/twitch-api.ts';

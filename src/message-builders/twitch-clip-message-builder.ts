@@ -1,3 +1,5 @@
+/** @format */
+
 import { EmbedBuilder, type ChatInputCommandInteraction } from 'discord.js';
 
 import type {

@@ -1,3 +1,5 @@
+/** @format */
+
 import { EmoteMatcher } from './emote-matcher.ts';
 import type {
   SevenTVEmoteNotInSet,

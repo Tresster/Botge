@@ -1,3 +1,5 @@
+/** @format */
+
 export enum Platform {
   sevenInSet = 0,
   sevenNotInSet = 1,

@@ -1,3 +1,5 @@
+/** @format */
+
 import type { ChatInputCommandInteraction } from 'discord.js';
 import { describe, expect, test } from 'vitest';
 

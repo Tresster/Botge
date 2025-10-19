@@ -1,3 +1,5 @@
+/** @format */
+
 import type { Platform } from './enums.ts';
 import type {
   SevenTVEmoteNotInSet,

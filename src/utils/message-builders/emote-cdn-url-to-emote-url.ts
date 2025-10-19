@@ -1,3 +1,5 @@
+/** @format */
+
 import { EMOTE_ENDPOINTS, CDN_ENDPOINTS } from '../../paths-and-endpoints.ts';
 import type { AssetInfo } from '../../types.ts';
 import { Platform } from '../../enums.ts';

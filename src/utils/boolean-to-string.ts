@@ -1,3 +1,5 @@
+/** @format */
+
 const TRUE_STRING = 'Yes';
 const FALSE_STRING = 'No';
 

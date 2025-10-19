@@ -1,3 +1,5 @@
+/** @format */
+
 import type { Index } from 'meilisearch';
 import type { AutocompleteInteraction, ApplicationCommandOptionChoiceData } from 'discord.js';
 import timezones, { type TimeZone } from 'timezones-list';

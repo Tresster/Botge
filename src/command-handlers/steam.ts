@@ -1,3 +1,5 @@
+/** @format */
+
 import fetch, { type Response } from 'node-fetch';
 import type { ChatInputCommandInteraction } from 'discord.js';
 

@@ -1,3 +1,5 @@
+/** @format */
+
 import type { ChatInputCommandInteraction, GuildMember, Role } from 'discord.js';
 
 import { sevenTVUrlToSevenTVNotInSet, SPLITTER } from '../utils/command-handlers/platform-url-to-api-url.ts';

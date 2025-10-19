@@ -1,3 +1,5 @@
+/** @format */
+
 import type { PermissionsBitField, Client, ChatInputCommandInteraction, TextChannel } from 'discord.js';
 
 import { PingForPingMeMessageBuilder } from '../message-builders/ping-for-ping-me-message-builder.ts';

@@ -1,3 +1,5 @@
+# @format
+
 services:
   meilisearch:
     image: getmeili/meilisearch:v1.16

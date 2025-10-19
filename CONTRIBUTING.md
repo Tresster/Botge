@@ -1,3 +1,5 @@
+<!-- @format -->
+
 # RUN THESE BEFORE PR/PUSH
 
 ```text

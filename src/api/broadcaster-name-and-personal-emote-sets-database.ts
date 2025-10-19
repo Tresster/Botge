@@ -1,3 +1,5 @@
+/** @format */
+
 import Database from 'better-sqlite3';
 import { PersonalEmoteSets } from '../personal-emote-sets.ts';
 

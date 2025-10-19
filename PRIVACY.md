@@ -1,3 +1,5 @@
+<!-- @format -->
+
 # Privacy Policy
 
 ## Data Collection

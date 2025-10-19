@@ -1,3 +1,5 @@
+/** @format */
+
 import type { TwitchApi } from '../../api/twitch-api.ts';
 import type { ClientCredentialsGrantFlow, TwitchClip, TwitchClips } from '../../types.ts';
 import { TWITCH_API_ENDPOINTS } from '../../paths-and-endpoints.ts';

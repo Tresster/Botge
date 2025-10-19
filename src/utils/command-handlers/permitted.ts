@@ -1,3 +1,5 @@
+/** @format */
+
 import type { Role, GuildMember, Guild } from 'discord.js';
 
 export function administrator(memberRolesCache: readonly (readonly [string, Role])[]): boolean {

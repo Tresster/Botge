@@ -1,3 +1,5 @@
+/** @format */
+
 import type { OmitPartialGroupDMChannel, Message } from 'discord.js';
 
 import type { Guild } from '../guild.ts';

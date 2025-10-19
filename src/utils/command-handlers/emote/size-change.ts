@@ -1,3 +1,5 @@
+/** @format */
+
 import type { AssetInfo } from '../../../types.ts';
 import { Platform } from '../../../enums.ts';
 import { sevenTVNotInSetToAsset } from '../../emote-to-asset.ts';

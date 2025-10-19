@@ -1,3 +1,5 @@
+/** @format */
+
 import { CDN_ENDPOINTS } from '../../paths-and-endpoints.ts';
 import type { SevenTVEmoteNotInSet } from '../../types.ts';
 import { fetchAndJson } from '../fetch-and-json.ts';

@@ -1,3 +1,5 @@
+/** @format */
+
 import type { ChatInputCommandInteraction } from 'discord.js';
 
 import { getOptionValueWithoutUndefined } from '../utils/get-option-value.ts';

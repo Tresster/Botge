@@ -1,3 +1,5 @@
+/** @format */
+
 import { Platform } from './enums.ts';
 
 export const DATABASE_DIR = 'data';

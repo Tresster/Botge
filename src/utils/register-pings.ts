@@ -1,3 +1,5 @@
+/** @format */
+
 import scheduler, { type Job } from 'node-schedule';
 
 import type { Client, TextChannel } from 'discord.js';

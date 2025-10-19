@@ -1,3 +1,5 @@
+/** @format */
+
 import { spawn } from 'child_process';
 import { join } from 'path';
 import { ensureDirSync } from 'fs-extra';

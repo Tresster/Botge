@@ -1,3 +1,5 @@
+/** @format */
+
 import { EmbedBuilder, type ChatInputCommandInteraction, type ButtonInteraction } from 'discord.js';
 
 import { daysAndhoursAndMinutesToMiliseconds } from '../command-handlers/pingme.ts';

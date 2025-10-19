@@ -1,3 +1,5 @@
+/** @format */
+
 import { scheduleJob, type Job } from 'node-schedule';
 import {
   ButtonBuilder,

@@ -1,3 +1,5 @@
+/** @format */
+
 import { defineConfig } from 'eslint/config';
 import { configs } from 'typescript-eslint';
 

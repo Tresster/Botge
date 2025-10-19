@@ -1,3 +1,5 @@
+/** @format */
+
 import type { ChatInputCommandInteraction, GuildEmoji } from 'discord.js';
 
 import { getOptionValue } from '../utils/get-option-value.ts';

@@ -1,3 +1,5 @@
+/** @format */
+
 import { Guild } from '../../guild.ts';
 import type { PersonalEmoteSets } from '../../personal-emote-sets.ts';
 import { PersonalEmoteMatcherConstructor } from '../../emote-matcher-constructor.ts';

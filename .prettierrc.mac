@@ -4,5 +4,6 @@
   "singleQuote": true,
   "printWidth": 120,
   "endOfLine": "lf",
-  "quoteProps": "consistent"
+  "quoteProps": "consistent",
+  "requirePragma": true
 }

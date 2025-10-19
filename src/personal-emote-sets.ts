@@ -1,3 +1,5 @@
+/** @format */
+
 export class PersonalEmoteSets {
   readonly #sevenTv: string | null;
   readonly #bttv: string | null;

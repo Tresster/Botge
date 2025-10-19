@@ -1,6 +1,6 @@
 # RUN THESE BEFORE PR/PUSH
 
-```zsh
+```text
 npm install
 npm run prettier-format
 npm run lint

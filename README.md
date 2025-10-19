@@ -8,12 +8,7 @@
 ![GitHub issue custom search in repo help wanted](https://img.shields.io/github/issues-search/Tresster/Botge?query=label%3A%22help%20wanted%22&label=help%20wanted%20issues)
 ![GitHub issue custom search in repo good first issue](https://img.shields.io/github/issues-search/Tresster/Botge?query=label%3A%22good%20first%20issue%22&label=good%20first%20issues)
 
-<center>
-  <img src="assets/peepoCuteHalloween.png" alt="Botge Website Logo" width="18">
-  <a href="https://botge.gitbook.io/">Botge Website</a>
-  <img src="assets/peepoCuteHalloween.png" alt="Botge Website Logo" width="18">
-</center>
-<br>
+<img src="assets/peepoCuteHalloween.png" alt="Botge Website Logo" width="18"> [Botge Website](https://botge.gitbook.io/)
 
 Botge is a [Discord](https://discord.com) bot that provides functionalities inspired by the [Twitch](https://www.twitch.tv) chat experience to your server.  
 It offers seamless emote handling, Twitch clip searching, and other powerful features that enhance Discord interactions.  

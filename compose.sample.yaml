@@ -25,7 +25,7 @@ services:
   server:
     image: ghcr.io/tresster/botge:main
     # Comment image and uncomment build, and context for local compose.
-    # `docker compose up`
+    # `docker compose up --build`
     # build:
     #   context: .
     environment:

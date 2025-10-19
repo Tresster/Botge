@@ -22,5 +22,7 @@ compose*.yaml
 Dockerfile
 eslint.config.js
 !PRIVACY.md
+!SUPPORT.md
+!README.md
 !TERMS.md
 !LICENSE

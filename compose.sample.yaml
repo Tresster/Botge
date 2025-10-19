@@ -40,9 +40,6 @@ services:
       # open ai - optional
       #- OPENAI_API_KEY=
 
-      # google - optional
-      #- CREDENTIALS=
-
       # twitch - optional
       #- TWITCH_CLIENT_ID=
       #- TWITCH_SECRET=

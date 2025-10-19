@@ -61,7 +61,7 @@ export function chatgptHandler(openai: ReadonlyOpenAI | undefined) {
                 { role: 'user', content: prompt },
                 {
                   role: 'user',
-                  content: [{ type: 'input_image', image_url: image, detail: 'low' }]
+                  content: [{ type: 'input_image', image_url: image, detail: 'auto' }]
                 }
               ]
             : undefined;
@@ -71,7 +71,8 @@ export function chatgptHandler(openai: ReadonlyOpenAI | undefined) {
 
       //1 token is around 4 english characters
       const response = await openai.responses.create({
-        model: 'gpt-4.1',
+        model: 'gpt-5',
+        tools: [{ type: 'web_search', search_context_size: 'medium' }],
         input: input,
         max_output_tokens: 400,
         instructions: instructions ?? null,

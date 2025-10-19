@@ -1,4 +1,4 @@
-# <img src="assets/peepoCute.png" alt="Botge Logo" width="36"> Botge
+# <img src="assets/peepoCuteHalloween.png" alt="Botge Logo" width="36"> Botge
 
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/Tresster/Botge)
 ![GitHub last commit](https://img.shields.io/github/last-commit/Tresster/Botge)
@@ -8,9 +8,16 @@
 ![GitHub issue custom search in repo help wanted](https://img.shields.io/github/issues-search/Tresster/Botge?query=label%3A%22help%20wanted%22&label=help%20wanted%20issues)
 ![GitHub issue custom search in repo good first issue](https://img.shields.io/github/issues-search/Tresster/Botge?query=label%3A%22good%20first%20issue%22&label=good%20first%20issues)
 
-<img src="assets/peepoCute.png" alt="Botge Website Logo" width="18"> [Botge Website](https://botge.gitbook.io/)
+<center>
+  <img src="assets/peepoCuteHalloween.png" alt="Botge Website Logo" width="18">
+  <a href="https://botge.gitbook.io/">Botge Website</a>
+  <img src="assets/peepoCuteHalloween.png" alt="Botge Website Logo" width="18">
+</center>
+<br>
 
-Botge is a [Discord](https://discord.com) bot that provides functionalities inspired by the [Twitch](https://www.twitch.tv) chat experience to your server. It offers seamless emote handling, Twitch clip searching, and other powerful features that enhance Discord interactions. With built-in [DeepL Translation](https://www.deepl.com/en/products/translator), integration with [OpenAI's](https://openai.com) GPT models and [Google's Gemini](https://gemini.google.com) models, Botge makes conversations more dynamic, engaging, and intelligent.
+Botge is a [Discord](https://discord.com) bot that provides functionalities inspired by the [Twitch](https://www.twitch.tv) chat experience to your server.  
+It offers seamless emote handling, Twitch clip searching, and other powerful features that enhance Discord interactions.  
+With built-in [DeepL Translation](https://www.deepl.com/en/products/translator), integration with [OpenAI's](https://openai.com) GPT models and [Google's Gemini](https://gemini.google.com) models, Botge makes conversations more dynamic, engaging, and intelligent.
 
 ## Features
 
@@ -35,9 +42,9 @@ Further help in configuration is available on the [website](https://botge.gitboo
 
 ## Usage
 
-Add the bot by [link](https://discord.com/oauth2/authorize?client_id=1298983961992757328).\
-Usage of Botge is straightforward if you are familiar with Discord bot usage.
+Add the bot by [invitation link](https://discord.com/oauth2/authorize?client_id=1298983961992757328).
 
+Usage of Botge is straightforward if you are familiar with Discord bot usage.  
 Read about advanced usage on the [website](https://botge.gitbook.io/botge/getting-started/usage).
 
 ## Documentation

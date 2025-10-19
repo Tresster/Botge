@@ -4,6 +4,8 @@ FROM node:${NODE_VERSION}-alpine AS build
 
 WORKDIR /app
 
+COPY .npmrc .
+
 COPY package*.json .
 
 RUN apk add --no-cache build-base
@@ -29,6 +31,8 @@ LABEL org.opencontainers.image.title="Botge" \
       org.opencontainers.image.documentation="https://botge.gitbook.io/botge/documentation"
 
 WORKDIR /app
+
+COPY .npmrc .
 
 COPY package*.json .
 

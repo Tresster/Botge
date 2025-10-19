@@ -1,10 +1,15 @@
-ARG NODE_VERSION=24.1.0
+ARG NODE_VERSION=25.0.0
 
 FROM node:${NODE_VERSION}-alpine AS build
 
 WORKDIR /app
 
 COPY package*.json .
+
+RUN apk add --no-cache build-base
+
+ENV PYTHONUNBUFFERED=1
+RUN apk add --no-cache py3-pip
 
 RUN npm install
 
@@ -25,14 +30,19 @@ LABEL org.opencontainers.image.title="Botge" \
 
 WORKDIR /app
 
-RUN apk add --no-cache ffmpeg
-
 COPY package*.json .
+
+RUN apk add --no-cache build-base
+
+ENV PYTHONUNBUFFERED=1
+RUN apk add --no-cache py3-pip
+
+RUN apk add --no-cache ffmpeg
 
 RUN npm ci --omit=dev
 
 COPY --from=build /app/dist ./dist
-COPY --from=build /app/LICENSE /app/PRIVACY.md ./
+COPY --from=build /app/PRIVACY.md /app/TERMS.md /app/LICENSE ./
 
 USER node
 

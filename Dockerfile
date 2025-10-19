@@ -1,4 +1,4 @@
-ARG NODE_VERSION=25.0.0
+ARG NODE_VERSION=24.10.0
 
 FROM node:${NODE_VERSION}-alpine AS build
 
@@ -7,11 +7,6 @@ WORKDIR /app
 COPY .npmrc .
 
 COPY package*.json .
-
-RUN apk add --no-cache build-base
-
-ENV PYTHONUNBUFFERED=1
-RUN apk add --no-cache py3-pip
 
 RUN npm install
 
@@ -22,7 +17,7 @@ RUN npm run build
 FROM node:${NODE_VERSION}-alpine AS release
 
 LABEL org.opencontainers.image.title="Botge" \
-      org.opencontainers.image.version="2.2.0" \
+      org.opencontainers.image.version="2.3.0" \
       org.opencontainers.image.description="Search emotes, clips, use zero-width emotes and other such commands." \
       org.opencontainers.image.url="https://botge.gitbook.io" \
       org.opencontainers.image.source="https://github.com/Tresster/Botge" \
@@ -35,11 +30,6 @@ WORKDIR /app
 COPY .npmrc .
 
 COPY package*.json .
-
-RUN apk add --no-cache build-base
-
-ENV PYTHONUNBUFFERED=1
-RUN apk add --no-cache py3-pip
 
 RUN apk add --no-cache ffmpeg
 

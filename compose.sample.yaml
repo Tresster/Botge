@@ -1,12 +1,13 @@
 services:
   meilisearch:
-    image: getmeili/meilisearch:v1.14.0
+    image: getmeili/meilisearch:v1.16
     ports:
       - 7700:7700
     environment:
       - MEILI_MASTER_KEY=SAMPLEMASTERKEY
       - MEILI_NO_ANALYTICS=true
       - MEILI_EXPERIMENTAL_REDUCE_INDEXING_MEMORY_USAGE
+      - MEILI_EXPERIMENTAL_DUMPLESS_UPGRADE
     volumes:
       - ./meili_data:/meili_data
     healthcheck:
@@ -23,12 +24,13 @@ services:
 
   server:
     image: ghcr.io/tresster/botge:main
-    # use this and delete the image field above to build and run image locally
-    # `docker compose up --build`
+    # Comment image and uncomment build, and context for local compose.
+    # `docker compose up`
     # build:
-    # context: .
+    #   context: .
     environment:
       - NODE_ENV=production
+
       # discord
       - APP_ID=
       - DISCORD_TOKEN=

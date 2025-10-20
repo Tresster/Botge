@@ -1,6 +1,6 @@
 <!-- @format -->
 
-# RUN THESE BEFORE PR/PUSH
+# PRE-COMMIT
 
 ```text
 npm install

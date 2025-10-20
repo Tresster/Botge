@@ -1,15 +1,28 @@
 {
   "compilerOptions": {
-    "target": "esnext",
+    "strict": true,
+
     "module": "nodenext",
+    "target": "esnext",
     "sourceMap": false,
     "outDir": "dist",
-    "strict": true,
-    "exactOptionalPropertyTypes": true,
-    "noImplicitReturns": true,
-    "noPropertyAccessFromIndexSignature": true,
+
     "noUncheckedSideEffectImports": true,
-    "rewriteRelativeImportExtensions": true
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noUnusedParameters": false,
+    "noUnusedLocals": true,
+
+    "noPropertyAccessFromIndexSignature": true,
+    "noFallthroughCasesInSwitch": true,
+
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+
+    "rewriteRelativeImportExtensions": true,
+    "exactOptionalPropertyTypes": true,
+    "verbatimModuleSyntax": true,
+    "skipLibCheck": false
   },
   "include": ["src"]
 }

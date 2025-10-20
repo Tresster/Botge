@@ -6,5 +6,6 @@
 npm install
 npm run prettier-format
 npm run lint
-npm run test
+npm run build
+npm test
 ```

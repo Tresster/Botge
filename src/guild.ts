@@ -1,6 +1,6 @@
 /** @format */
 
-import type { Index } from 'meilisearch';
+import type { EnqueuedTaskPromise, Index } from 'meilisearch';
 
 import { getClipsWithGameNameFromBroadcasterName, getClipsWithGameNameFromIds } from './utils/api/twitch-api-utils.ts';
 import { listCutedogClipIds } from './utils/list-cutedog-clip-ids.ts';
@@ -119,6 +119,7 @@ export class Guild {
     this.#uniqueCreatorNames = [];
     this.#uniqueGameIds = [];
 
+    const updateDocumentsQueue: Readonly<EnqueuedTaskPromise>[] = [];
     let updated = 0;
 
     if (deleteOld !== undefined && deleteOld) await this.#twitchClipsMeiliSearchIndex.deleteAllDocuments().waitTask();
@@ -134,7 +135,7 @@ export class Guild {
           else return clip;
         });
 
-        await this.#twitchClipsMeiliSearchIndex.updateDocuments(clips).waitTask();
+        updateDocumentsQueue.push(this.#twitchClipsMeiliSearchIndex.updateDocuments(clips));
         updated += clips.length;
       }
     } else {
@@ -150,7 +151,7 @@ export class Guild {
         else return clip;
       });
 
-      await this.#twitchClipsMeiliSearchIndex.updateDocuments(clips).waitTask();
+      updateDocumentsQueue.push(this.#twitchClipsMeiliSearchIndex.updateDocuments(clips));
       updated += clips.length;
 
       for (let i = 0; i < 9 && cursor !== undefined; i++) {
@@ -166,11 +167,12 @@ export class Guild {
           else return clip;
         });
 
-        await this.#twitchClipsMeiliSearchIndex.updateDocuments(clips).waitTask();
+        updateDocumentsQueue.push(this.#twitchClipsMeiliSearchIndex.updateDocuments(clips));
         updated += clips.length;
       }
     }
 
+    await Promise.all(updateDocumentsQueue.map(async (updateDocuments) => updateDocuments.waitTask()));
     await this.refreshUniqueCreatorNamesAndGameIds();
     console.log(`Updated ${updated} clips.`);
   }

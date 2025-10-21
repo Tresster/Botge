@@ -6,10 +6,10 @@ import { configs } from 'typescript-eslint';
 export default defineConfig(
   {
     languageOptions: {
+      sourceType: 'module',
+      ecmaVersion: 'latest',
       parserOptions: {
-        projectService: true,
-        tsconfigRootDir: import.meta.dirname,
-        ecmaVersion: 'latest'
+        projectService: true
       }
     }
   },

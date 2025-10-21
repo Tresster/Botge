@@ -250,4 +250,3 @@ await updateCommands_;
 await Promise.all(refreshClipsOrRefreshUniqueCreatorNamesAndGameIds);
 await bot.start(DISCORD_TOKEN);
 await registerPings(bot.client, bot.pingsDatabase, bot.scheduledJobs);
-

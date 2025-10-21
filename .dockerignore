@@ -8,6 +8,7 @@
 assets
 data
 dist
+docs
 meili_data
 nginx/cache
 node_modules

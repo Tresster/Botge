@@ -2,4 +2,4 @@
 
 # Support
 
-[Discord server](https://discord.gg/zhwvZAXC)
+[Discord server](https://discord.gg/ZjGb7XTg9N)

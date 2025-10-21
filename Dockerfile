@@ -4,9 +4,7 @@ FROM node:${NODE_VERSION}-alpine AS build
 
 WORKDIR /app
 
-COPY .npmrc .
-
-COPY package*.json .
+COPY .npmrc package*.json ./
 
 RUN npm install
 
@@ -27,9 +25,7 @@ LABEL org.opencontainers.image.title="Botge" \
 
 WORKDIR /app
 
-COPY .npmrc .
-
-COPY package*.json .
+COPY .npmrc package*.json ./
 
 RUN apk add --no-cache ffmpeg
 

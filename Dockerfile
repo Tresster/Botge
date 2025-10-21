@@ -10,7 +10,7 @@ RUN npm install
 
 COPY . .
 
-RUN npm run build
+RUN npx tsc
 
 FROM node:${NODE_VERSION}-alpine AS release
 LABEL org.opencontainers.image.title="Botge" \
@@ -24,14 +24,13 @@ LABEL org.opencontainers.image.title="Botge" \
 
 WORKDIR /app
 
-COPY .npmrc package*.json ./
+COPY .github/CODEOWNERS .github/
+COPY .npmrc package*.json *.md LICENSE ./
 
 RUN apk add --no-cache ffmpeg
 RUN npm ci --omit=dev
 
 COPY --from=build /app/dist ./dist
-COPY --from=build /app/.github/CODEOWNERS ./.github/
-COPY --from=build /app/*.md  /app/LICENSE ./
 
 USER node
 

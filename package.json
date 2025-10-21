@@ -34,7 +34,6 @@
   "type": "module",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc",
     "lint": "eslint src --flag unstable_native_nodejs_ts_config",
     "prepare": "husky || true",
     "prettier-format": "prettier . --write",

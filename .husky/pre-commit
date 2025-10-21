@@ -3,4 +3,5 @@ git fetch
 npm install
 npm run prettier-format
 npm run lint
-npm run build
+
+docker build .

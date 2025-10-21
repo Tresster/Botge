@@ -10,8 +10,15 @@
 ![GitHub issue custom search in repo help wanted](https://img.shields.io/github/issues-search/Tresster/Botge?query=label%3A%22help%20wanted%22&label=help%20wanted%20issues)
 ![GitHub issue custom search in repo good first issue](https://img.shields.io/github/issues-search/Tresster/Botge?query=label%3A%22good%20first%20issue%22&label=good%20first%20issues)
 
-![Botge Website Logo](assets/peepoCuteHalloween1x.png) [Botge Website](https://botge.gitbook.io/)
+## Table of Contents
 
+- [Features](#features)
+- [Usage](#usage)
+- [Configuration](#configuration)
+- [Documentation](#documentation)
+- [License](#license)
+
+![Botge Website Logo](assets/peepoCuteHalloween1x.png) [Botge Website](https://botge.gitbook.io/)  
 Botge is a [Discord](https://discord.com) bot that provides functionalities inspired by the [Twitch](https://www.twitch.tv) chat experience to your server.  
 It offers seamless emote handling, Twitch clip searching, and other powerful features that enhance Discord interactions.  
 With built-in [DeepL Translation](https://www.deepl.com/en/products/translator), integration with [OpenAI's](https://openai.com) GPT models and [Google's Gemini](https://gemini.google.com) models, Botge makes conversations more dynamic, engaging, and intelligent.
@@ -31,18 +38,18 @@ With built-in [DeepL Translation](https://www.deepl.com/en/products/translator),
 - **Find the emoji**: Generates an x by x grid where each element is a random, non-animated server emoji hidden in a spoiler tag, with only a single occurrence of the specified emoji.
 - **Ping Me**: Pings you after a specified time, optionally with a message.
 
-## Configuration
-
-Configure the bot in the `/settings` command.
-
-Further help in configuration is available on the [website](https://botge.gitbook.io/botge/getting-started/configuration).
-
 ## Usage
 
 Add the bot by [invitation link](https://discord.com/oauth2/authorize?client_id=1298983961992757328).
 
 Usage of Botge is straightforward if you are familiar with Discord bot usage.  
 Read about advanced usage on the [website](https://botge.gitbook.io/botge/getting-started/usage).
+
+## Configuration
+
+Configure the bot in the `/settings` command.
+
+Further help in configuration is available on the [website](https://botge.gitbook.io/botge/getting-started/configuration).
 
 ## Documentation
 

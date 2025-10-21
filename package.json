@@ -35,7 +35,6 @@
   "main": "dist/index.js",
   "scripts": {
     "lint": "eslint src --flag unstable_native_nodejs_ts_config",
-    "prepare": "husky || true",
     "prettier-format": "prettier . --write",
     "test": "vitest tests",
     "tests-lint": "eslint tests",

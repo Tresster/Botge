@@ -32,7 +32,7 @@ RUN apk add --no-cache ffmpeg
 RUN npm ci --omit=dev
 
 COPY --from=build /app/dist ./dist
-COPY --from=build /app/PRIVACY.md /app/SUPPORT.md /app/README.md /app/TERMS.md  /app/LICENSE ./
+COPY --from=build /app/*.md  /app/LICENSE ./
 
 USER node
 

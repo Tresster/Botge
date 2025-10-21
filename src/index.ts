@@ -159,6 +159,7 @@ function closeFunction(): void {
     bot.pingsDatabase.close();
     bot.permittedRoleIdsDatabase.close();
     bot.broadcasterNameAndPersonalEmoteSetsDatabase.close();
+    bot.usersDatabase.close();
   } catch (error) {
     console.log(
       `Error at closeFunction - closing databases: ${error instanceof Error ? error.message : String(error)}`

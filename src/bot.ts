@@ -146,6 +146,9 @@ export class Bot {
   public get broadcasterNameAndPersonalEmoteSetsDatabase(): Readonly<BroadcasterNameAndPersonalEmoteSetsDatabase> {
     return this.#broadcasterNameAndPersonalEmoteSetsDatabase;
   }
+  public get usersDatabase(): Readonly<UsersDatabase> {
+    return this.#usersDatabase;
+  }
   public get scheduledJobs(): Readonly<Job>[] {
     return this.#scheduledJobs;
   }

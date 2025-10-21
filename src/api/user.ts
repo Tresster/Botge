@@ -35,6 +35,10 @@ export class UsersDatabase {
     return map;
   }
 
+  public close(): void {
+    this.#database.close();
+  }
+
   #createTable(): void {
     const createTable = this.#database.prepare(`
       CREATE TABLE IF NOT EXISTS ${TABLE_NAME} (

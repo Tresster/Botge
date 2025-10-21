@@ -1,6 +1,5 @@
 /** @format */
 
-import { config } from 'dotenv';
 import { describe, expect, test } from 'vitest';
 
 import {
@@ -11,7 +10,6 @@ import {
 
 import { newTwitchApi } from '../src/utils/constructors/new-twitch-api';
 
-config();
 const { TWITCH_CLIENT_ID, TWITCH_SECRET } = process.env;
 
 describe('Get API Url', () => {

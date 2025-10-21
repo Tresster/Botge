@@ -1,6 +1,5 @@
 /** @format */
 
-import { config } from 'dotenv';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { Md5 } from 'ts-md5';
 
@@ -8,7 +7,6 @@ import { REST, Routes } from 'discord.js';
 
 import { commands } from './commands.ts';
 
-config();
 const { APP_ID, DISCORD_TOKEN } = process.env;
 
 export async function updateCommands(lockFilePath: string): Promise<void> {

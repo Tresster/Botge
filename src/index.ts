@@ -7,7 +7,6 @@ import { GoogleGenAI } from '@google/genai';
 import { MeiliSearch } from 'meilisearch';
 import { Translator } from 'deepl-node';
 import { join } from 'node:path';
-import { config } from 'dotenv';
 import OpenAI from 'openai';
 import { Client, GatewayIntentBits } from 'discord.js';
 import { getVoiceConnections } from '@discordjs/voice';
@@ -31,7 +30,6 @@ import type { Guild } from './guild.ts';
 import { User } from './user.js';
 import { Bot } from './bot.ts';
 
-config();
 const {
   DISCORD_TOKEN,
   OPENAI_API_KEY,

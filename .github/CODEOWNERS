@@ -1,1 +1,17 @@
 * @Tresster
+/nginx/default.conf @gentlebob
+
+/src/bot.ts @Tresster @gentlebob
+/src/index.ts @Tresster @gentlebob
+
+/compose.sample.yaml @gentlebob @Tresster
+/src/emote-matcher.ts @gentlebob @Tresster
+/src/update-commands-docker.ts @gentlebob @Tresster
+/src/api/cached-url.ts @gentlebob @Tresster
+/src/command-handlers/emote.ts @gentlebob @Tresster
+/src/command-handlers/steam.ts @gentlebob @Tresster
+/src/command-handlers/transient.ts @gentlebob @Tresster
+/src/utils/command-handlers/emote/download-asset.ts @gentlebob @Tresster
+/src/utils/command-handlers/emote/ffprobe-utils.ts @gentlebob @Tresster
+
+/src/command-handlers/gemini.ts @widepogcrazy @Tresster

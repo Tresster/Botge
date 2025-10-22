@@ -32,7 +32,7 @@
     }
   ],
   "type": "module",
-  "main": "dist/index.js",
+  "main": "src/index.ts",
   "scripts": {
     "lint": "eslint src --flag unstable_native_nodejs_ts_config",
     "prettier-format": "prettier . --write",

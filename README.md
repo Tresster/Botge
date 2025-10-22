@@ -12,13 +12,16 @@
 
 ## Table of Contents
 
+- [Introduction](#introduction)
 - [Features](#features)
 - [Usage](#usage)
 - [Configuration](#configuration)
 - [Documentation](#documentation)
 - [License](#license)
 
-![Botge Website Logo](assets/peepoCuteHalloween1x.png) [Botge Website](https://botge.gitbook.io/)  
+## Introduction
+
+![Botge Website Logo](assets/peepoCuteHalloween1x.png) [Botge Website](https://botge.gitbook.io)  
 Botge is a [Discord](https://discord.com) bot that provides functionalities inspired by the [Twitch](https://www.twitch.tv) chat experience to your server.  
 It offers seamless emote handling, Twitch clip searching, and other powerful features that enhance Discord interactions.  
 With built-in [DeepL Translation](https://www.deepl.com/en/products/translator), integration with [OpenAI's](https://openai.com) GPT models and [Google's Gemini](https://gemini.google.com) models, Botge makes conversations more dynamic, engaging, and intelligent.
@@ -53,7 +56,9 @@ Further help in configuration is available on the [website](https://botge.gitboo
 
 ## Documentation
 
-The documentation is available on the [website](https://botge.gitbook.io/botge/documentation/documentation).
+![Docker docks](docs/Docker.png)
+
+More documentation is available on the [website](https://botge.gitbook.io/botge/documentation/documentation) and in the [docs](docs) folder.
 
 ## License
 

@@ -20,6 +20,5 @@ eslint.config.js
 
 !.github/CODEOWNERS
 !tsconfig.json
-!LICENSE
 !.npmrc
 !*.md

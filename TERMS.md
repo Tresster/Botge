@@ -69,4 +69,4 @@ In the event of any conflict between those laws, the laws applicable in the loca
 
 ## Contact
 
-If you have questions or concerns about these Terms, please contact the operators of the Service through the [Botge Discord](https://discord.gg/tMZ79dym) server.
+If you have questions or concerns about these Terms, please contact the operators of the Service through the [Botge Discord server](https://discord.gg/ZjGb7XTg9N).

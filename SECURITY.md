@@ -6,7 +6,7 @@ If you think you've found a security vulnerability in Botge, please report it to
 
 ## Reporting Security Issues
 
-Report in the [Discord server](https://discord.gg/ZjGb7XTg9N).
+Please submit a report to the [Botge Discord server](https://discord.gg/ZjGb7XTg9N).
 
 ## Preferred Language
 

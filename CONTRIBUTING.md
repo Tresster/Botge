@@ -9,7 +9,7 @@ npm install
 npm run prettier-format
 npm run lint
 
-docker build .
+docker build . or npx tsc
 
 npm test
 ```

@@ -4,4 +4,4 @@ npm install
 npm run prettier-format
 npm run lint
 
-docker build .
+npx tsc

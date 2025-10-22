@@ -270,27 +270,39 @@ export class EmoteMatcher {
     for (const emote of sevenGlobal.emotes) this.#root.addAllSuffix(sevenTVInSetToAsset(emote), priority);
     priority--;
 
-    for (const emote of bttvGlobal) this.#root.addAllSuffix(bttvToAsset(emote), priority);
+    try {
+      for (const emote of bttvGlobal) this.#root.addAllSuffix(bttvToAsset(emote), priority);
+    } catch {}
     priority--;
 
-    for (const emote of ffzGlobal.sets[`${FFZGLOBALSETSKEY}`].emoticons)
-      this.#root.addAllSuffix(ffzToAsset(emote), priority);
+    try {
+      for (const emote of ffzGlobal.sets[`${FFZGLOBALSETSKEY}`].emoticons)
+        this.#root.addAllSuffix(ffzToAsset(emote), priority);
+    } catch {}
     priority--;
 
-    for (const emote of twitchGlobal?.data ?? []) this.#root.addAllSuffix(twitchToAsset(emote), priority);
+    try {
+      for (const emote of twitchGlobal?.data ?? []) this.#root.addAllSuffix(twitchToAsset(emote), priority);
+    } catch {}
     if (twitchGlobal !== undefined) priority--;
 
     for (const emote of sevenPersonal?.emotes ?? []) this.#root.addAllSuffix(sevenTVInSetToAsset(emote), priority);
     if (sevenPersonal !== undefined) priority--;
 
-    for (const emote of bttvPersonal?.channelEmotes ?? []) this.#root.addAllSuffix(bttvToAsset(emote), priority);
+    try {
+      for (const emote of bttvPersonal?.channelEmotes ?? []) this.#root.addAllSuffix(bttvToAsset(emote), priority);
+    } catch {}
     if (bttvPersonal !== undefined) priority--;
 
-    for (const emote of bttvPersonal?.sharedEmotes ?? []) this.#root.addAllSuffix(bttvToAsset(emote), priority);
+    try {
+      for (const emote of bttvPersonal?.sharedEmotes ?? []) this.#root.addAllSuffix(bttvToAsset(emote), priority);
+    } catch {}
     if (bttvPersonal !== undefined) priority--;
 
-    for (const emote of ffzPersonal?.sets[ffzPersonal.room.set].emoticons ?? [])
-      this.#root.addAllSuffix(ffzToAsset(emote), priority);
+    try {
+      for (const emote of ffzPersonal?.sets[ffzPersonal.room.set].emoticons ?? [])
+        this.#root.addAllSuffix(ffzToAsset(emote), priority);
+    } catch {}
     if (ffzPersonal !== undefined) priority--;
 
     for (const emote of sevenNotInSet ?? []) {

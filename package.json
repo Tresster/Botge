@@ -37,12 +37,12 @@
     "lint": "eslint src --flag unstable_native_nodejs_ts_config",
     "prettier-format": "prettier . --write",
     "test": "vitest tests",
-    "tests-lint": "eslint tests",
+    "tests-lint": "eslint tests --flag unstable_native_nodejs_ts_config",
     "tests-prettier-format": "prettier tests --write"
   },
   "dependencies": {
     "@discordjs/voice": "^0.19.0",
-    "@google/genai": "^1.25.0",
+    "@google/genai": "^1.26.0",
     "@twemoji/api": "^16.0.1",
     "better-sqlite3": "^12.4.1",
     "deepl-node": "^1.20.0",
@@ -65,7 +65,7 @@
     "ts-essentials": "^10.1.1",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.46.2",
-    "vitest": "^3.2.4"
+    "vitest": "^4.0.1"
   },
   "engines": {
     "node": "v24.10.0",

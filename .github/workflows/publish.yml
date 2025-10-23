@@ -1,31 +1,64 @@
 # @format
 
+#
 name: Publish Package
 
+# Configures this workflow to run every time a change is pushed to the branch called `origin` if it contains a specific tag.
 on:
   push:
     tags:
       - 'v*'
 
-permissions:
-  id-token: write # Required for OIDC
-  contents: read
-
+# There is a single job in this workflow. It's configured to run on the latest available version of Ubuntu.
 jobs:
   publish:
     runs-on: ubuntu-latest
+    # Sets the permissions for the actions in this job.
+    permissions:
+      # Required for OIDC.
+      id-token: write
+      # Contents.
+      contents: read
     steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
+      # Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v5
+      # Sets up node.
+      - name: Setup Node
+        id: node
+        uses: actions/setup-node@v6
         with:
           node-version: 'v24.10.0'
           registry-url: 'https://registry.npmjs.org'
-
-      # Ensure npm 11.5.1 or later is installed
+      # Updates npm.
       - name: Update npm
+        id: npm
         run: npm install -g npm@latest
-      - run: npm ci
-      - run: npx tsc
-      - run: npm test
-      - run: npm publish
+      # Runs npm ci.
+      - name: Clean Install
+        id: ci
+        run: npm ci
+      # Prettier before Lint.
+      - name: Prettier before Lint
+        id: prettier-before-lint
+        run: npm run prettier-format
+      # Lint.
+      - name: Lint
+        id: lint
+        run: npm run lint
+      # Build.
+      - name: Build
+        id: build
+        run: npm run build
+      # Prettier after build.
+      - name: Prettier after build
+        id: prettier-after-build
+        run: npm run prettier-format
+      # Test.
+      - name: Test
+        id: test
+        run: npm test
+      # Public Publish.
+      - name: Public Publish
+        id: publish
+        run: npm publish --access public

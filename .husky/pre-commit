@@ -1,7 +1,6 @@
 git fetch
-
 npm install
 npm run prettier-format
 npm run lint
-
-npx tsc
+npm run build
+npm run prettier-format

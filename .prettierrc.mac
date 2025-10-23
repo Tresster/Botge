@@ -5,5 +5,5 @@
   "printWidth": 120,
   "endOfLine": "lf",
   "quoteProps": "consistent",
-  "requirePragma": true
+  "insertPragma": true
 }

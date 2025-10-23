@@ -1,9 +1,12 @@
 .DS_Store
 /data
-/dist
 /meili_data
 /nginx/cache
 /node_modules
 /tmp
-/compose.yaml
+
 /.prettierrc
+/compose.yaml
+
+/dist/**/*.js
+/tsconfig.tsbuildinfo

@@ -1,28 +1,35 @@
 {
   "compilerOptions": {
-    "strict": true,
-
     "module": "nodenext",
     "target": "esnext",
-    "sourceMap": false,
+
+    "rootDir": "src",
     "outDir": "dist",
 
-    "noUncheckedSideEffectImports": true,
-    "noImplicitOverride": true,
+    "strict": true,
+    "sourceMap": false,
+
+    "composite": true,
+    "declarationMap": false,
+    "isolatedDeclarations": true,
+
     "noImplicitReturns": true,
-    "noUnusedParameters": false,
+    "noImplicitOverride": true,
     "noUnusedLocals": true,
+    "noUnusedParameters": false,
+    "noUncheckedSideEffectImports": true,
 
-    "noPropertyAccessFromIndexSignature": true,
     "noFallthroughCasesInSwitch": true,
+    "noPropertyAccessFromIndexSignature": true,
 
-    "allowUnreachableCode": false,
     "allowUnusedLabels": false,
+    "allowUnreachableCode": false,
 
-    "rewriteRelativeImportExtensions": true,
-    "exactOptionalPropertyTypes": true,
+    "skipLibCheck": false,
     "verbatimModuleSyntax": true,
-    "skipLibCheck": false
+    "exactOptionalPropertyTypes": true,
+    "rewriteRelativeImportExtensions": true
   },
   "include": ["src"]
+  //"exclude": ["tests", "dist/**/*.d.ts"]
 }

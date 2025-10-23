@@ -5,12 +5,13 @@ FROM node:${NODE_VERSION}-alpine AS build
 WORKDIR /app
 
 COPY .npmrc package*.json ./
-
 RUN npm install
 
 COPY . .
+RUN npm run build 
 
-RUN npx tsc
+COPY .prettierrc.linux .prettierrc
+RUN npm run prettier-format
 
 FROM node:${NODE_VERSION}-alpine AS release
 LABEL org.opencontainers.image.title="Botge" \
@@ -24,14 +25,15 @@ LABEL org.opencontainers.image.title="Botge" \
 
 WORKDIR /app
 
-COPY .github/CODEOWNERS .github/
-COPY docs/*.md docs/
-COPY .npmrc package*.json LICENSE *.md ./
-
 RUN apk add --no-cache ffmpeg
+
+COPY .npmrc package*.json ./
 RUN npm ci --omit=dev
 
 COPY --from=build /app/dist ./dist
+COPY .github/CODEOWNERS .github/
+COPY docs/*.md docs/Docker.png docs/
+COPY LICENSE README.md ./
 
 USER node
 

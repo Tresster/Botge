@@ -1,9 +1,9 @@
 /** @format */
 
-import { defineConfig } from 'eslint/config';
+import { defineConfig, type Config } from 'eslint/config';
 import { configs } from 'typescript-eslint';
 
-export default defineConfig(
+const config: readonly Config[] = defineConfig(
   {
     languageOptions: {
       sourceType: 'module',
@@ -120,3 +120,5 @@ export default defineConfig(
     }
   }
 );
+
+export default config;

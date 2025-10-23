@@ -34,11 +34,13 @@
   ],
   "type": "module",
   "main": "src/index.ts",
+  "types": "dist/index.d.ts",
   "directories": {
     "doc": "docs",
     "test": "tests"
   },
   "scripts": {
+    "build": "tsc --build",
     "lint": "eslint src --flag unstable_native_nodejs_ts_config",
     "prettier-format": "prettier . --write",
     "test": "vitest tests",
@@ -84,5 +86,41 @@
   "cpu": [
     "x64",
     "arm64"
-  ]
+  ],
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "onFail": "error",
+      "version": "^24.10.0"
+    },
+    "packageManager": {
+      "name": "npm",
+      "onFail": "error",
+      "version": "^11.6"
+    },
+    "os": [
+      {
+        "name": "linux",
+        "onFail": "error"
+      },
+      {
+        "name": "darwin",
+        "onFail": "error"
+      },
+      {
+        "name": "win32",
+        "onFail": "error"
+      }
+    ],
+    "cpu": [
+      {
+        "name": "x64",
+        "onFail": "error"
+      },
+      {
+        "name": "arm64",
+        "onFail": "error"
+      }
+    ]
+  }
 }

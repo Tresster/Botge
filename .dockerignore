@@ -3,7 +3,6 @@
 .husky
 assets
 data
-dist
 docs
 meili_data
 nginx/cache
@@ -17,10 +16,16 @@ tmp
 compose*.yaml
 Dockerfile
 eslint.config.js
+tsconfig.tsbuildinfo
 
 !.github/CODEOWNERS
-!tsconfig.json
+!dist
 !docs/*.md
-!*.md
-!LICENSE
+!docs/Docker.png
 !.npmrc
+!.prettierignore
+!.prettierrc.linux
+!LICENSE
+!package*.json
+!README.md
+!tsconfig.json

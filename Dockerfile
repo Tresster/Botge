@@ -25,8 +25,8 @@ LABEL org.opencontainers.image.title="Botge" \
 WORKDIR /app
 
 COPY .github/CODEOWNERS .github/
-COPY docs/*.md ./
-COPY .npmrc package*.json LICENSE ./
+COPY docs/*.md docs/
+COPY .npmrc package*.json LICENSE *.md ./
 
 RUN apk add --no-cache ffmpeg
 RUN npm ci --omit=dev

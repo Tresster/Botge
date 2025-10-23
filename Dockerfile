@@ -5,7 +5,7 @@ FROM node:${NODE_VERSION}-alpine AS build
 WORKDIR /app
 
 COPY .npmrc package*.json ./
-RUN npm install
+RUN npm ci
 
 COPY . .
 RUN npm run build 

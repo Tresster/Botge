@@ -1,40 +1,45 @@
 # @format
 
 services:
+  nginx:
+    image: nginx:1.29.2-alpine
+    mem_limit: 256m
+    restart: always
+    volumes:
+      - ./nginx/cache:/var/www/cache:rw
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+
   meilisearch:
-    image: getmeili/meilisearch:v1.16
     ports:
       - 7700:7700
+    image: getmeili/meilisearch:v1.16
+    mem_limit: 512m
+    healthcheck:
+      test: set -o pipefail;curl -fsS http://localhost:7700/health | grep -q '{"status":"available"}'
+      retries: 3
+      timeout: 5s
+    volumes:
+      - ./meili_data:/meili_data
     environment:
       - MEILI_MASTER_KEY=SAMPLEMASTERKEY
       - MEILI_NO_ANALYTICS=true
       - MEILI_EXPERIMENTAL_REDUCE_INDEXING_MEMORY_USAGE
       - MEILI_EXPERIMENTAL_DUMPLESS_UPGRADE
-    volumes:
-      - ./meili_data:/meili_data
-    healthcheck:
-      test: set -o pipefail;curl -fsS http://localhost:7700/health | grep -q '{"status":"available"}'
-      retries: 3
-      timeout: 5s
-
-  nginx:
-    restart: always
-    image: nginx:1.29.2-alpine
-    volumes:
-      - ./nginx/cache:/var/www/cache:rw
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
 
   botge:
-    mem_limit: 1g
-    deploy:
-      resources:
-        limits:
-          memory: 1g
+    depends_on:
+      - nginx
+      - meilisearch
     image: ghcr.io/tresster/botge:main
     # Comment image and uncomment build, and context for local compose.
     # `docker compose up --build`
     # build:
     #   context: .
+    mem_limit: 512m
+    restart: always
+    volumes:
+      - ./tmp:/app/tmp
+      - ./data:/app/data
     environment:
       - NODE_ENV=production
 
@@ -70,10 +75,3 @@ services:
 
       # join voice channel
       - JOIN_VOICE_CHANNEL=true
-    volumes:
-      - ./tmp:/app/tmp
-      - ./data:/app/data
-    restart: always
-    depends_on:
-      - meilisearch
-      - nginx

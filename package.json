@@ -41,11 +41,11 @@
   },
   "scripts": {
     "build": "tsc",
-    "lint": "eslint src --flag unstable_native_nodejs_ts_config",
-    "prettier-format": "prettier . --write",
+    "eslint": "eslint src --flag unstable_native_nodejs_ts_config",
+    "prettier": "prettier . --write",
     "test": "vitest tests",
-    "tests-lint": "eslint tests --flag unstable_native_nodejs_ts_config",
-    "tests-prettier-format": "prettier tests --write"
+    "tests-eslint": "eslint tests --flag unstable_native_nodejs_ts_config",
+    "tests-prettier": "prettier tests --write"
   },
   "dependencies": {
     "@discordjs/voice": "^0.19.0",

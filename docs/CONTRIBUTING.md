@@ -5,9 +5,9 @@
 ```text
 git fetch
 npm install
-npm run prettier-format
-npm run lint
+npm run prettier
+npm run eslint
 npm run build
-npm run prettier-format
+npm run prettier
 npm test
 ```

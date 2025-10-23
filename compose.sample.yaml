@@ -24,7 +24,12 @@ services:
       - ./nginx/cache:/var/www/cache:rw
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
 
-  server:
+  botge:
+    mem_limit: 1g
+    deploy:
+      resources:
+        limits:
+          memory: 1g
     image: ghcr.io/tresster/botge:main
     # Comment image and uncomment build, and context for local compose.
     # `docker compose up --build`

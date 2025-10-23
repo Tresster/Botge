@@ -39,13 +39,13 @@ jobs:
         id: ci
         run: npm ci
       # Prettier before Lint.
-      - name: Prettier before Lint
-        id: prettier-before-lint
-        run: npm run prettier-format
+      - name: Prettier before ESLint
+        id: prettier-before-eslint
+        run: npm run prettier
       # Lint.
-      - name: Lint
-        id: lint
-        run: npm run lint
+      - name: ESLint
+        id: eslint
+        run: npm run eslint
       # Build.
       - name: Build
         id: build
@@ -53,7 +53,7 @@ jobs:
       # Prettier after build.
       - name: Prettier after build
         id: prettier-after-build
-        run: npm run prettier-format
+        run: npm run prettier
       # Test.
       - name: Test
         id: test

@@ -11,7 +11,7 @@ COPY . .
 RUN npm run build 
 
 COPY .prettierrc.linux .prettierrc
-RUN npm run prettier-format
+RUN npm run prettier
 
 FROM node:${NODE_VERSION}-alpine AS release
 LABEL org.opencontainers.image.title="Botge" \

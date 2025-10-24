@@ -4,6 +4,10 @@
 /.vscode
 /data
 /docs/*
+!/docs/Docker.png
+!/docs/CHANGELOG.md
+!/docs/PRIVACY.md
+!/docs/TERMS.md
 /meili_data
 /nginx
 /node_modules
@@ -19,8 +23,3 @@
 /eslint.config.ts
 /tsconfig.json
 /tsconfig.tsbuildinfo
-
-!/docs/Docker.png
-!/docs/CHANGELOG.md
-!/docs/PRIVACY.md
-!/docs/TERMS.md

@@ -1,12 +1,14 @@
 .DS_Store
-/data
+/data/*
+!/data/.gitkeep
 /dist
-/meili_data
+/meili_data/*
+!/meili_data/.gitkeep
 /nginx/cache
 /node_modules
-/tmp
+/tmp/*
+!/tmp/.gitkeep
 
 /.prettierrc
 /compose.yaml
-
 /tsconfig.tsbuildinfo

@@ -38,9 +38,9 @@ jobs:
       - name: Clean Install
         id: ci
         run: npm ci
-      # Prettier before Lint.
-      - name: Prettier before ESLint
-        id: prettier-before-eslint
+      # Prettier.
+      - name: Prettier
+        id: prettier
         run: npm run prettier
       # Lint.
       - name: ESLint
@@ -50,10 +50,6 @@ jobs:
       - name: Build
         id: build
         run: npm run build
-      # Prettier after build.
-      - name: Prettier after build
-        id: prettier-after-build
-        run: npm run prettier
       # Test.
       - name: Test
         id: test

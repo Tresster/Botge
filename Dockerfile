@@ -8,14 +8,11 @@ COPY .npmrc package*.json ./
 RUN npm ci
 
 COPY . .
-RUN npm run build 
-
-COPY .prettierrc.linux .prettierrc
-RUN npm run prettier
+RUN npm run build
 
 FROM node:${NODE_VERSION}-alpine AS release
 LABEL org.opencontainers.image.title="Botge" \
-      org.opencontainers.image.version="2.5.1" \
+      org.opencontainers.image.version="2.5.2" \
       org.opencontainers.image.description="Search emotes, clips, use zero-width emotes and other such commands." \
       org.opencontainers.image.url="https://botge.gitbook.io" \
       org.opencontainers.image.source="https://github.com/Tresster/Botge" \
@@ -31,8 +28,7 @@ COPY .npmrc package*.json ./
 RUN npm ci --omit=dev
 
 COPY --from=build /app/dist ./dist
-COPY .github/CODEOWNERS .github/
-COPY docs/*.md docs/Docker.png docs/
+COPY docs ./docs
 COPY LICENSE README.md ./
 
 USER node

@@ -3,7 +3,12 @@
 .husky
 assets
 data
+dist
 docs
+!docs/Docker.png
+!docs/CHANGELOG.md
+!docs/PRIVACY.md
+!docs/TERMS.md
 meili_data
 nginx/cache
 node_modules
@@ -12,20 +17,9 @@ tmp
 
 .dockerignore
 .gitignore
+.npmignore
 .prettier*
 compose*.yaml
 Dockerfile
-eslint.config.js
+eslint.config.ts
 tsconfig.tsbuildinfo
-
-!.github/CODEOWNERS
-!dist
-!docs/*.md
-!docs/Docker.png
-!.npmrc
-!.prettierignore
-!.prettierrc.linux
-!LICENSE
-!package*.json
-!README.md
-!tsconfig.json

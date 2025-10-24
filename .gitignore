@@ -2,8 +2,7 @@
 /data/*
 !/data/.gitkeep
 /dist
-/meili_data/*
-!/meili_data/.gitkeep
+/meili_data
 /nginx/cache
 /node_modules
 /tmp/*

@@ -61,4 +61,4 @@ jobs:
       # Public Publish.
       - name: Public Publish
         id: publish
-        run: npm publish --access public
+        run: npm publish --access=public

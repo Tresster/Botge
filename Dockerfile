@@ -15,7 +15,7 @@ RUN npm run prettier
 
 FROM node:${NODE_VERSION}-alpine AS release
 LABEL org.opencontainers.image.title="Botge" \
-      org.opencontainers.image.version="2.5.0" \
+      org.opencontainers.image.version="2.5.1" \
       org.opencontainers.image.description="Search emotes, clips, use zero-width emotes and other such commands." \
       org.opencontainers.image.url="https://botge.gitbook.io" \
       org.opencontainers.image.source="https://github.com/Tresster/Botge" \

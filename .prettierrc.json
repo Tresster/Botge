@@ -5,5 +5,6 @@
   "printWidth": 120,
   "endOfLine": "lf",
   "quoteProps": "consistent",
-  "insertPragma": true
+  "insertPragma": true,
+  "plugins": ["prettier-plugin-sh"]
 }

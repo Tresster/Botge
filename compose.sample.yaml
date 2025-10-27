@@ -38,8 +38,8 @@ services:
     mem_limit: 512m
     restart: always
     volumes:
-      - ./tmp:/app/tmp
       - ./data:/app/data
+      - ./tmp:/app/tmp
     environment:
       - NODE_ENV=production
 

@@ -1,60 +1,65 @@
 /** @format */
 
-import Database from 'better-sqlite3';
+import type { SqlJsStatic } from 'sql.js';
 
-const TABLE_NAME = 'users';
+import { BaseDatabase } from './base.ts';
 
-export class UsersDatabase {
-  readonly #database: Database.Database;
+type DatabaseUser = {
+  readonly userId: string;
+  readonly guildId: string;
+};
 
-  public constructor(filepath: string) {
-    this.#database = new Database(filepath);
+const TABLE_NAME = 'users' as const;
+
+export class UsersDatabase extends BaseDatabase {
+  public constructor(filepath: string, sqlJsStatic: SqlJsStatic) {
+    super(filepath, sqlJsStatic);
+
     this.#createTable();
   }
 
   public changeGuildId(userId: string, guildId: string): void {
     if (this.#rowExists(userId)) {
-      const update = this.#database.prepare(`UPDATE ${TABLE_NAME} SET guildId=(?) WHERE userId=(?)`);
-      update.run(guildId, userId);
+      const statement = this.database.prepare(`UPDATE ${TABLE_NAME} SET guildId=(?) WHERE userId=(?)`);
+      statement.run([guildId, userId]);
+      statement.free();
     } else {
-      const insert = this.#database.prepare(`INSERT INTO ${TABLE_NAME} VALUES(?,?)`);
-      insert.run(userId, guildId);
+      const statement = this.database.prepare(`INSERT INTO ${TABLE_NAME} VALUES(?,?)`);
+      statement.run([userId, guildId]);
+      statement.free();
     }
+
+    this.exportDatabase();
   }
 
   public getAllUsers(): Readonly<Map<string, readonly [string]>> {
-    const select = this.#database.prepare(`SELECT userId, guildId FROM ${TABLE_NAME}`);
-
-    const selectAll = select.all() as readonly {
-      readonly userId: string;
-      readonly guildId: string;
-    }[];
-
+    const databaseUsers = this.getAll_(`SELECT userId, guildId FROM ${TABLE_NAME}`) as readonly DatabaseUser[];
     const map = new Map<string, readonly [string]>();
-    selectAll.forEach((selectAll_) => map.set(selectAll_.userId, [selectAll_.guildId]));
+
+    databaseUsers.forEach((databaseUser) => map.set(databaseUser.userId, [databaseUser.guildId]));
+
     return map;
   }
 
-  public close(): void {
-    this.#database.close();
-  }
-
   #createTable(): void {
-    const createTable = this.#database.prepare(`
+    const statement = this.database.prepare(`
       CREATE TABLE IF NOT EXISTS ${TABLE_NAME} (
         userId TEXT NOT NULL PRIMARY KEY,
         guildId TEXT NOT NULL
       );
     `);
+    statement.run();
+    statement.free();
 
-    createTable.run();
+    this.exportDatabase();
   }
 
   #rowExists(userId: string): boolean {
-    const select = this.#database.prepare(`SELECT userId FROM ${TABLE_NAME} WHERE userId=(?)`);
-    const select_ = select.get(userId);
+    const statement = this.database.prepare(`SELECT userId FROM ${TABLE_NAME} WHERE userId=(?)`);
+    const rows = statement.get([userId]);
+    statement.free();
 
-    if (select_ === undefined) return false;
+    if (rows.length === 0) return false;
     return true;
   }
 }

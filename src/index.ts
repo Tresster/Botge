@@ -10,6 +10,7 @@ import { join } from 'node:path';
 import OpenAI from 'openai';
 import { Client, GatewayIntentBits } from 'discord.js';
 import { getVoiceConnections } from '@discordjs/voice';
+import initSqlJs from 'sql.js';
 
 import { BroadcasterNameAndPersonalEmoteSetsDatabase } from './api/broadcaster-name-and-personal-emote-sets-database.ts';
 import { PermittedRoleIdsDatabase } from './api/permitted-role-ids-database.ts';
@@ -89,14 +90,22 @@ const bot = await (async (): Promise<Readonly<Bot>> => {
       ? new TwitchClipsMeiliSearch(new MeiliSearch({ host: MEILISEARCH_HOST, apiKey: MEILISEARCH_API_KEY }))
       : undefined;
 
-  const addedEmotesDatabase: Readonly<AddedEmotesDatabase> = new AddedEmotesDatabase(DATABASE_ENDPOINTS.addedEmotes);
-  const pingsDatabase: Readonly<PingsDatabase> = new PingsDatabase(DATABASE_ENDPOINTS.pings);
+  const sqlJsStatic = await initSqlJs();
+  const addedEmotesDatabase: Readonly<AddedEmotesDatabase> = new AddedEmotesDatabase(
+    DATABASE_ENDPOINTS.addedEmotes,
+    sqlJsStatic
+  );
+  const pingsDatabase: Readonly<PingsDatabase> = new PingsDatabase(DATABASE_ENDPOINTS.pings, sqlJsStatic);
   const permittedRoleIdsDatabase: Readonly<PermittedRoleIdsDatabase> = new PermittedRoleIdsDatabase(
-    DATABASE_ENDPOINTS.permitRoleIds
+    DATABASE_ENDPOINTS.permitRoleIds,
+    sqlJsStatic
   );
   const broadcasterNameAndPersonalEmoteSetsDatabase: Readonly<BroadcasterNameAndPersonalEmoteSetsDatabase> =
-    new BroadcasterNameAndPersonalEmoteSetsDatabase(DATABASE_ENDPOINTS.broadcasterNameAndpersonalEmoteSets);
-  const usersDatabase: Readonly<UsersDatabase> = new UsersDatabase(DATABASE_ENDPOINTS.users);
+    new BroadcasterNameAndPersonalEmoteSetsDatabase(
+      DATABASE_ENDPOINTS.broadcasterNameAndpersonalEmoteSets,
+      sqlJsStatic
+    );
+  const usersDatabase: Readonly<UsersDatabase> = new UsersDatabase(DATABASE_ENDPOINTS.users, sqlJsStatic);
 
   const cachedUrl: Readonly<CachedUrl> = new CachedUrl(LOCAL_CACHE_BASE);
 

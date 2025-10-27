@@ -80,7 +80,8 @@ const config: readonly Config[] = defineConfig(
               ],
               package: 'discord.js'
             },
-            { from: 'package', name: ['VoiceConnection'], package: '@discordjs/voice' }
+            { from: 'package', name: 'VoiceConnection', package: '@discordjs/voice' },
+            { from: 'package', name: 'SqlJsStatic', package: 'sql.js' }
           ]
         }
       ],

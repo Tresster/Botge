@@ -1,6 +1,7 @@
 .github
 .vscode
 .husky
+!.husky/install.ts
 assets
 data
 dist

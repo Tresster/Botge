@@ -55,13 +55,14 @@ import type { Guild } from '../guild.ts';
 import type { User } from '../user.ts';
 
 export const SELECT_SETTINGS_PERMITTED_ROLES_ROLE_SELECT_MENU_CUSTOM_ID = 'selectSettingsPermittedRolesRoleSelectMenu';
-export const SELECT_ADD_EMOTE_PERMITTED_ROLES_ROLE_SELECT_MENU_CUSTOM_ID = 'selectAddEmotePermittedRolesRoleSelectMenu';
-export const ASSIGN_EMOTE_SETS_MODAL_CUSTOM_ID = 'assignEmoteSetsModal';
-export const ASSIGN_GUILD_MODAL_CUSTOM_ID = 'assignGuildModal';
+export const SELECT_ADD_EMOTE_PERMITTED_ROLES_ROLE_SELECT_MENU_CUSTOM_ID =
+  'selectAddEmotePermittedRolesRoleSelectMenu' as const;
+export const ASSIGN_EMOTE_SETS_MODAL_CUSTOM_ID = 'assignEmoteSetsModal' as const;
+export const ASSIGN_GUILD_MODAL_CUSTOM_ID = 'assignGuildModal' as const;
 
-export const BROADCASTER_NAME_TEXT_INPUT_CUSTOM_ID = 'broadcasterNameTextInput';
-export const SEVENTV_TEXT_INPUT_CUSTOM_ID = 'sevenTVTextInput';
-export const GUILD_ID_TEXT_INPUT_CUSTOM_ID = 'guildIdTextInput';
+export const BROADCASTER_NAME_TEXT_INPUT_CUSTOM_ID = 'broadcasterNameTextInput' as const;
+export const SEVENTV_TEXT_INPUT_CUSTOM_ID = 'sevenTVTextInput' as const;
+export const GUILD_ID_TEXT_INPUT_CUSTOM_ID = 'guildIdTextInput' as const;
 
 const MAX_ROLE_SELECT_MENU_VALUES = 10 as const;
 

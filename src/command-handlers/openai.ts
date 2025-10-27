@@ -71,7 +71,7 @@ export function chatgptHandler(openai: ReadonlyOpenAI | undefined) {
 
       //1 token is around 4 english characters
       const response = await openai.responses.create({
-        model: 'gpt-5',
+        model: 'gpt-4.1',
         input: input,
         max_output_tokens: 400,
         instructions: instructions ?? null,

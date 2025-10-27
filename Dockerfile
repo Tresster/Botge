@@ -12,7 +12,7 @@ RUN npm run build
 
 FROM node:${NODE_VERSION}-alpine AS release
 LABEL org.opencontainers.image.title="Botge" \
-      org.opencontainers.image.version="2.5.2" \
+      org.opencontainers.image.version="2.5.3" \
       org.opencontainers.image.description="Search emotes, clips, use zero-width emotes and other such commands." \
       org.opencontainers.image.url="https://botge.gitbook.io" \
       org.opencontainers.image.source="https://github.com/Tresster/Botge" \
@@ -29,7 +29,7 @@ RUN npm ci --omit=dev
 
 COPY --from=build /app/dist ./dist
 COPY docs ./docs
-COPY LICENSE README.md ./
+COPY LICENSE.txt README.md ./
 
 USER node
 

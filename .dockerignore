@@ -16,9 +16,9 @@ tests
 tmp
 
 .dockerignore
+.gitattributes
 .gitignore
-.npmignore
-.prettier*
+.prettierrc.json
 compose*.yaml
 Dockerfile
 eslint.config.ts

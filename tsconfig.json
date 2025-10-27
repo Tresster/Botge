@@ -11,7 +11,7 @@
 
     "composite": true,
     "declarationMap": false,
-    "isolatedDeclarations": true,
+    "isolatedDeclarations": false,
 
     "noImplicitReturns": true,
     "noImplicitOverride": true,

@@ -4,7 +4,7 @@ import { CDN_ENDPOINTS } from '../../paths-and-endpoints.ts';
 import type { SevenTVEmoteNotInSet } from '../../types.ts';
 import { fetchAndJson } from '../fetch-and-json.ts';
 
-export const SPLITTER = '/';
+export const SPLITTER = '/' as const;
 
 const regExpSevenTVEmoteNotInSet: Readonly<RegExp> = new RegExp(/^https:\/\/7tv\.app\/emotes\/[A-Za-z0-9]+$/);
 const regExpOldSevenTVEmoteNotInSet: Readonly<RegExp> = new RegExp(/^https:\/\/old\.7tv\.app\/emotes\/[A-Za-z0-9]+$/);

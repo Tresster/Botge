@@ -12,7 +12,7 @@ import type {
 } from '../types.ts';
 import { CDN_ENDPOINTS } from '../paths-and-endpoints.ts';
 
-const EMOTESIZE = 2;
+const EMOTESIZE = 2 as const;
 
 export function sevenTVInSetToAsset(emote: SevenTVEmoteInSet, size?: number): AssetInfo {
   const { id, name, flags, data, timestamp } = emote;

@@ -73,14 +73,14 @@ export function getContent(ping: Ping, contentType: ContentType): string {
   return content;
 }
 
-export const PING_ME_AS_WELL_BUTTON_FOR_PING_ME_BASE_CUSTOM_ID = 'pingMeAsWellButtonForPingMe';
-export const REMOVE_ME_FROM_PING_BUTTON_FOR_PING_ME_BASE_CUSTOM_ID = 'removeMeFromPingButtonForPingMe';
-export const DELETE_PING_BUTTON_FOR_PING_ME_BASE_CUSTOM_ID = 'deletePingButtonForPingMe';
-const CLEANUP_MINUTES = 4;
+export const PING_ME_AS_WELL_BUTTON_FOR_PING_ME_BASE_CUSTOM_ID = 'pingMeAsWellButtonForPingMe' as const;
+export const REMOVE_ME_FROM_PING_BUTTON_FOR_PING_ME_BASE_CUSTOM_ID = 'removeMeFromPingButtonForPingMe' as const;
+export const DELETE_PING_BUTTON_FOR_PING_ME_BASE_CUSTOM_ID = 'deletePingButtonForPingMe' as const;
+const CLEANUP_MINUTES = 4 as const;
 
 export class PingForPingMeMessageBuilder {
-  public static readonly messageBuilderTypeForPingMe = 'PingForPingMeForPingMe';
-  public static readonly messageBuilderTypeForPingList = 'PingForPingMeForPingList';
+  public static readonly messageBuilderTypeForPingMe = 'PingForPingMeForPingMe' as const;
+  public static readonly messageBuilderTypeForPingList = 'PingForPingMeForPingList' as const;
   static readonly #emptyPingMessageBuilderReplies: PingForPingMeMessageBuilderReplies = {
     reply: undefined,
     buttonReply: undefined,

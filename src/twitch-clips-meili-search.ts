@@ -2,7 +2,7 @@
 
 import type { MeiliSearch, Index } from 'meilisearch';
 
-const INDEX_NAME = 'twitchClips';
+const INDEX_NAME = 'twitchClips' as const;
 
 function getIndexName(guildId: string): string {
   return `${INDEX_NAME}_${guildId}`;

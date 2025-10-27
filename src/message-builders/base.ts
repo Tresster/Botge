@@ -24,16 +24,16 @@ import type {
   PingForPingListMessageBuilderTransformFunctionReturnType
 } from '../types.ts';
 
-export const PREVIOUS_BUTTON_BASE_CUSTOM_ID = 'previousButton';
-export const NEXT_BUTTON_BASE_CUSTOM_ID = 'nextButton';
-export const FIRST_BUTTON_BASE_CUSTOM_ID = 'firstButton';
-export const LAST_BUTTON_BASE_CUSTOM_ID = 'lastButton';
-export const JUMP_TO_BUTTON_BASE_CUSTOM_ID = 'jumpToButton';
-export const JUMP_TO_MODAL_BASE_CUSTOM_ID = 'jumpToModal';
-export const JUMP_TO_TEXT_INPUT_BASE_CUSTOM_ID = 'jumpToTextInput';
-export const JUMP_TO_IDENTIFIER_INPUT_BASE_CUSTOM_ID = 'jumpToIdentifierTextInput';
+export const PREVIOUS_BUTTON_BASE_CUSTOM_ID = 'previousButton' as const;
+export const NEXT_BUTTON_BASE_CUSTOM_ID = 'nextButton' as const;
+export const FIRST_BUTTON_BASE_CUSTOM_ID = 'firstButton' as const;
+export const LAST_BUTTON_BASE_CUSTOM_ID = 'lastButton' as const;
+export const JUMP_TO_BUTTON_BASE_CUSTOM_ID = 'jumpToButton' as const;
+export const JUMP_TO_MODAL_BASE_CUSTOM_ID = 'jumpToModal' as const;
+export const JUMP_TO_TEXT_INPUT_BASE_CUSTOM_ID = 'jumpToTextInput' as const;
+export const JUMP_TO_IDENTIFIER_INPUT_BASE_CUSTOM_ID = 'jumpToIdentifierTextInput' as const;
 
-const BUTTON_CUSTOM_ID_SPLITTER = '-';
+const BUTTON_CUSTOM_ID_SPLITTER = '-' as const;
 
 export function getBaseCustomIdFromCustomId(customId: string): string {
   return customId.split(BUTTON_CUSTOM_ID_SPLITTER)[0];

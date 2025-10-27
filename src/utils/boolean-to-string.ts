@@ -1,10 +1,10 @@
 /** @format */
 
-const TRUE_STRING = 'Yes';
-const FALSE_STRING = 'No';
+const TRUE_STRING = 'Yes' as const;
+const FALSE_STRING = 'No' as const;
 
-const ALLOWED_TEXT = 'allowed';
-const NOT_ALLOWED_TEXT = `not ${ALLOWED_TEXT}`;
+const ALLOWED_TEXT = 'allowed' as const;
+const NOT_ALLOWED_TEXT = `not ${ALLOWED_TEXT}` as const;
 
 export function booleanToAllowed(allowed: boolean): string {
   if (allowed) return ALLOWED_TEXT;

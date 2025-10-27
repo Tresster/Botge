@@ -15,7 +15,7 @@ export class TwitchClipMessageBuilder extends BaseMessageBuilder<
   TwitchClip,
   TwitchClipMessageBuilderTransformFunctionReturnType
 > {
-  public static readonly messageBuilderType = 'Clip';
+  public static readonly messageBuilderType = 'Clip' as const;
   static #staticCounter = 0;
   readonly #sortedByText: string | undefined;
 

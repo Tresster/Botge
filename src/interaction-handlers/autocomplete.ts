@@ -13,7 +13,7 @@ import type { EmoteMatcher } from '../emote-matcher.ts';
 import { Platform } from '../enums.ts';
 import { COMMAND_NAMES } from '../commands.ts';
 
-const MAX_OPTIONS_LENGTH = 10; //THE MAXIMUM YOU CAN SET HERE IS 25
+const MAX_OPTIONS_LENGTH = 10 as const; //THE MAXIMUM YOU CAN SET HERE IS 25
 
 async function getHitsFromTwitchClipsMeilisearchIndex(
   twitchClipsMeiliSearchIndex: Index,

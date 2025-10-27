@@ -10,7 +10,7 @@ import type {
   OpenAIResponseInputImage
 } from '../types.ts';
 
-const MAX_DISCORD_MESSAGE_LENGTH = 2000;
+const MAX_DISCORD_MESSAGE_LENGTH = 2000 as const;
 
 const DISCORD_EMOJIS_JOINED = ((): string | undefined => {
   const { DISCORD_EMOJIS } = process.env;

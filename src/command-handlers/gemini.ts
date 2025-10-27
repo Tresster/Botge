@@ -8,7 +8,7 @@ import type { ReadonlyGoogleGenAI } from '../types.ts';
 
 import { getOptionValueWithoutUndefined } from '../utils/get-option-value.ts';
 
-const MAX_DISCORD_MESSAGE_LENGTH = 2000;
+const MAX_DISCORD_MESSAGE_LENGTH = 2000 as const;
 
 const DISCORD_EMOJIS_JOINED = ((): string | undefined => {
   const { DISCORD_EMOJIS } = process.env;

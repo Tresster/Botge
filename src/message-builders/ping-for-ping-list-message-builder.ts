@@ -14,13 +14,13 @@ export const REMOVE_ME_FROM_PING_BUTTON_FOR_PING_LIST_BASE_CUSTOM_ID = 'removeMe
 export const DELETE_PING_BUTTON_FOR_PING_LIST_BASE_CUSTOM_ID = 'deletePingButtonForPingList';
 */
 
-const UNKNOWN_USER = 'unknown user';
+const UNKNOWN_USER = 'unknown user' as const;
 
 export class PingForPingListMessageBuilder extends BaseMessageBuilder<
   Readonly<PingForPingMeMessageBuilder>,
   PingForPingListMessageBuilderTransformFunctionReturnType
 > {
-  public static readonly messageBuilderType = 'PingForPingList';
+  public static readonly messageBuilderType = 'PingForPingList' as const;
   static #staticCounter = 0;
   readonly #markedAsDeleteds: number[];
 

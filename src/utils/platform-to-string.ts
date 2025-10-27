@@ -2,11 +2,11 @@
 
 import { Platform } from '../enums.ts';
 
-const SEVEN_IN_SET_STRING = '7TV';
-const SEVEN_NOT_IN_SET_STRING = '7TV | Added Emote';
-const BTTV_STRING = 'BTTV';
-const FFZ_STRING = 'FFZ';
-const TWITCH_STRING = 'Twitch';
+const SEVEN_IN_SET_STRING = '7TV' as const;
+const SEVEN_NOT_IN_SET_STRING = '7TV | Added Emote' as const;
+const BTTV_STRING = 'BTTV' as const;
+const FFZ_STRING = 'FFZ' as const;
+const TWITCH_STRING = 'Twitch' as const;
 
 export function platformStrings(): readonly string[] {
   return [SEVEN_IN_SET_STRING, SEVEN_NOT_IN_SET_STRING, BTTV_STRING, FFZ_STRING, TWITCH_STRING];

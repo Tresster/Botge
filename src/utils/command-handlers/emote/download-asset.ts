@@ -8,7 +8,7 @@ import type { CachedUrl } from '../../../api/cached-url.ts';
 import type { AssetInfo, DownloadedAsset } from '../../../types.ts';
 import { getDimension, getDuration } from './ffprobe-utils.ts';
 
-export const DEFAULTDURATION = 0;
+export const DEFAULTDURATION = 0 as const;
 
 export async function downloadAsset(
   outdir: string,

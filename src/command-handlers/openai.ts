@@ -6,7 +6,7 @@ import { getOptionValue, getOptionValueWithoutUndefined } from '../utils/get-opt
 import type { ReadonlyOpenAI, OpenAIResponseInput } from '../types.ts';
 import type { Guild } from '../guild.ts';
 
-const MAX_DISCORD_MESSAGE_LENGTH = 2000;
+const MAX_DISCORD_MESSAGE_LENGTH = 2000 as const;
 
 const DISCORD_EMOJIS_JOINED = ((): string | undefined => {
   const { DISCORD_EMOJIS } = process.env;

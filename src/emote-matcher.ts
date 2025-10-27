@@ -20,7 +20,7 @@ import {
   twitchToAsset
 } from './utils/emote-to-asset.ts';
 
-const FFZGLOBALSETSKEY = 3;
+const FFZGLOBALSETSKEY = 3 as const;
 
 class EmoteNode {
   public highestPriority: number;

@@ -20,19 +20,19 @@ import { TMP_DIR } from '../paths-and-endpoints.ts';
 import { GUILD_ID_CUTEDOG } from '../guilds.ts';
 import type { Guild } from '../guild.ts';
 
-export const EMOTE_COMMAND_IDENTIFIER = '+';
+export const EMOTE_COMMAND_IDENTIFIER = '+' as const;
 
-const DEFAULTFPS = 25;
-const MAXWIDTH = 192;
-const MAXHEIGHT = 64;
-const DOWNLOAD_ASSET_ERROR_MESSAGE = 'Failed to download asset(s).';
-const FAILED_TO_DOWNLOAD_OR_GET_EMOJI_MESSAGE = 'Failed to download or get emoji(s).';
-const SOMETHING_WENT_WRONG_REPLY_MESSAGE = 'Someting went wrong. Please try again later.';
+const DEFAULTFPS = 25 as const;
+const MAXWIDTH = 192 as const;
+const MAXHEIGHT = 64 as const;
+const DOWNLOAD_ASSET_ERROR_MESSAGE = 'Failed to download asset(s).' as const;
+const FAILED_TO_DOWNLOAD_OR_GET_EMOJI_MESSAGE = 'Failed to download or get emoji(s).' as const;
+const SOMETHING_WENT_WRONG_REPLY_MESSAGE = 'Someting went wrong. Please try again later.' as const;
 
 function getMaxWidth(layers: readonly DownloadedAsset[], scaleToHeight: number): number {
   const scaledWidth = layers.map((layer) => (layer.width / layer.height) * scaleToHeight);
 
-  const ret: number = Math.round(Math.max(...scaledWidth));
+  const ret = Math.round(Math.max(...scaledWidth));
   return ret % 2 === 0 ? ret : ret + 1; // rounds up to even number because of ffmpeg
 }
 

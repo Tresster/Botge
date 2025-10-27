@@ -15,12 +15,12 @@ import { permitted, administrator, owner, globalAdministrator } from '../utils/c
 import { booleanToAllowed } from '../utils/boolean-to-string.ts';
 import type { Guild } from '../guild.ts';
 
-export const SETTINGS_PERMITTED_ROLES_BUTTON_CUSTOM_ID = 'settingsPermittedRolesButton';
-export const ADD_EMOTE_PERMITTED_ROLES_BUTTON_CUSTOM_ID = 'addEmotePermittedRolesButton';
-export const ALLOW_EVERYONE_TO_ADD_EMOTE_BUTTON_CUSTOM_ID = 'allowEveryoneToAddEmoteButton';
-export const ADDED_EMOTE_DELETION_MENU_BUTTON_CUSTOM_ID = 'addedEmoteDeletionMenuButton';
-export const CONFIGURATION_GUILD_BUTTON_CUSTOM_ID = 'configurationGuildButton';
-export const CONFIGURATION_USER_BUTTON_CUSTOM_ID = 'configurationUserButton';
+export const SETTINGS_PERMITTED_ROLES_BUTTON_CUSTOM_ID = 'settingsPermittedRolesButton' as const;
+export const ADD_EMOTE_PERMITTED_ROLES_BUTTON_CUSTOM_ID = 'addEmotePermittedRolesButton' as const;
+export const ALLOW_EVERYONE_TO_ADD_EMOTE_BUTTON_CUSTOM_ID = 'allowEveryoneToAddEmoteButton' as const;
+export const ADDED_EMOTE_DELETION_MENU_BUTTON_CUSTOM_ID = 'addedEmoteDeletionMenuButton' as const;
+export const CONFIGURATION_GUILD_BUTTON_CUSTOM_ID = 'configurationGuildButton' as const;
+export const CONFIGURATION_USER_BUTTON_CUSTOM_ID = 'configurationUserButton' as const;
 
 export function settingsHandler() {
   return async (interaction: ChatInputCommandInteraction, guild: Readonly<Guild> | undefined): Promise<void> => {

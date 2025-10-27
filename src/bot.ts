@@ -42,7 +42,7 @@ import { COMMAND_NAMES } from './commands.ts';
 import type { Guild } from './guild.ts';
 import type { User } from './user.ts';
 
-const CLEANUP_MINUTES = 10;
+const CLEANUP_MINUTES = 10 as const;
 
 export class Bot {
   readonly #client: Client;

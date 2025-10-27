@@ -63,7 +63,7 @@ export const BROADCASTER_NAME_TEXT_INPUT_CUSTOM_ID = 'broadcasterNameTextInput';
 export const SEVENTV_TEXT_INPUT_CUSTOM_ID = 'sevenTVTextInput';
 export const GUILD_ID_TEXT_INPUT_CUSTOM_ID = 'guildIdTextInput';
 
-const MAX_ROLE_SELECT_MENU_VALUES = 10;
+const MAX_ROLE_SELECT_MENU_VALUES = 10 as const;
 
 export function buttonHandler(
   twitchClipMessageBuilders: readonly Readonly<TwitchClipMessageBuilder>[],

@@ -6,7 +6,7 @@ import { setTimeout } from 'node:timers/promises';
 import { getOptionValue } from '../utils/get-option-value.ts';
 import type { Guild } from '../guild.ts';
 
-const MAXIMUM_DURATION_SECONDS = 600;
+const MAXIMUM_DURATION_SECONDS = 600 as const;
 
 export function transientHandler() {
   return async function transientHandlerInnerFunction(

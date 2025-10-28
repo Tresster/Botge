@@ -6,15 +6,15 @@ import {
   getSevenTvApiUrlFromSevenTvEmoteSetLink,
   getBttvApiUrlFromBroadcasterName,
   getFfzApiUrlFromBroadcasterName
-} from '../src/utils/interaction-handlers/get-api-url';
+} from 'src/utils/interaction-handlers/get-api-url.ts';
 
-import { newTwitchApi } from '../src/utils/constructors/new-twitch-api';
+import { newTwitchApi } from 'src/utils/constructors/new-twitch-api.ts';
 
 const { TWITCH_CLIENT_ID, TWITCH_SECRET } = process.env;
 
 describe('Get API Url', () => {
-  const broadcasterNameValid = 'CuteDog_';
-  const broadcasterNameInvalid = 'invalidBroadcasterName';
+  const broadcasterNameValid = 'CuteDog_' as const;
+  const broadcasterNameInvalid = 'invalidBroadcasterName' as const;
 
   describe('getSevenTvApiUrlFromSevenTvEmoteSetLink', () => {
     test('valid broadcasterName & valid emote set URL', async () => {
@@ -78,7 +78,7 @@ describe('Get API Url', () => {
 
       test('valid broadcasterName but never logged into BTTV', async () => {
         const broadcasterName = 'zackrawrr';
-        (await twitchApi.users([broadcasterName])).data[0].id;
+        expect((await twitchApi.users([broadcasterName])).data[0].id).toBeDefined();
 
         const bttvApiUrlMessage = await getBttvApiUrlFromBroadcasterName(broadcasterName, twitchApi);
 

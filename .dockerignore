@@ -23,4 +23,3 @@ tmp
 compose*.yaml
 Dockerfile
 eslint.config.ts
-tsconfig.tsbuildinfo

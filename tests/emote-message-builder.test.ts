@@ -3,13 +3,12 @@
 import type { ChatInputCommandInteraction } from 'discord.js';
 import { describe, expect, test } from 'vitest';
 
-import { getAllSubstrings } from '../src/command-handlers/shortest-unique-substrings';
-import { EmoteMessageBuilder } from '../src/message-builders/emote-message-builder';
-import type { AssetInfo } from '../src/types';
-import { Platform } from '../src/enums';
+import { getAllSubstrings } from 'src/command-handlers/shortest-unique-substrings.ts';
+import { EmoteMessageBuilder } from 'src/message-builders/emote-message-builder.ts';
+import type { AssetInfo } from 'src/types.ts';
+import { Platform } from 'src/enums.ts';
 
-const EMOTES_LENGTH = 4;
-if (EMOTES_LENGTH < 4) throw new Error('EMOTES_LENGTH at least 4.');
+const EMOTES_LENGTH = 4 as const; //at least 4
 
 function getTestName(index: number): string {
   return `testName${index}`;

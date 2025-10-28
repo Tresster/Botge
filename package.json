@@ -1,6 +1,6 @@
 {
   "name": "botge",
-  "version": "2.5.4",
+  "version": "2.6.0",
   "description": "Search emotes, clips, use zero-width emotes and other such commands.",
   "keywords": [
     "bot",
@@ -27,13 +27,13 @@
   "type": "module",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc --build src",
+    "build:production": "tsc --project src/tsconfig.production.json",
     "eslint": "eslint src --flag unstable_native_nodejs_ts_config",
+    "eslint:tests": "eslint tests --flag unstable_native_nodejs_ts_config",
     "prepare": "node .husky/install.ts",
     "prettier": "prettier . --write",
-    "test": "vitest tests",
-    "tests-eslint": "eslint tests --flag unstable_native_nodejs_ts_config",
-    "tests-prettier": "prettier tests --write"
+    "test": "vitest tests"
   },
   "dependencies": {
     "@discordjs/voice": "^0.19.0",
@@ -61,6 +61,7 @@
     "ts-essentials": "^10.1.1",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.46.2",
+    "vite-tsconfig-paths": "5.1.4",
     "vitest": "^4.0.4"
   },
   "engines": {

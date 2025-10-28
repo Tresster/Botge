@@ -5,9 +5,15 @@ import { Platform } from './enums.ts';
 export const DATABASE_DIR = 'data' as const;
 export const TMP_DIR = 'tmp' as const;
 
-export const TWITCH_ACCESS_TOKEN_PATH = `${DATABASE_DIR}/twitchAccessToken.txt` as const;
+export const TWITCH_ACCESS_TOKEN_PATH: 'data/twitchAccessToken.txt' = `${DATABASE_DIR}/twitchAccessToken.txt` as const;
 
-export const DATABASE_ENDPOINTS = {
+export const DATABASE_ENDPOINTS: {
+  readonly addedEmotes: 'data/addedEmotes.sqlite';
+  readonly pings: 'data/pings.sqlite';
+  readonly permitRoleIds: 'data/permitRoleIds.sqlite';
+  readonly broadcasterNameAndpersonalEmoteSets: 'data/broadcasterNameAndPersonalEmoteSets.sqlite';
+  readonly users: 'data/users.sqlite';
+} = {
   addedEmotes: `${DATABASE_DIR}/addedEmotes.sqlite`,
   pings: `${DATABASE_DIR}/pings.sqlite`,
   permitRoleIds: `${DATABASE_DIR}/permitRoleIds.sqlite`,

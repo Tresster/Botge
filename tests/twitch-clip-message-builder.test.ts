@@ -3,12 +3,11 @@
 import type { ChatInputCommandInteraction } from 'discord.js';
 import { describe, expect, test } from 'vitest';
 
-import { getAllSubstrings } from '../src/command-handlers/shortest-unique-substrings';
-import { TwitchClipMessageBuilder } from '../src/message-builders/twitch-clip-message-builder';
-import type { TwitchClip } from '../src/types';
+import { getAllSubstrings } from 'src/command-handlers/shortest-unique-substrings.ts';
+import { TwitchClipMessageBuilder } from 'src/message-builders/twitch-clip-message-builder.ts';
+import type { TwitchClip } from 'src/types.ts';
 
-const TWITCH_CLIPS_LENGTH = 4;
-if (TWITCH_CLIPS_LENGTH < 4) throw new Error('TWITCH_CLIPS_LENGTH at least 4.');
+const TWITCH_CLIPS_LENGTH = 4 as const; //at least 4
 
 function getTestTitle(index: number): string {
   return `testTitle${index}`;

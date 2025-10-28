@@ -1,35 +1,5 @@
 {
-  "compilerOptions": {
-    "module": "nodenext",
-    "target": "esnext",
-
-    "rootDir": "src",
-    "outDir": "dist",
-
-    "strict": true,
-    "sourceMap": false,
-
-    "composite": true,
-    "declarationMap": false,
-    "isolatedDeclarations": false,
-
-    "noImplicitReturns": true,
-    "noImplicitOverride": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": false,
-    "noUncheckedSideEffectImports": true,
-
-    "noFallthroughCasesInSwitch": true,
-    "noPropertyAccessFromIndexSignature": true,
-
-    "allowUnusedLabels": false,
-    "allowUnreachableCode": false,
-
-    "skipLibCheck": false,
-    "verbatimModuleSyntax": true,
-    "exactOptionalPropertyTypes": true,
-    "rewriteRelativeImportExtensions": true
-  },
-  "include": ["src"]
-  //"exclude": ["tests", "dist/**/*.d.ts"]
+  "extends": "./tsconfig-base",
+  "files": ["./.husky/install.ts", "./eslint.config.ts", "./vitest.config.ts"],
+  "references": [{ "path": "./src" }, { "path": "./tests" }]
 }

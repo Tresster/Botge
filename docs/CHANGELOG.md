@@ -2,9 +2,29 @@
 
 # Changelog
 
-## [Unreleased](https://github.com/Tresster/Botge/tree/HEAD)
+## [v2.6.0](https://github.com/Tresster/Botge/tree/v2.6.0) (2025-10-28)
 
-[Full Changelog](https://github.com/Tresster/Botge/compare/543b9f332156d54c92877c2ff1b7ebc4a0525136...HEAD)
+[Full Changelog](https://github.com/Tresster/Botge/compare/v2.5.4...v2.6.0)
+
+## [v2.5.4](https://github.com/Tresster/Botge/tree/v2.5.4) (2025-10-27)
+
+[Full Changelog](https://github.com/Tresster/Botge/compare/v2.5.3...v2.5.4)
+
+**Fixed bugs:**
+
+- Failed to ChatGPT. [\#64](https://github.com/Tresster/Botge/issues/64)
+
+## [v2.5.3](https://github.com/Tresster/Botge/tree/v2.5.3) (2025-10-27)
+
+[Full Changelog](https://github.com/Tresster/Botge/compare/v2.5.2...v2.5.3)
+
+## [v2.5.2](https://github.com/Tresster/Botge/tree/v2.5.2) (2025-10-24)
+
+[Full Changelog](https://github.com/Tresster/Botge/compare/v2.5.1...v2.5.2)
+
+## [v2.5.1](https://github.com/Tresster/Botge/tree/v2.5.1) (2025-10-24)
+
+[Full Changelog](https://github.com/Tresster/Botge/compare/543b9f332156d54c92877c2ff1b7ebc4a0525136...v2.5.1)
 
 **Closed issues:**
 

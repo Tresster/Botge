@@ -23,14 +23,31 @@ import {
 const FFZGLOBALSETSKEY = 3 as const;
 
 class EmoteNode {
-  public highestPriority: number;
-  public assets: AssetInfo[];
-  public uniquePath: boolean;
+  #highestPriority: number;
+  readonly #assets: AssetInfo[];
+  #uniquePath: boolean;
 
   public constructor(priority: number, asset: AssetInfo) {
-    this.highestPriority = priority;
-    this.assets = [asset];
-    this.uniquePath = true;
+    this.#highestPriority = priority;
+    this.#assets = [asset];
+    this.#uniquePath = true;
+  }
+
+  public get highestPriority(): number {
+    return this.#highestPriority;
+  }
+  public get assets(): AssetInfo[] {
+    return this.#assets;
+  }
+  public get uniquePath(): boolean {
+    return this.#uniquePath;
+  }
+
+  public set highestPriority(highestPriority: number) {
+    this.#highestPriority = highestPriority;
+  }
+  public set uniquePath(uniquePath: boolean) {
+    this.#uniquePath = uniquePath;
   }
 }
 
@@ -39,7 +56,7 @@ class SuffixTree {
   #data: EmoteNode | undefined;
 
   public constructor() {
-    this.#paths = new Map();
+    this.#paths = new Map<string, SuffixTree>();
     this.#data = undefined;
   }
 

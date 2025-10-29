@@ -1,11 +1,14 @@
 {
-  "extends": "../tsconfig-base",
+  "extends": "./tsconfig",
+  "references": [],
   "compilerOptions": {
-    "outDir": "../dist",
-
+    //Projects
     "composite": false,
+
+    //Emit
     "declarationMap": false,
+
+    //Interop Constraints
     "isolatedDeclarations": false
-  },
-  "references": []
+  }
 }

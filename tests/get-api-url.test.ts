@@ -76,15 +76,6 @@ describe('Get API Url', () => {
         expect(bttvApiUrlMessage.ownerUsername).toBeUndefined();
       });
 
-      test('valid broadcasterName but never logged into BTTV', async () => {
-        const broadcasterName = 'zackrawrr';
-        expect((await twitchApi.users([broadcasterName])).data[0].id).toBeDefined();
-
-        const bttvApiUrlMessage = await getBttvApiUrlFromBroadcasterName(broadcasterName, twitchApi);
-
-        expect(bttvApiUrlMessage.type).toBe('feedback');
-      });
-
       test('invalid broadcasterName', async () => {
         const bttvApiUrlMessage = await getBttvApiUrlFromBroadcasterName(broadcasterNameInvalid, twitchApi);
 

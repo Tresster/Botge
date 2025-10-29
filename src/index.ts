@@ -31,19 +31,6 @@ import type { Guild } from './guild.ts';
 import { User } from './user.js';
 import { Bot } from './bot.ts';
 
-const {
-  DISCORD_TOKEN,
-  OPENAI_API_KEY,
-  DEEPL_API_KEY,
-  TWITCH_CLIENT_ID,
-  TWITCH_SECRET,
-  MEILISEARCH_HOST,
-  MEILISEARCH_API_KEY,
-  LOCAL_CACHE_BASE,
-  UPDATE_CLIPS_ON_STARTUP,
-  GEMINI_API_KEY
-} = process.env;
-
 const ensureDirs = (async (): Promise<void> => {
   await ensureDir(DATABASE_DIR);
   await ensureDir(TMP_DIR);
@@ -68,6 +55,17 @@ const updateCommands_ = (async (): Promise<void> => {
 
 //bot object
 const bot = await (async (): Promise<Readonly<Bot>> => {
+  const {
+    OPENAI_API_KEY,
+    DEEPL_API_KEY,
+    TWITCH_CLIENT_ID,
+    TWITCH_SECRET,
+    MEILISEARCH_HOST,
+    MEILISEARCH_API_KEY,
+    LOCAL_CACHE_BASE,
+    GEMINI_API_KEY
+  } = process.env;
+
   const client: Client = new Client({
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent]
   });
@@ -221,7 +219,7 @@ process.on('unhandledRejection', (error): void => {
 });
 
 const refreshClipsOrRefreshUniqueCreatorNamesAndGameIds: readonly Promise<void>[] =
-  UPDATE_CLIPS_ON_STARTUP === 'true'
+  process.env['UPDATE_CLIPS_ON_STARTUP'] === 'true'
     ? bot.guilds.map(async (guild) => guild.refreshClips(bot.twitchApi))
     : bot.guilds.map(async (guild) => guild.refreshUniqueCreatorNamesAndGameIds());
 
@@ -258,5 +256,5 @@ bot.registerHandlers();
 await ensureDirs;
 await updateCommands_;
 await Promise.all(refreshClipsOrRefreshUniqueCreatorNamesAndGameIds);
-await bot.start(DISCORD_TOKEN);
+await bot.start(process.env['DISCORD_TOKEN']);
 await registerPings(bot.client, bot.pingsDatabase, bot.scheduledJobs);

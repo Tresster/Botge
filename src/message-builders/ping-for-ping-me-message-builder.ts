@@ -19,7 +19,7 @@ import type {
 } from '../types.ts';
 import { getCustomId } from './base.ts';
 
-export enum ContentType {
+export const enum ContentType {
   PingRegistered = 0,
   Pinged = 1
 }

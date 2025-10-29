@@ -17,6 +17,7 @@ tests
 tmp
 
 .dockerignore
+.env
 .gitattributes
 .gitignore
 .prettierrc.json

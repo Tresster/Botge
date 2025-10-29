@@ -98,6 +98,8 @@ const config: readonly Config[] = defineConfig(
       '@typescript-eslint/consistent-type-definitions': ['warn', 'type'],
       '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^guild$' }],
 
+      '@typescript-eslint/adjacent-overload-signatures': 'off',
+
       'eqeqeq': 'warn',
       'strict': 'warn',
       'array-callback-return': 'warn',

@@ -1,30 +1,42 @@
 {
   "compilerOptions": {
+    //Modules
     "module": "nodenext",
-    "target": "esnext",
 
-    "strict": true,
-    "sourceMap": false,
+    "resolveJsonModule": false,
+    "noUncheckedSideEffectImports": true,
+    "rewriteRelativeImportExtensions": true,
 
+    //Projects
     "composite": true,
+    //Completeness
+    "skipLibCheck": false,
+    //Language and Environment
+    "lib": [],
+
+    //Emit
+    "sourceMap": false,
     "declarationMap": true,
+    "noEmitOnError": true,
+
+    //Interop Constraints
+    "verbatimModuleSyntax": true,
     "isolatedDeclarations": true,
+
+    //Type Checking
+    "strict": true,
+
+    "noUnusedLocals": true,
+    "noUnusedParameters": false,
 
     "noImplicitReturns": true,
     "noImplicitOverride": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": false,
-    "noUncheckedSideEffectImports": true,
-
-    "noFallthroughCasesInSwitch": true,
-    "noPropertyAccessFromIndexSignature": true,
 
     "allowUnusedLabels": false,
     "allowUnreachableCode": false,
 
-    "skipLibCheck": false,
-    "verbatimModuleSyntax": true,
     "exactOptionalPropertyTypes": true,
-    "rewriteRelativeImportExtensions": true
+    "noFallthroughCasesInSwitch": true,
+    "noPropertyAccessFromIndexSignature": true
   }
 }

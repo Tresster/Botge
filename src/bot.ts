@@ -9,6 +9,7 @@ import { shortestuniquesubstringsHandler } from './command-handlers/shortest-uni
 import { emoteHandler, emotesHandler, emoteListHandler } from './command-handlers/emote.ts';
 import { addEmoteHandlerSevenTVNotInSet } from './command-handlers/add-emote.ts';
 import { findTheEmojiHandler } from './command-handlers/find-the-emoji.ts';
+import { mediaListHandler } from './command-handlers/media-list.ts';
 import { translateHandler } from './command-handlers/translate.ts';
 import { transientHandler } from './command-handlers/transient.ts';
 import { pingListHandler } from './command-handlers/ping-list.ts';
@@ -17,10 +18,12 @@ import { chatgptHandler } from './command-handlers/openai.ts';
 import { geminiHandler } from './command-handlers/gemini.ts';
 import { pingMeHandler } from './command-handlers/pingme.ts';
 import { steamHandler } from './command-handlers/steam.ts';
+import { mediaHandler } from './command-handlers/media.ts';
 import { clipHandler } from './command-handlers/clip.ts';
 import type { BroadcasterNameAndPersonalEmoteSetsDatabase } from './api/broadcaster-name-and-personal-emote-sets-database.ts';
 import type { PermittedRoleIdsDatabase } from './api/permitted-role-ids-database.ts';
 import type { AddedEmotesDatabase } from './api/added-emotes-database.ts';
+import type { MediaDatabase } from './api/media-database.ts';
 import type { PingsDatabase } from './api/ping-database.ts';
 import type { TwitchApi } from './api/twitch-api.ts';
 import type { CachedUrl } from './api/cached-url.ts';
@@ -34,6 +37,7 @@ import type { TwitchClipMessageBuilder } from './message-builders/twitch-clip-me
 import type { EmoteMessageBuilder } from './message-builders/emote-message-builder.ts';
 import type { PingForPingListMessageBuilder } from './message-builders/ping-for-ping-list-message-builder.ts';
 import type { PingForPingMeMessageBuilder } from './message-builders/ping-for-ping-me-message-builder.ts';
+import type { MediaMessageBuilder } from './message-builders/media-message-builder.ts';
 import { messageCreateHandler } from './message-create-handlers/message-create-handler.ts';
 import type { ReadonlyGoogleGenAI, ReadonlyOpenAI, ReadonlyTranslator } from './types.ts';
 import type { TwitchClipsMeiliSearch } from './twitch-clips-meili-search.ts';
@@ -55,6 +59,7 @@ export class Bot {
   readonly #permittedRoleIdsDatabase: Readonly<PermittedRoleIdsDatabase>;
   readonly #broadcasterNameAndPersonalEmoteSetsDatabase: Readonly<BroadcasterNameAndPersonalEmoteSetsDatabase>;
   readonly #usersDatabase: Readonly<UsersDatabase>;
+  readonly #mediaDatabase: Readonly<MediaDatabase>;
   readonly #cachedUrl: Readonly<CachedUrl>;
   readonly #guilds: Readonly<Guild>[];
   readonly #users: Readonly<User>[];
@@ -62,6 +67,7 @@ export class Bot {
   readonly #emoteMessageBuilders: EmoteMessageBuilder[] = [];
   readonly #pingForPingMeMessageBuilders: PingForPingMeMessageBuilder[] = [];
   readonly #pingForPingListMessageBuilders: PingForPingListMessageBuilder[] = [];
+  readonly #mediaMessageBuilders: MediaMessageBuilder[] = [];
   readonly #twitchClipsMeiliSearch: Readonly<TwitchClipsMeiliSearch> | undefined;
   readonly #commandHandlers: Map<
     string,
@@ -80,6 +86,7 @@ export class Bot {
     permittedRoleIdsDatabase: Readonly<PermittedRoleIdsDatabase>,
     broadcasterNameAndPersonalEmoteSetsDatabase: Readonly<BroadcasterNameAndPersonalEmoteSetsDatabase>,
     usersDatabase: Readonly<UsersDatabase>,
+    mediaDatabase: Readonly<MediaDatabase>,
     cachedUrl: Readonly<CachedUrl>,
     guilds: readonly Readonly<Guild>[],
     users: readonly Readonly<User>[],
@@ -95,6 +102,7 @@ export class Bot {
     this.#permittedRoleIdsDatabase = permittedRoleIdsDatabase;
     this.#broadcasterNameAndPersonalEmoteSetsDatabase = broadcasterNameAndPersonalEmoteSetsDatabase;
     this.#usersDatabase = usersDatabase;
+    this.#mediaDatabase = mediaDatabase;
     this.#cachedUrl = cachedUrl;
     this.#guilds = [...guilds];
     this.#users = [...users];
@@ -121,7 +129,9 @@ export class Bot {
       [
         COMMAND_NAMES.pingList,
         pingListHandler(this.#pingsDatabase, this.#pingForPingListMessageBuilders, this.#client, this.#scheduledJobs)
-      ]
+      ],
+      [COMMAND_NAMES.media, mediaHandler(this.#mediaDatabase)],
+      [COMMAND_NAMES.mediaList, mediaListHandler(this.#mediaDatabase, this.#mediaMessageBuilders)]
     ]);
   }
 
@@ -148,6 +158,9 @@ export class Bot {
   }
   public get usersDatabase(): Readonly<UsersDatabase> {
     return this.#usersDatabase;
+  }
+  public get mediaDatabase(): Readonly<MediaDatabase> {
+    return this.#mediaDatabase;
   }
   public get scheduledJobs(): Readonly<Job>[] {
     return this.#scheduledJobs;
@@ -208,7 +221,7 @@ export class Bot {
           return newGuildWithoutPersonalEmotes_;
         })());
 
-      void messageCreateHandler()(this.#cachedUrl, message, guild);
+      void messageCreateHandler()(this.#cachedUrl, message, guild, this.#mediaDatabase);
     });
 
     //interaction
@@ -265,6 +278,7 @@ export class Bot {
           this.#twitchClipMessageBuilders,
           this.#emoteMessageBuilders,
           this.#pingForPingListMessageBuilders,
+          this.#mediaMessageBuilders,
           guild,
           this.#broadcasterNameAndPersonalEmoteSetsDatabase,
           this.#usersDatabase,
@@ -283,7 +297,8 @@ export class Bot {
           emoteMatcher,
           twitchClipsMeiliSearchIndex,
           uniqueCreatorNames,
-          uniqueGameIds
+          uniqueGameIds,
+          this.#mediaDatabase
         )(interaction);
         return;
       }
@@ -300,13 +315,15 @@ export class Bot {
         const emoteMessageBuilder = await buttonHandler(
           this.#twitchClipMessageBuilders,
           this.#emoteMessageBuilders,
+          this.#mediaMessageBuilders,
           this.#pingForPingMeMessageBuilders,
           this.#pingForPingListMessageBuilders,
           guild,
           user_,
           this.#addedEmotesDatabase,
           this.#permittedRoleIdsDatabase,
-          this.#pingsDatabase
+          this.#pingsDatabase,
+          this.#mediaDatabase
         )(interaction);
 
         if (emoteMessageBuilder !== undefined) this.#emoteMessageBuilders.push(emoteMessageBuilder);
@@ -314,7 +331,7 @@ export class Bot {
       }
 
       if (interaction.isMessageContextMenuCommand()) {
-        void messageContextMenuCommandHandler(this.#openai)(interaction);
+        void messageContextMenuCommandHandler(this.#openai, this.#mediaDatabase)(interaction);
         return;
       }
 
@@ -345,6 +362,7 @@ export class Bot {
     this.#cleanupMessageBuilders(this.#twitchClipMessageBuilders, timeNow);
     this.#cleanupMessageBuilders(this.#emoteMessageBuilders, timeNow);
     this.#cleanupMessageBuilders(this.#pingForPingListMessageBuilders, timeNow);
+    this.#cleanupMessageBuilders(this.#mediaMessageBuilders, timeNow);
     this.#cleanupPingMessageBuilders(timeNow);
   }
 
@@ -353,7 +371,12 @@ export class Bot {
   }
 
   #cleanupMessageBuilders(
-    messageBuilders: (TwitchClipMessageBuilder | EmoteMessageBuilder | PingForPingListMessageBuilder)[],
+    messageBuilders: (
+      | TwitchClipMessageBuilder
+      | EmoteMessageBuilder
+      | PingForPingListMessageBuilder
+      | MediaMessageBuilder
+    )[],
     timeNow: number
   ): void {
     for (const [index, messageBuilder] of messageBuilders.entries()) {

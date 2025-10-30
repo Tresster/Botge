@@ -8,6 +8,7 @@ import { platformStrings, platformToString, stringToPlatform } from '../utils/pl
 import { booleanToString, stringToBoolean } from '../utils/boolean-to-string.ts';
 import { getOptionValue } from '../utils/get-option-value.ts';
 import { getShortestUniqueSubstrings } from '../command-handlers/shortest-unique-substrings.ts';
+import type { MediaDatabase } from '../api/media-database.ts';
 import type { TwitchClip, ReadonlyHit, ReadonlyApplicationCommandOptionChoiceDataString, AssetInfo } from '../types.ts';
 import type { EmoteMatcher } from '../emote-matcher.ts';
 import { Platform } from '../enums.ts';
@@ -43,7 +44,8 @@ export function autocompleteHandler(
   emoteMatcher: Readonly<EmoteMatcher>,
   twitchClipsMeiliSearchIndex: Index | undefined,
   uniqueCreatorNames: readonly string[] | undefined,
-  uniqueGameIds: readonly string[] | undefined
+  uniqueGameIds: readonly string[] | undefined,
+  mediaDataBase: Readonly<MediaDatabase>
 ) {
   return async (interaction: AutocompleteInteraction): Promise<void> => {
     try {
@@ -300,6 +302,23 @@ export function autocompleteHandler(
               };
             }
           );
+
+          await interaction.respond(
+            options.slice(0, MAX_OPTIONS_LENGTH) as readonly ApplicationCommandOptionChoiceData<string>[]
+          );
+        }
+      } else if (interactionCommandName === COMMAND_NAMES.media) {
+        if (focusedOptionName === 'name') {
+          const mediaNames: readonly string[] = mediaDataBase
+            .getAllMedia(interaction.user.id)
+            .map((media) => media.name)
+            .filter((mediaName) => mediaName.includes(focusedOptionValue.trim().toLocaleLowerCase()));
+          const options: readonly ApplicationCommandOptionChoiceData<string>[] = mediaNames.map((mediaName) => {
+            return {
+              name: mediaName,
+              value: mediaName
+            };
+          });
 
           await interaction.respond(
             options.slice(0, MAX_OPTIONS_LENGTH) as readonly ApplicationCommandOptionChoiceData<string>[]

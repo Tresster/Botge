@@ -1,7 +1,7 @@
 /** @format */
 
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
-import type { Database, SqlJsStatic } from 'sql.js';
+import type { Database, SqlJsStatic, SqlValue } from 'sql.js';
 
 export class BaseDatabase {
   protected readonly database: Database;
@@ -24,9 +24,9 @@ export class BaseDatabase {
     this.database.close();
   }
 
-  protected getAll_(sql: string): readonly unknown[] {
+  protected getAll_(sql: string, params?: SqlValue[]): readonly unknown[] {
     const databaseObjects: unknown[] = [];
-    const statement = this.database.prepare(sql);
+    const statement = this.database.prepare(sql, params);
 
     while (statement.step()) {
       const databaseObject = statement.getAsObject() as unknown;

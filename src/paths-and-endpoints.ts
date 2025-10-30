@@ -13,12 +13,14 @@ export const DATABASE_ENDPOINTS: {
   readonly permitRoleIds: 'data/permitRoleIds.sqlite';
   readonly broadcasterNameAndpersonalEmoteSets: 'data/broadcasterNameAndPersonalEmoteSets.sqlite';
   readonly users: 'data/users.sqlite';
+  readonly media: 'data/media.sqlite';
 } = {
   addedEmotes: `${DATABASE_DIR}/addedEmotes.sqlite`,
   pings: `${DATABASE_DIR}/pings.sqlite`,
   permitRoleIds: `${DATABASE_DIR}/permitRoleIds.sqlite`,
   broadcasterNameAndpersonalEmoteSets: `${DATABASE_DIR}/broadcasterNameAndPersonalEmoteSets.sqlite`,
-  users: `${DATABASE_DIR}/users.sqlite`
+  users: `${DATABASE_DIR}/users.sqlite`,
+  media: `${DATABASE_DIR}/media.sqlite`
 } as const;
 
 export const CDN_ENDPOINTS = {

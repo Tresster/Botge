@@ -10,6 +10,7 @@ import {
 import { PingForPingListMessageBuilder } from '../message-builders/ping-for-ping-list-message-builder.ts';
 import { TwitchClipMessageBuilder } from '../message-builders/twitch-clip-message-builder.ts';
 import { EmoteMessageBuilder } from '../message-builders/emote-message-builder.ts';
+import { MediaMessageBuilder } from '../message-builders/media-message-builder.js';
 import {
   getBaseCustomIdFromCustomId,
   getMessageBuilderTypeFromCustomId,
@@ -37,6 +38,7 @@ export function modalSubmitHandler(
   twitchClipMessageBuilders: readonly Readonly<TwitchClipMessageBuilder>[],
   emoteMessageBuilders: readonly Readonly<EmoteMessageBuilder>[],
   pingForPingListMessageBuilders: readonly Readonly<PingForPingListMessageBuilder>[],
+  mediaMessageBuilders: readonly Readonly<MediaMessageBuilder>[],
   guild: Readonly<Guild> | undefined,
   broadcasterNameAndPersonalEmoteSetsDatabase: Readonly<BroadcasterNameAndPersonalEmoteSetsDatabase>,
   usersDatabase: Readonly<UsersDatabase>,
@@ -198,11 +200,13 @@ export function modalSubmitHandler(
         | readonly Readonly<TwitchClipMessageBuilder>[]
         | readonly Readonly<EmoteMessageBuilder>[]
         | readonly Readonly<PingForPingListMessageBuilder>[]
+        | readonly Readonly<MediaMessageBuilder>[]
         | undefined => {
         if (messageBuilderType === TwitchClipMessageBuilder.messageBuilderType) return twitchClipMessageBuilders;
         else if (messageBuilderType === EmoteMessageBuilder.messageBuilderType) return emoteMessageBuilders;
         else if (messageBuilderType === PingForPingListMessageBuilder.messageBuilderType)
           return pingForPingListMessageBuilders;
+        else if (messageBuilderType === MediaMessageBuilder.messageBuilderType) return mediaMessageBuilders;
         return undefined;
       })();
       if (messageBuilders === undefined) return;
@@ -214,6 +218,7 @@ export function modalSubmitHandler(
             | Readonly<TwitchClipMessageBuilder>
             | Readonly<EmoteMessageBuilder>
             | Readonly<PingForPingListMessageBuilder>
+            | Readonly<MediaMessageBuilder>
         ) => messageBuilder.counter === counter
       );
       if (messageBuilderIndex === -1) return;

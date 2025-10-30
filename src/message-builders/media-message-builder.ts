@@ -1,0 +1,105 @@
+/** @format */
+
+import {
+  ButtonStyle,
+  ButtonBuilder,
+  EmbedBuilder,
+  ActionRowBuilder,
+  type ChatInputCommandInteraction,
+  type MessageActionRowComponentBuilder
+} from 'discord.js';
+
+import type {
+  Media,
+  MediaMessageBuilderTransformFunctionReturnType,
+  ReadonlyActionRowBuilderMessageActionRowComponentBuilder
+} from '../types.ts';
+import { MEDIA_LIST } from '../commands.ts';
+import { BaseMessageBuilder, getCustomId } from './base.ts';
+
+export const DELETE_MEDIA_BUTTON_BASE_CUSTOM_ID = 'deleteMediaButton' as const;
+export const RENAME_MEDIA_BUTTON_BASE_CUSTOM_ID = 'renameMediaButton' as const;
+
+export class MediaMessageBuilder extends BaseMessageBuilder<Media, MediaMessageBuilderTransformFunctionReturnType> {
+  public static readonly messageBuilderType = 'Media' as const;
+  static #staticCounter = 0;
+  readonly #extraRow: ReadonlyActionRowBuilderMessageActionRowComponentBuilder;
+  readonly #markedAsDeleteds: number[] = [];
+  readonly #sortedByText: string | undefined;
+
+  public constructor(
+    interaction: ChatInputCommandInteraction,
+    mediaArray: readonly Media[],
+    sortedBy: string | undefined
+  ) {
+    const transformFunction = (media: Media): MediaMessageBuilderTransformFunctionReturnType => {
+      const { name, url, dateAdded } = media;
+
+      const embed = new EmbedBuilder();
+
+      if (this.#markedAsDeleteds.includes(this.currentIndex)) embed.setDescription('❌ DELETED ❌');
+
+      embed
+        .setColor('DarkButNotBlack')
+        .setTitle(name)
+        .setURL(url)
+        .addFields({ name: 'Date Added (UTC)', value: dateAdded.toUTCString() })
+        .setFooter({
+          text: `${this.currentIndex + 1}/${this.arrayLength}. ${this.#sortedByText === MEDIA_LIST.sortBy.alphabetical ? 'Sorted alphabetically' : `Sorted by ${this.#sortedByText}`}.`
+        });
+
+      const { tenorUrl } = media;
+      if (tenorUrl !== undefined) embed.setThumbnail(tenorUrl);
+      else embed.setThumbnail(url);
+
+      return {
+        embeds: [embed],
+        components: [this.row, this.#extraRow]
+      };
+    };
+
+    const getIdentifierFunction = (media: Media): string => {
+      return media.name;
+    };
+
+    super(
+      MediaMessageBuilder.#staticCounter++,
+      MediaMessageBuilder.messageBuilderType,
+      interaction,
+      mediaArray,
+      transformFunction,
+      getIdentifierFunction,
+      'name'
+    );
+
+    this.#sortedByText = sortedBy ?? 'date added (newest first)';
+    this.#extraRow = new ActionRowBuilder<MessageActionRowComponentBuilder>().addComponents(
+      new ButtonBuilder()
+        .setCustomId(
+          getCustomId(DELETE_MEDIA_BUTTON_BASE_CUSTOM_ID, MediaMessageBuilder.messageBuilderType, this.counter)
+        )
+        .setLabel('Delete')
+        .setStyle(ButtonStyle.Danger),
+      new ButtonBuilder()
+        .setCustomId(
+          getCustomId(RENAME_MEDIA_BUTTON_BASE_CUSTOM_ID, MediaMessageBuilder.messageBuilderType, this.counter)
+        )
+        .setLabel('Rename')
+        .setStyle(ButtonStyle.Secondary)
+    );
+  }
+
+  public get currentMedia(): Media | undefined {
+    if (this.#markedAsDeleteds.includes(this.currentIndex)) return undefined;
+
+    const currentMedia = this.currentItem;
+    return currentMedia;
+  }
+
+  public markCurrentAsDeleted(): MediaMessageBuilderTransformFunctionReturnType | undefined {
+    if (this.#markedAsDeleteds.includes(this.currentIndex)) return undefined;
+
+    this.#markedAsDeleteds.push(this.currentIndex);
+    return this.current();
+  }
+}

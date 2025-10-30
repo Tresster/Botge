@@ -15,6 +15,7 @@ import initSqlJs from 'sql.js';
 import { BroadcasterNameAndPersonalEmoteSetsDatabase } from './api/broadcaster-name-and-personal-emote-sets-database.ts';
 import { PermittedRoleIdsDatabase } from './api/permitted-role-ids-database.ts';
 import { AddedEmotesDatabase } from './api/added-emotes-database.ts';
+import { MediaDatabase } from './api/media-database.ts';
 import { PingsDatabase } from './api/ping-database.ts';
 import { CachedUrl } from './api/cached-url.ts';
 import { UsersDatabase } from './api/user.ts';
@@ -104,6 +105,7 @@ const bot = await (async (): Promise<Readonly<Bot>> => {
       sqlJsStatic
     );
   const usersDatabase: Readonly<UsersDatabase> = new UsersDatabase(DATABASE_ENDPOINTS.users, sqlJsStatic);
+  const mediaDatabase: Readonly<MediaDatabase> = new MediaDatabase(DATABASE_ENDPOINTS.media, sqlJsStatic);
 
   const cachedUrl: Readonly<CachedUrl> = new CachedUrl(LOCAL_CACHE_BASE);
 
@@ -153,6 +155,7 @@ const bot = await (async (): Promise<Readonly<Bot>> => {
     permittedRoleIdsDatabase,
     broadcasterNameAndPersonalEmoteSetsDatabase,
     usersDatabase,
+    mediaDatabase,
     cachedUrl,
     guilds,
     users,
@@ -167,6 +170,7 @@ function closeFunction(): void {
     bot.permittedRoleIdsDatabase.close();
     bot.broadcasterNameAndPersonalEmoteSetsDatabase.close();
     bot.usersDatabase.close();
+    bot.mediaDatabase.close();
   } catch (error) {
     console.log(
       `Error at closeFunction - closing databases: ${error instanceof Error ? error.message : String(error)}`

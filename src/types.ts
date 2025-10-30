@@ -257,6 +257,18 @@ export type PingForPingListMessageBuilderTransformFunctionReturnType = {
   readonly components: readonly ReadonlyActionRowBuilderMessageActionRowComponentBuilder[];
 };
 
+export type Media = {
+  readonly url: string;
+  readonly name: string;
+  readonly dateAdded: Readonly<Date>;
+  readonly tenorUrl?: string;
+};
+
+export type MediaMessageBuilderTransformFunctionReturnType = {
+  readonly embeds: readonly ReadonlyEmbedBuilder[];
+  readonly components: readonly ReadonlyActionRowBuilderMessageActionRowComponentBuilder[];
+};
+
 //Needed for @twemoji/api.parse, but we only parse string.
 declare module '@twemoji/api' {
   type HTMLElement = string;

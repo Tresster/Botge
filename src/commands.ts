@@ -33,11 +33,15 @@ export const COMMAND_NAMES = {
   pingMe: 'pingme',
   poe2: 'poe2',
   settings: 'settings',
-  pingList: 'pinglist'
+  pingList: 'pinglist',
+  media: 'media',
+  mediaList: 'medialist'
 } as const;
 
 export const CONTEXT_MENU_COMMAND_NAMES = {
-  chatGptExplain: 'ChatGPT Explain'
+  chatGptExplain: 'ChatGPT Explain',
+  addMedia: 'Add Media',
+  removeMedia: 'Remove Media'
 } as const;
 
 export const PING_LIST = {
@@ -46,6 +50,12 @@ export const PING_LIST = {
     every: 'every'
   },
   timezone: 'timezone'
+} as const;
+
+export const MEDIA_LIST = {
+  sortBy: {
+    alphabetical: 'alphabetical'
+  }
 } as const;
 
 const emote: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
@@ -246,6 +256,35 @@ const pingList: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder
     option.setName(PING_LIST.timezone).setDescription('The timezone to display the ping date in').setAutocomplete(true)
   );
 
+const media: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
+  .setName(COMMAND_NAMES.media)
+  .setDescription('Get a media')
+  .addStringOption((option: ReadonlySlashCommandStringOption) =>
+    option.setName('name').setDescription("The media's name").setRequired(true).setAutocomplete(true)
+  )
+  .setContexts(InteractionContextType.Guild, InteractionContextType.PrivateChannel);
+
+const mediaList: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
+  .setName(COMMAND_NAMES.mediaList)
+  .setDescription('Media list')
+  .addStringOption((option: ReadonlySlashCommandStringOption) =>
+    option
+      .setName('sortby')
+      .setDescription('Sort. Default: date added (newest first)')
+      .addChoices({ name: 'Alphabetical Order', value: MEDIA_LIST.sortBy.alphabetical })
+  )
+  .setContexts(InteractionContextType.Guild, InteractionContextType.PrivateChannel);
+
+const addMedia: ReadonlyContextMenuCommandBuilder = new ContextMenuCommandBuilder()
+  .setName(CONTEXT_MENU_COMMAND_NAMES.addMedia)
+  .setType(ApplicationCommandType.Message)
+  .setContexts(InteractionContextType.Guild, InteractionContextType.PrivateChannel);
+
+const removeMedia: ReadonlyContextMenuCommandBuilder = new ContextMenuCommandBuilder()
+  .setName(CONTEXT_MENU_COMMAND_NAMES.removeMedia)
+  .setType(ApplicationCommandType.Message)
+  .setContexts(InteractionContextType.Guild, InteractionContextType.PrivateChannel);
+
 export const commands: readonly (
   | Readonly<RESTPostAPIChatInputApplicationCommandsJSONBody>
   | Readonly<RESTPostAPIContextMenuApplicationCommandsJSONBody>
@@ -265,7 +304,9 @@ export const commands: readonly (
     pingMe.toJSON(),
     poe2.toJSON(),
     settings.toJSON(),
-    pingList.toJSON()
+    pingList.toJSON(),
+    media.toJSON(),
+    mediaList.toJSON()
   ],
-  ...[chatGptExplain.toJSON()]
+  ...[chatGptExplain.toJSON(), addMedia.toJSON(), removeMedia.toJSON()]
 ];

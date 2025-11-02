@@ -1,7 +1,7 @@
 {
   "telemetry.feedback.enabled": false,
 
-  "git.alwaysSignOff": true,
+  "git.alwaysSignOff": false,
   "git.autofetch": true,
   "git.enableCommitSigning": true,
 

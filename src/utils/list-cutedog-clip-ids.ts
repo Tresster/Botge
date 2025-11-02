@@ -1,5 +1,7 @@
 /** @format */
 
+import fetch from 'node-fetch';
+
 import type { ReadonlyRegExpExecArray } from '../types.ts';
 
 const url =

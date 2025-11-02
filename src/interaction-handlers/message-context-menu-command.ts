@@ -72,7 +72,8 @@ function getMediaUrlFromMessage(message: Message): getMediaUrlFromMessageReturnT
 
     if (
       !embedUrl.startsWith('https://tenor.com/view/') &&
-      !embedUrl.startsWith('https://cdn.discordapp.com/attachments/')
+      !embedUrl.startsWith('https://cdn.discordapp.com/attachments/') &&
+      !embedUrl.startsWith('https://media.discordapp.com/attachments/')
     ) {
       return { type: 'feedback', message: 'Currently the only supported media are Tenor links and attachments.' };
     }

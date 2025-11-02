@@ -1,6 +1,6 @@
 {
   "name": "botge",
-  "version": "2.6.1",
+  "version": "2.6.2",
   "description": "Search emotes, clips, use zero-width emotes and other such commands.",
   "keywords": [
     "bot",
@@ -29,20 +29,19 @@
   "scripts": {
     "build": "tsc --build src",
     "build:production": "tsc --project src/tsconfig.production.json",
-    "eslint": "eslint src --flag unstable_native_nodejs_ts_config",
-    "eslint:tests": "eslint tests --flag unstable_native_nodejs_ts_config",
+    "eslint": "eslint . --flag unstable_native_nodejs_ts_config",
     "prepare": "node .husky/install.ts",
     "prettier": "prettier . --write",
     "test": "vitest tests"
   },
   "dependencies": {
     "@discordjs/voice": "^0.19.0",
-    "@google/genai": "^1.27.0",
+    "@google/genai": "^1.28.0",
     "@twemoji/api": "^16.0.1",
     "deepl-node": "^1.20.0",
-    "discord.js": "^14.24.0",
+    "discord.js": "^14.24.2",
     "fs-extra": "^11.3.2",
-    "meilisearch": "^0.53.0",
+    "meilisearch": "^0.54.0",
     "node-fetch": "^3.3.2",
     "node-schedule": "^2.1.1",
     "openai": "^6.7.0",
@@ -54,15 +53,16 @@
     "@types/fs-extra": "^11.0.4",
     "@types/node-schedule": "^2.1.8",
     "@types/sql.js": "1.4.9",
-    "eslint": "^9.38.0",
+    "eslint": "^9.39.0",
     "husky": "^9.1.7",
+    "markdownlint": "0.39.0",
     "prettier": "^3.6.2",
     "prettier-plugin-sh": "0.18.0",
     "ts-essentials": "^10.1.1",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.46.2",
     "vite-tsconfig-paths": "5.1.4",
-    "vitest": "^4.0.4"
+    "vitest": "^4.0.6"
   },
   "engines": {
     "node": "v25.0.0",

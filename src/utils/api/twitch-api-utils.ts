@@ -1,11 +1,13 @@
 /** @format */
 
+import fetch from 'node-fetch';
+
 import type { TwitchApi } from '../../api/twitch-api.ts';
-import type { ClientCredentialsGrantFlow, TwitchClip, TwitchClips } from '../../types.ts';
+import type { TwitchClientCredentialsGrantFlow, TwitchClip, TwitchClips } from '../../types.ts';
 import { TWITCH_API_ENDPOINTS } from '../../paths-and-endpoints.ts';
 
 export async function getTwitchAccessToken(clientId: string, clientSecret: string): Promise<string> {
-  const resp = await fetch(TWITCH_API_ENDPOINTS.accessToken, {
+  const response = await fetch(TWITCH_API_ENDPOINTS.accessToken, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
@@ -13,9 +15,9 @@ export async function getTwitchAccessToken(clientId: string, clientSecret: strin
     body: `client_id=${clientId}&client_secret=${clientSecret}&grant_type=client_credentials`
   });
 
-  if (!resp.ok) throw new Error(`Cannot get access token from twitch: ${resp.status}`);
+  if (!response.ok) throw new Error(`Cannot get access token from Twitch: ${response.status}`);
 
-  return ((await resp.json()) as ClientCredentialsGrantFlow).access_token;
+  return ((await response.json()) as TwitchClientCredentialsGrantFlow).access_token;
 }
 
 async function transformClipsGameIdFromIdToNameAndTransformCreatedAt(

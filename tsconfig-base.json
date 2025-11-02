@@ -10,9 +10,10 @@
     //Projects
     "composite": true,
     //Completeness
-    "skipLibCheck": false,
+    "skipLibCheck": true,
     //Language and Environment
-    "lib": [],
+    "lib": ["ESNext"],
+    "libReplacement": false,
 
     //Emit
     "sourceMap": false,

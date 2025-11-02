@@ -9,7 +9,7 @@ import type {
 } from '../types.ts';
 import { BaseMessageBuilder } from './base.ts';
 
-const { EMBED_SERVER_HOST } = process.env;
+const { EMBED_SERVER_TWITCH } = process.env;
 
 export class TwitchClipMessageBuilder extends BaseMessageBuilder<
   TwitchClip,
@@ -28,7 +28,7 @@ export class TwitchClipMessageBuilder extends BaseMessageBuilder<
       twitchClip: TwitchClip
     ): TwitchClipMessageBuilderTransformFunctionReturnType => {
       const { id } = twitchClip;
-      const content = `${EMBED_SERVER_HOST}${id}\n${this.currentIndex + 1}/${this.arrayLength}`;
+      const content = `${EMBED_SERVER_TWITCH}${id}\n${this.currentIndex + 1}/${this.arrayLength}`;
 
       return {
         content: content,
@@ -71,7 +71,7 @@ export class TwitchClipMessageBuilder extends BaseMessageBuilder<
       TwitchClipMessageBuilder.messageBuilderType,
       interaction,
       twitchClips,
-      EMBED_SERVER_HOST !== undefined ? transformFunctionWithEmbedServer : transformFunctionWithoutEmbedServer,
+      EMBED_SERVER_TWITCH !== undefined ? transformFunctionWithEmbedServer : transformFunctionWithoutEmbedServer,
       getIdentifierFunction,
       'title'
     );

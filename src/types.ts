@@ -168,6 +168,17 @@ export type TwitchUsers = {
   readonly data: readonly TwitchUser[];
 };
 
+export type RedditLivestreamFails = {
+  readonly data: {
+    readonly children: readonly {
+      readonly data: {
+        readonly permalink: string;
+        readonly over_18: boolean;
+      };
+    }[];
+  };
+};
+
 export type AddedEmote = {
   readonly url: string;
   readonly alias: string | null;
@@ -213,7 +224,20 @@ export type TwitchGlobalOptions = {
   };
 };
 
-export type ClientCredentialsGrantFlow = {
+export type RedditGlobalOptions = {
+  readonly method: string;
+  readonly headers: {
+    readonly Authorization: string;
+  };
+};
+
+export type TwitchClientCredentialsGrantFlow = {
+  readonly access_token: string;
+  readonly expires_in: number;
+  readonly token_type: string;
+};
+
+export type RedditClientCredentialsGrantFlow = {
   readonly access_token: string;
   readonly expires_in: number;
   readonly token_type: string;

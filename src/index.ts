@@ -20,6 +20,7 @@ import { PingsDatabase } from './api/ping-database.ts';
 import { CachedUrl } from './api/cached-url.ts';
 import { UsersDatabase } from './api/user.ts';
 import { newTwitchApi } from './utils/constructors/new-twitch-api.ts';
+import { newRedditApi } from './utils/constructors/new-reddit-api.ts';
 import { newGuild } from './utils/constructors/new-guild.ts';
 import { registerPings } from './utils/register-pings.ts';
 import { DATABASE_DIR, DATABASE_ENDPOINTS, TMP_DIR } from './paths-and-endpoints.ts';
@@ -61,6 +62,8 @@ const bot = await (async (): Promise<Readonly<Bot>> => {
     DEEPL_API_KEY,
     TWITCH_CLIENT_ID,
     TWITCH_SECRET,
+    REDDIT_CLIENT_ID,
+    REDDIT_SECRET,
     MEILISEARCH_HOST,
     MEILISEARCH_API_KEY,
     LOCAL_CACHE_BASE,
@@ -82,6 +85,11 @@ const bot = await (async (): Promise<Readonly<Bot>> => {
   const twitchApi =
     TWITCH_CLIENT_ID !== undefined && TWITCH_SECRET !== undefined
       ? newTwitchApi(TWITCH_CLIENT_ID, TWITCH_SECRET)
+      : undefined;
+
+  const redditApi =
+    REDDIT_CLIENT_ID !== undefined && REDDIT_SECRET !== undefined
+      ? newRedditApi(REDDIT_CLIENT_ID, REDDIT_SECRET)
       : undefined;
 
   const twitchClipsMeiliSearch: Readonly<TwitchClipsMeiliSearch> | undefined =
@@ -150,6 +158,7 @@ const bot = await (async (): Promise<Readonly<Bot>> => {
     googleGenAI,
     translator,
     await twitchApi,
+    await redditApi,
     addedEmotesDatabase,
     pingsDatabase,
     permittedRoleIdsDatabase,
@@ -239,6 +248,9 @@ scheduleJob('0 */20 * * * *', async () => {
 // this is because of the 300 second timeout of fetch + 1 minute, so twitch api is validated before use
 scheduleJob('0 54 * * * *', async () => {
   await bot.twitchApi?.validateAndGetNewAccessTokenIfInvalid();
+});
+scheduleJob('0 54 * * * *', async () => {
+  await bot.redditApi?.validateAndGetNewAccessTokenIfInvalid();
 });
 
 scheduleJob('0 */2 * * *', async () => {

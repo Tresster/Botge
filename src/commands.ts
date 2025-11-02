@@ -35,7 +35,8 @@ export const COMMAND_NAMES = {
   settings: 'settings',
   pingList: 'pinglist',
   media: 'media',
-  mediaList: 'medialist'
+  mediaList: 'medialist',
+  drama: 'drama'
 } as const;
 
 export const CONTEXT_MENU_COMMAND_NAMES = {
@@ -285,6 +286,11 @@ const removeMedia: ReadonlyContextMenuCommandBuilder = new ContextMenuCommandBui
   .setType(ApplicationCommandType.Message)
   .setContexts(InteractionContextType.Guild, InteractionContextType.PrivateChannel);
 
+const drama: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
+  .setName(COMMAND_NAMES.drama)
+  .setDescription('Get the top post from r/LivestreamFail')
+  .setContexts(InteractionContextType.Guild, InteractionContextType.PrivateChannel);
+
 export const commands: readonly (
   | Readonly<RESTPostAPIChatInputApplicationCommandsJSONBody>
   | Readonly<RESTPostAPIContextMenuApplicationCommandsJSONBody>
@@ -306,7 +312,8 @@ export const commands: readonly (
     settings.toJSON(),
     pingList.toJSON(),
     media.toJSON(),
-    mediaList.toJSON()
+    mediaList.toJSON(),
+    drama.toJSON()
   ],
   ...[chatGptExplain.toJSON(), addMedia.toJSON(), removeMedia.toJSON()]
 ];

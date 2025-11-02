@@ -1,5 +1,6 @@
 /** @format */
 
+import fetch from 'node-fetch';
 import { writeFileSync } from 'node:fs';
 
 import { getTwitchAccessToken } from '../utils/api/twitch-api-utils.ts';

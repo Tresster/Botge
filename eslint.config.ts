@@ -1,21 +1,36 @@
 /** @format */
 
 import { defineConfig, type Config } from 'eslint/config';
-import { configs } from 'typescript-eslint';
+import tseslint from 'typescript-eslint';
 
-const config: readonly Config[] = defineConfig(
+const config: readonly Config[] = defineConfig([
   {
-    languageOptions: {
-      sourceType: 'module',
-      ecmaVersion: 'latest',
-      parserOptions: {
-        projectService: true
-      }
-    }
+    ignores: [
+      '.github/**/*',
+      '.husky/_/**/*',
+      'assets/**/*',
+      'data/**/*',
+      'dist/**/*',
+      'docs/**/*',
+      'meili_data/**/*',
+      'nginx/cache/**/*',
+      'node_modules/**/*',
+      'tmp/**/*'
+    ]
   },
-  configs.stylisticTypeChecked,
-  configs.strictTypeChecked,
   {
+    files: ['**/*.ts'],
+    plugins: {
+      tseslint
+    },
+    languageOptions: {
+      parser: tseslint.parser,
+      parserOptions: {
+        projectService: true,
+        ecmaVersion: 'latest'
+      }
+    },
+    extends: [tseslint.configs.strictTypeChecked, tseslint.configs.stylisticTypeChecked],
     rules: {
       '@typescript-eslint/class-methods-use-this': 'warn',
       '@typescript-eslint/consistent-return': 'warn',
@@ -26,26 +41,26 @@ const config: readonly Config[] = defineConfig(
       '@typescript-eslint/explicit-member-accessibility': 'warn',
       '@typescript-eslint/explicit-module-boundary-types': 'warn',
       '@typescript-eslint/init-declarations': 'warn',
-      //"@typescript-eslint/max-params": 'warn',
+      //'@typescript-eslint/max-params': 'warn',
       '@typescript-eslint/member-ordering': 'warn',
       '@typescript-eslint/method-signature-style': 'warn',
-      //"@typescript-eslint/naming-convention": 'warn',
+      //'@typescript-eslint/naming-convention': 'warn',
       '@typescript-eslint/no-dupe-class-members': 'warn',
       '@typescript-eslint/no-import-type-side-effects': 'warn',
 
       '@typescript-eslint/no-invalid-this': 'warn',
       '@typescript-eslint/no-loop-func': 'warn',
-      //"@typescript-eslint/no-magic-numbers" : 'warn',
+      //'@typescript-eslint/no-magic-numbers': 'warn',
       '@typescript-eslint/no-redeclare': 'warn',
 
       '@typescript-eslint/no-restricted-imports': 'warn',
       '@typescript-eslint/no-restricted-types': 'warn',
       '@typescript-eslint/no-shadow': 'warn',
-      //"@typescript-eslint/no-type-alias" : 'warn',
+      //'@typescript-eslint/no-type-alias': 'warn',
       '@typescript-eslint/no-unnecessary-parameter-property-assignment': 'warn',
 
       '@typescript-eslint/no-unnecessary-qualifier': 'warn',
-      //"@typescript-eslint/no-unsafe-type-assertion" : 'warn',
+      //'@typescript-eslint/no-unsafe-type-assertion': 'warn',
       '@typescript-eslint/no-use-before-define': 'warn',
       '@typescript-eslint/no-useless-empty-export': 'warn',
 
@@ -53,6 +68,23 @@ const config: readonly Config[] = defineConfig(
       '@typescript-eslint/prefer-destructuring': 'warn',
       '@typescript-eslint/prefer-enum-initializers': 'warn',
       '@typescript-eslint/prefer-readonly': 'warn',
+
+      '@typescript-eslint/promise-function-async': 'warn',
+      '@typescript-eslint/require-array-sort-compare': 'warn',
+      '@typescript-eslint/strict-boolean-expressions': 'warn',
+      '@typescript-eslint/switch-exhaustiveness-check': 'warn',
+      '@typescript-eslint/typedef': 'warn',
+
+      '@typescript-eslint/restrict-template-expressions': ['warn', { allowNumber: true }],
+      '@typescript-eslint/no-misused-promises': ['warn', { checksVoidReturn: false }],
+
+      '@typescript-eslint/consistent-type-definitions': ['warn', 'type'],
+      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^guild$' }],
+
+      '@typescript-eslint/adjacent-overload-signatures': 'off',
+
+      '@typescript-eslint/unified-signatures': 'off',
+
       '@typescript-eslint/prefer-readonly-parameter-types': [
         'warn',
         {
@@ -86,24 +118,10 @@ const config: readonly Config[] = defineConfig(
         }
       ],
 
-      '@typescript-eslint/promise-function-async': 'warn',
-      '@typescript-eslint/require-array-sort-compare': 'warn',
-      '@typescript-eslint/strict-boolean-expressions': 'warn',
-      '@typescript-eslint/switch-exhaustiveness-check': 'warn',
-      '@typescript-eslint/typedef': 'warn',
-
-      '@typescript-eslint/restrict-template-expressions': ['warn', { allowNumber: true }],
-      '@typescript-eslint/no-misused-promises': ['warn', { checksVoidReturn: false }],
-
-      '@typescript-eslint/consistent-type-definitions': ['warn', 'type'],
-      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^guild$' }],
-
-      '@typescript-eslint/adjacent-overload-signatures': 'off',
-
       'eqeqeq': 'warn',
       'strict': 'warn',
       'array-callback-return': 'warn',
-      //"no-await-in-loop": 'warn',
+      //'no-await-in-loop': 'warn',
       'no-constructor-return': 'warn',
 
       'no-duplicate-imports': 'warn',
@@ -122,6 +140,6 @@ const config: readonly Config[] = defineConfig(
       'no-invalid-this': 'warn'
     }
   }
-);
+]);
 
 export default config;

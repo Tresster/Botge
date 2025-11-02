@@ -4,7 +4,8 @@
     "github.vscode-github-actions",
     "eamodio.gitlens",
     "DavidAnson.vscode-markdownlint",
+    "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode"
   ],
-  "unwantedRecommendations": ["dbaeumer.vscode-eslint", "christian-kohler.npm-intellisense"]
+  "unwantedRecommendations": ["christian-kohler.npm-intellisense"]
 }

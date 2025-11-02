@@ -19,6 +19,7 @@ import { geminiHandler } from './command-handlers/gemini.ts';
 import { pingMeHandler } from './command-handlers/pingme.ts';
 import { steamHandler } from './command-handlers/steam.ts';
 import { mediaHandler } from './command-handlers/media.ts';
+import { dramaHandler } from './command-handlers/drama.ts';
 import { clipHandler } from './command-handlers/clip.ts';
 import type { BroadcasterNameAndPersonalEmoteSetsDatabase } from './api/broadcaster-name-and-personal-emote-sets-database.ts';
 import type { PermittedRoleIdsDatabase } from './api/permitted-role-ids-database.ts';
@@ -26,6 +27,7 @@ import type { AddedEmotesDatabase } from './api/added-emotes-database.ts';
 import type { MediaDatabase } from './api/media-database.ts';
 import type { PingsDatabase } from './api/ping-database.ts';
 import type { TwitchApi } from './api/twitch-api.ts';
+import type { RedditApi } from './api/reddit-api.ts';
 import type { CachedUrl } from './api/cached-url.ts';
 import type { UsersDatabase } from './api/user.ts';
 import { messageContextMenuCommandHandler } from './interaction-handlers/message-context-menu-command.ts';
@@ -54,6 +56,7 @@ export class Bot {
   readonly #googleGenAI: ReadonlyGoogleGenAI | undefined;
   readonly #translator: ReadonlyTranslator | undefined;
   readonly #twitchApi: Readonly<TwitchApi> | undefined;
+  readonly #redditApi: Readonly<RedditApi> | undefined;
   readonly #addedEmotesDatabase: Readonly<AddedEmotesDatabase>;
   readonly #pingsDatabase: Readonly<PingsDatabase>;
   readonly #permittedRoleIdsDatabase: Readonly<PermittedRoleIdsDatabase>;
@@ -81,6 +84,7 @@ export class Bot {
     googleGenAI: ReadonlyGoogleGenAI | undefined,
     translator: ReadonlyTranslator | undefined,
     twitchApi: Readonly<TwitchApi> | undefined,
+    redditApi: Readonly<RedditApi> | undefined,
     addedEmotesDatabase: Readonly<AddedEmotesDatabase>,
     pingsDatabase: Readonly<PingsDatabase>,
     permittedRoleIdsDatabase: Readonly<PermittedRoleIdsDatabase>,
@@ -97,6 +101,7 @@ export class Bot {
     this.#googleGenAI = googleGenAI;
     this.#translator = translator;
     this.#twitchApi = twitchApi;
+    this.#redditApi = redditApi;
     this.#addedEmotesDatabase = addedEmotesDatabase;
     this.#pingsDatabase = pingsDatabase;
     this.#permittedRoleIdsDatabase = permittedRoleIdsDatabase;
@@ -131,7 +136,8 @@ export class Bot {
         pingListHandler(this.#pingsDatabase, this.#pingForPingListMessageBuilders, this.#client, this.#scheduledJobs)
       ],
       [COMMAND_NAMES.media, mediaHandler(this.#mediaDatabase)],
-      [COMMAND_NAMES.mediaList, mediaListHandler(this.#mediaDatabase, this.#mediaMessageBuilders)]
+      [COMMAND_NAMES.mediaList, mediaListHandler(this.#mediaDatabase, this.#mediaMessageBuilders)],
+      [COMMAND_NAMES.drama, dramaHandler(this.#redditApi)]
     ]);
   }
 
@@ -143,6 +149,9 @@ export class Bot {
   }
   public get twitchApi(): Readonly<TwitchApi> | undefined {
     return this.#twitchApi;
+  }
+  public get redditApi(): Readonly<RedditApi> | undefined {
+    return this.#redditApi;
   }
   public get addedEmotesDatabase(): Readonly<AddedEmotesDatabase> {
     return this.#addedEmotesDatabase;

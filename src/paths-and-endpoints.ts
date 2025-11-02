@@ -6,6 +6,7 @@ export const DATABASE_DIR = 'data' as const;
 export const TMP_DIR = 'tmp' as const;
 
 export const TWITCH_ACCESS_TOKEN_PATH: 'data/twitchAccessToken.txt' = `${DATABASE_DIR}/twitchAccessToken.txt` as const;
+export const REDDIT_ACCESS_TOKEN_PATH: 'data/redditAccessToken.txt' = `${DATABASE_DIR}/redditAccessToken.txt` as const;
 
 export const DATABASE_ENDPOINTS: {
   readonly addedEmotes: 'data/addedEmotes.sqlite';
@@ -36,6 +37,12 @@ export const TWITCH_API_ENDPOINTS = {
   games: 'https://api.twitch.tv/helix/games',
   clips: 'https://api.twitch.tv/helix/clips',
   emotesGlobal: 'https://api.twitch.tv/helix/chat/emotes/global'
+} as const;
+
+export const REDDIT_API_ENDPOINTS = {
+  accessToken: 'https://www.reddit.com/api/v1/access_token',
+  accessTokenValidate: 'https://oauth.reddit.com/api/v1/scopes', //there is no real validation path.
+  livestreamFail: 'https://oauth.reddit.com/r/LivestreamFail'
 } as const;
 
 export const GLOBAL_EMOTE_ENDPOINTS = {

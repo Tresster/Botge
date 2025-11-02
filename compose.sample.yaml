@@ -47,10 +47,10 @@ services:
       - APP_ID=
       - DISCORD_TOKEN=
 
-      # open ai - optional
+      # OpenAI - optional
       #- OPENAI_API_KEY=
 
-      # twitch - optional
+      # Twitch - optional
       #- TWITCH_CLIENT_ID=
       #- TWITCH_SECRET=
 
@@ -58,14 +58,17 @@ services:
       - MEILISEARCH_HOST=http://meilisearch:7700
       - MEILISEARCH_API_KEY=SAMPLEMASTERKEY
 
-      # nginx
+      # NGINX
       - LOCAL_CACHE_BASE=http://nginx:80
 
       # clips - optional
       - UPDATE_CLIPS_ON_STARTUP=true
 
-      # embed server host, example: https://embedserver.com/t/ with / at the end - optional
-      #- EMBED_SERVER_HOST=
+      # embed server for Twitch, example: https://embedserver.com/t/ with / at the end - optional
+      #- EMBED_SERVER_TWITCH=
+
+      # embed server for Reddit, example: https://embedserver.com/r without / at the end - optional
+      #- EMBED_SERVER_REDDIT=
 
       # Gemini - optional
       #- GEMINI_API_KEY=

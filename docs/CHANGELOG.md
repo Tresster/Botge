@@ -2,6 +2,14 @@
 
 # Changelog
 
+## [v2.6.2](https://github.com/Tresster/Botge/tree/v2.6.2) (2025-11-02)
+
+[Full Changelog](https://github.com/Tresster/Botge/compare/v2.6.0...v2.6.2)
+
+**Implemented enhancements:**
+
+- add a gif handler command similar to /emote [\#65](https://github.com/Tresster/Botge/issues/65)
+
 ## [v2.6.0](https://github.com/Tresster/Botge/tree/v2.6.0) (2025-10-28)
 
 [Full Changelog](https://github.com/Tresster/Botge/compare/v2.5.4...v2.6.0)

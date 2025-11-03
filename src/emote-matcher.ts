@@ -11,7 +11,6 @@ import type {
   TwitchGlobalEmotes,
   AssetInfo
 } from './types.ts';
-
 import {
   sevenTVInSetToAsset,
   sevenTVNotInSetToAsset,
@@ -20,7 +19,7 @@ import {
   twitchToAsset
 } from './utils/emote-to-asset.ts';
 
-const FFZGLOBALSETSKEY = 3 as const;
+const FFZ_GLOBAL_SETS_KEY = 3 as const;
 
 class EmoteNode {
   #highestPriority: number;
@@ -293,7 +292,7 @@ export class EmoteMatcher {
     priority--;
 
     try {
-      for (const emote of ffzGlobal.sets[`${FFZGLOBALSETSKEY}`].emoticons)
+      for (const emote of ffzGlobal.sets[`${FFZ_GLOBAL_SETS_KEY}`].emoticons)
         this.#root.addAllSuffix(ffzToAsset(emote), priority);
     } catch {}
     priority--;

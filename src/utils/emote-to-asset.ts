@@ -12,12 +12,12 @@ import type {
 } from '../types.ts';
 import { CDN_ENDPOINTS } from '../paths-and-endpoints.ts';
 
-const EMOTESIZE = 2 as const;
+const EMOTE_SIZE = 2 as const;
 
 export function sevenTVInSetToAsset(emote: SevenTVEmoteInSet, size?: number): AssetInfo {
   const { id, name, flags, data, timestamp } = emote;
   const { host, animated } = data;
-  const filename = `${size ?? EMOTESIZE}x.${animated ? 'gif' : 'png'}`;
+  const filename = `${size ?? EMOTE_SIZE}x.${animated ? 'gif' : 'png'}`;
   const file = host.files.find((f: SevenTVEmoteFile) => f.name === filename);
   return {
     id: id,
@@ -34,7 +34,7 @@ export function sevenTVInSetToAsset(emote: SevenTVEmoteInSet, size?: number): As
 
 export function sevenTVNotInSetToAsset(emote: Readonly<SevenTVEmoteNotInSet>, size?: number): AssetInfo {
   const { id, name, flags, host, animated } = emote;
-  const filename = `${size ?? EMOTESIZE}x.${animated ? 'gif' : 'png'}`;
+  const filename = `${size ?? EMOTE_SIZE}x.${animated ? 'gif' : 'png'}`;
   const file = host.files.find((f: SevenTVEmoteFile) => f.name === filename);
   return {
     id: id,
@@ -51,7 +51,7 @@ export function sevenTVNotInSetToAsset(emote: Readonly<SevenTVEmoteNotInSet>, si
 
 export function bttvToAsset(emote: BTTVEmote): AssetInfo {
   const { id, code, animated } = emote;
-  const filename = `${EMOTESIZE}x.${animated ? 'gif' : 'png'}`;
+  const filename = `${EMOTE_SIZE}x.${animated ? 'gif' : 'png'}`;
   return {
     id: id,
     name: code,
@@ -70,7 +70,7 @@ export function ffzToAsset(emote: FFZEmote): AssetInfo {
   return {
     id: id,
     name: name,
-    url: urls[`${EMOTESIZE}`],
+    url: urls[`${EMOTE_SIZE}`],
     zeroWidth: false,
     animated: false,
     width: undefined,
@@ -88,7 +88,7 @@ export function twitchToAsset(emote: TwitchEmote): AssetInfo {
   return {
     id: id,
     name: name,
-    url: `https://${CDN_ENDPOINTS.twitch}/${id}/${chosenFormat}/${chosenThemeMode}/${EMOTESIZE}.0`,
+    url: `https://${CDN_ENDPOINTS.twitch}/${id}/${chosenFormat}/${chosenThemeMode}/${EMOTE_SIZE}.0`,
     zeroWidth: false,
     animated: animated,
     width: undefined,

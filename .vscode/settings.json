@@ -1,5 +1,6 @@
 {
   "telemetry.feedback.enabled": false,
+  "files.autoSave": "onFocusChange",
 
   "git.alwaysSignOff": false,
   "git.autofetch": true,
@@ -18,7 +19,7 @@
   "typescript.format.semicolons": "insert",
 
   "docker.lsp.experimental.vulnerabilityScanning": true,
-  "docker.lsp.experimental.scout.notPinnedDigest": true,
+  "docker.lsp.experimental.scout.notPinnedDigest": false,
   "docker.lsp.experimental.scout.recommendedTag": true,
   "docker.lsp.telemetry": "error",
 
@@ -30,9 +31,97 @@
   "prettier.requireConfig": true,
   "prettier.configPath": ".prettierrc.json",
 
+  "redhat.telemetry.enabled": false,
+  "yaml.format.printWidth": 120,
+  "yaml.format.singleQuote": true,
+
+  "bookmarks.saveBookmarksInProject": true,
+  "bookmarks.experimental.enableNewStickyEngine": true,
+  "bookmarks.useWorkaroundForFormatters": true,
+  "bookmarks.sideBar.countBadge": "off",
+  "bookmarks.sideBar.expanded": true,
+  "bookmarks.revealLocation": "center",
+
+  "workbench.iconTheme": "vscode-icons",
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
+
+  "cSpell.validateDirectives": false,
+  "cSpell.dictionaries": ["typescript"],
+  "cSpell.ignoreRandomStrings": true,
+  "cSpell.ignoreWords": [
+    // Commands
+    "shortestuniquesubstrings",
+    "findtheemoji",
+    "emotelist",
+    "medialist",
+    "addemote",
+    "pinglist",
+    "pingme",
+
+    "fullsize",
+    "tinygif",
+
+    // ? Ge - rename later
+    "guildge",
+    "clipsge",
+    "namege",
+    "testge",
+    "userge",
+
+    // Random
+    "KHTML",
+    "jtvnw",
+    "01FDMJPSF8000CJ4MDR2FNZEQ3"
+  ],
+  "cSpell.words": [
+    // Project
+    "NodeNext",
+    "ESNext",
+
+    // Lib
+    "healthcheck",
+    "pipefail",
+
+    "paletteuse",
+    "palettegen",
+    "libwebp",
+    "ffprobe",
+    "hstack",
+
+    "noprint",
+    "nokey",
+
+    // Specific
+    "FrankerFaceZ",
+    "BetterTTV",
+    "GitBook",
+    "MeiliSearch",
+    "getmeili",
+    "Meili",
+    "DeepL",
+    "GenAI",
+    "BTTV",
+
+    // Names
+    "Botge",
+    "xTresster",
+    "Tresster",
+    "gentlebob",
+    "widepogcrazy",
+    "TimotronPrime",
+    "santirack",
+
+    "CuteDog",
+    "zackrawrr",
+
+    // Words
+    "DUMPLESS",
+    "pingable",
+    "cooldown",
+    "analyse"
+  ],
 
   "markdownlint.config": {
     "$schema": "https://raw.githubusercontent.com/DavidAnson/markdownlint/v0.39.0/schema/markdownlint-config-schema-strict.json",

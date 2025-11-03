@@ -9,7 +9,7 @@ import type { PingsDatabase } from '../api/ping-database.ts';
 import { PING_LIST } from '../commands.ts';
 import type { Guild } from '../guild.ts';
 import { PingForPingMeMessageBuilder } from '../message-builders/ping-for-ping-me-message-builder.ts';
-import { daysAndhoursAndMinutesToMiliseconds } from './pingme.ts';
+import { daysAndHoursAndMinutesToMilliseconds } from './pingme.ts';
 import type { Ping } from '../types.ts';
 
 export function pingListHandler(
@@ -46,7 +46,7 @@ export function pingListHandler(
               return undefined;
             }
 
-            const timeMilliseconds = time + daysAndhoursAndMinutesToMiliseconds(days ?? 0, hours ?? 0, minutes ?? 0);
+            const timeMilliseconds = time + daysAndHoursAndMinutesToMilliseconds(days ?? 0, hours ?? 0, minutes ?? 0);
             const pingDate = new Date(timeMilliseconds);
 
             return new PingForPingMeMessageBuilder(

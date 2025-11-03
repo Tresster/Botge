@@ -26,7 +26,7 @@ import type { UsersDatabase } from '../api/user.js';
 import {
   ASSIGN_EMOTE_SETS_MODAL_CUSTOM_ID,
   BROADCASTER_NAME_TEXT_INPUT_CUSTOM_ID,
-  SEVENTV_TEXT_INPUT_CUSTOM_ID,
+  SEVEN_TV_TEXT_INPUT_CUSTOM_ID,
   ASSIGN_GUILD_MODAL_CUSTOM_ID,
   GUILD_ID_TEXT_INPUT_CUSTOM_ID
 } from './button.ts';
@@ -94,7 +94,7 @@ export function modalSubmitHandler(
         let broadcasterName: string | null = interaction.fields
           .getTextInputValue(BROADCASTER_NAME_TEXT_INPUT_CUSTOM_ID)
           .trim();
-        let sevenTv: string | null = interaction.fields.getTextInputValue(SEVENTV_TEXT_INPUT_CUSTOM_ID).trim();
+        let sevenTv: string | null = interaction.fields.getTextInputValue(SEVEN_TV_TEXT_INPUT_CUSTOM_ID).trim();
         let bttv: string | null = null;
         let ffz: string | null = null;
         let reply = '';
@@ -254,7 +254,7 @@ export function modalSubmitHandler(
       }
 
       if (jumpToIdentifierTextInputValue !== undefined && jumpToIdentifierTextInputValue !== '') {
-        const reply = messageBuilder.jumpToIdentifer(jumpToIdentifierTextInputValue);
+        const reply = messageBuilder.jumpToIdentifier(jumpToIdentifierTextInputValue);
         await defer;
 
         if (reply === undefined) return;
@@ -271,13 +271,13 @@ export function modalSubmitHandler(
         return;
       }
 
-      const jumpToTextIntputValueNumber = Number(jumpToTextInputValue);
-      if (Number.isNaN(jumpToTextIntputValueNumber)) {
+      const jumpToTextInputValueNumber = Number(jumpToTextInputValue);
+      if (Number.isNaN(jumpToTextInputValueNumber)) {
         await defer;
         return;
       }
 
-      const reply = messageBuilder.jumpTo(jumpToTextIntputValueNumber - 1);
+      const reply = messageBuilder.jumpTo(jumpToTextInputValueNumber - 1);
       await defer;
 
       if (reply === undefined) return;

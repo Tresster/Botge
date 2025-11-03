@@ -9,7 +9,7 @@ import type { Guild } from '../guild.ts';
 import type { Ping } from '../types.ts';
 import type { Job } from 'node-schedule';
 
-export function daysAndhoursAndMinutesToMiliseconds(days: number, hours: number, minutes: number): number {
+export function daysAndHoursAndMinutesToMilliseconds(days: number, hours: number, minutes: number): number {
   return ((days * 24 + hours) * 60 + minutes) * 60 * 1000;
 }
 
@@ -65,7 +65,7 @@ export function pingMeHandler(
       }
 
       const timeNow = Date.now();
-      const pingDate = new Date(timeNow + daysAndhoursAndMinutesToMiliseconds(days ?? 0, hours ?? 0, minutes ?? 0));
+      const pingDate = new Date(timeNow + daysAndHoursAndMinutesToMilliseconds(days ?? 0, hours ?? 0, minutes ?? 0));
 
       const { channelId } = interaction;
       let channel: TextChannel | undefined = undefined;

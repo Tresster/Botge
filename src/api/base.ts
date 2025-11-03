@@ -1,6 +1,7 @@
 /** @format */
 
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+
 import type { Database, SqlJsStatic, SqlValue } from 'sql.js';
 
 export class BaseDatabase {

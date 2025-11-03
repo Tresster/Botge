@@ -3,8 +3,14 @@
 import fetch from 'node-fetch';
 
 import type { TwitchApi } from '../../api/twitch-api.ts';
-import type { TwitchClientCredentialsGrantFlow, TwitchClip, TwitchClips } from '../../types.ts';
+import type { TwitchClip, TwitchClips } from '../../types.ts';
 import { TWITCH_API_ENDPOINTS } from '../../paths-and-endpoints.ts';
+
+type TwitchClientCredentialsGrantFlow = {
+  readonly access_token: string;
+  readonly expires_in: number;
+  readonly token_type: string;
+};
 
 export async function getTwitchAccessToken(clientId: string, clientSecret: string): Promise<string> {
   const response = await fetch(TWITCH_API_ENDPOINTS.accessToken, {

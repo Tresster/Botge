@@ -1,6 +1,7 @@
 /** @format */
 
 import type { AutocompleteInteraction, ChatInputCommandInteraction } from 'discord.js';
+
 import type { Platform } from '../enums.ts';
 
 export function getOptionValue<T = Platform | string | number | boolean>(

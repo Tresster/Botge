@@ -6,7 +6,24 @@ import { writeFileSync } from 'node:fs';
 import { getRedditAccessToken } from '../utils/api/reddit-api-utils.ts';
 import { fetchAndJson } from '../utils/fetch-and-json.ts';
 import { REDDIT_API_ENDPOINTS, REDDIT_ACCESS_TOKEN_PATH } from '../paths-and-endpoints.ts';
-import type { RedditGlobalOptions, RedditLivestreamFails } from '../types.ts';
+
+type RedditGlobalOptions = {
+  readonly method: string;
+  readonly headers: {
+    readonly Authorization: string;
+  };
+};
+
+type RedditLivestreamFails = {
+  readonly data: {
+    readonly children: readonly {
+      readonly data: {
+        readonly permalink: string;
+        readonly over_18: boolean;
+      };
+    }[];
+  };
+};
 
 export class RedditApi {
   readonly #clientId: string;

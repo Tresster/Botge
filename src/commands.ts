@@ -18,7 +18,7 @@ import type {
   ReadonlySlashCommandIntegerOption
 } from './types.ts';
 
-export const COMMAND_NAMES = {
+export const SLASH_COMMAND_NAMES = {
   emote: 'emote',
   emotes: 'emotes',
   emoteList: 'emotelist',
@@ -60,7 +60,7 @@ export const MEDIA_LIST = {
 } as const;
 
 const emote: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
-  .setName(COMMAND_NAMES.emote)
+  .setName(SLASH_COMMAND_NAMES.emote)
   .setDescription('Get an emote')
   .addStringOption((option: ReadonlySlashCommandStringOption) =>
     option.setName('name').setDescription("The emote's name").setRequired(true).setAutocomplete(true)
@@ -71,7 +71,7 @@ const emote: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
   .setContexts(InteractionContextType.Guild, InteractionContextType.PrivateChannel);
 
 const emotes: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
-  .setName(COMMAND_NAMES.emotes)
+  .setName(SLASH_COMMAND_NAMES.emotes)
   .setDescription(
     'Overlay and/or create a horizontal stack of emotes/Discord built-in emojis/external images (png/gif)'
   )
@@ -93,8 +93,8 @@ const emotes: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
   )
   .setContexts(InteractionContextType.Guild, InteractionContextType.PrivateChannel);
 
-const emotelist: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
-  .setName(COMMAND_NAMES.emoteList)
+const emoteList: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
+  .setName(SLASH_COMMAND_NAMES.emoteList)
   .setDescription('Browse through the queried emotes')
   .addStringOption((option: ReadonlySlashCommandStringOption) =>
     option.setName('query').setDescription('The query').setAutocomplete(true)
@@ -114,7 +114,7 @@ const emotelist: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilde
   .setContexts(InteractionContextType.Guild, InteractionContextType.PrivateChannel);
 
 const clip: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
-  .setName(COMMAND_NAMES.clip)
+  .setName(SLASH_COMMAND_NAMES.clip)
   .setDescription('Get a single clip or browse through multiple clips')
   .addStringOption((option: ReadonlySlashCommandStringOption) =>
     option.setName('title').setDescription('The clip title').setAutocomplete(true)
@@ -134,7 +134,7 @@ const clip: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
   .setContexts(InteractionContextType.Guild, InteractionContextType.PrivateChannel);
 
 const addemote: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
-  .setName(COMMAND_NAMES.addEmote)
+  .setName(SLASH_COMMAND_NAMES.addEmote)
   .setDescription('Add an emote')
   .addStringOption((option: ReadonlySlashCommandStringOption) =>
     option.setName('url').setDescription('The 7TV link of the emote').setRequired(true)
@@ -144,7 +144,7 @@ const addemote: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder
   );
 
 const chatgpt: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
-  .setName(COMMAND_NAMES.chatGpt)
+  .setName(SLASH_COMMAND_NAMES.chatGpt)
   .setDescription('Send a prompt to ChatGPT and receive a response')
   .addStringOption((option: ReadonlySlashCommandStringOption) =>
     option.setName('prompt').setDescription('The prompt to send').setRequired(true)
@@ -161,21 +161,21 @@ const chatgpt: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder(
   .setContexts(InteractionContextType.Guild, InteractionContextType.PrivateChannel);
 
 const gemini: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
-  .setName(COMMAND_NAMES.gemini)
+  .setName(SLASH_COMMAND_NAMES.gemini)
   .setDescription('Send a prompt to Gemini and receive a response')
   .addStringOption((option: ReadonlySlashCommandStringOption) =>
     option.setName('prompt').setDescription('The prompt to send').setRequired(true)
   );
 
 const translate: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
-  .setName(COMMAND_NAMES.translate)
+  .setName(SLASH_COMMAND_NAMES.translate)
   .setDescription('Translate text to english. Auto-detects language')
   .addStringOption((option: ReadonlySlashCommandStringOption) =>
     option.setName('text').setDescription('The text to translate').setRequired(true)
   );
 
-const shortestuniquesubstrings: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
-  .setName(COMMAND_NAMES.shortestUniqueSubstrings)
+const shortestUniqueSubstrings: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
+  .setName(SLASH_COMMAND_NAMES.shortestUniqueSubstrings)
   .setDescription('Get the shortest unique substring(s) of emote(s)')
   .addStringOption((option: ReadonlySlashCommandStringOption) =>
     option.setName('emotes').setDescription('Emote name(s). Separated by space').setRequired(true).setAutocomplete(true)
@@ -192,7 +192,7 @@ const shortestuniquesubstrings: ReadonlySlashCommandOptionsOnlyBuilder = new Sla
   .setContexts(InteractionContextType.Guild, InteractionContextType.PrivateChannel);
 
 const transient: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
-  .setName(COMMAND_NAMES.transient)
+  .setName(SLASH_COMMAND_NAMES.transient)
   .setDescription('Send a message and delete it after the specified time')
   .addStringOption((option: ReadonlySlashCommandStringOption) =>
     option.setName('text').setDescription('The text to send')
@@ -205,7 +205,7 @@ const transient: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilde
   );
 
 const findTheEmoji: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
-  .setName(COMMAND_NAMES.findTheEmoji)
+  .setName(SLASH_COMMAND_NAMES.findTheEmoji)
   .setDescription('Generates an emoji grid, where each emoji is in a spoiler tag')
   .addStringOption((option: ReadonlySlashCommandStringOption) =>
     option.setName('emoji').setDescription('The emoji to find. Non-animated server emoji')
@@ -215,7 +215,7 @@ const findTheEmoji: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBui
   );
 
 const pingMe: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
-  .setName(COMMAND_NAMES.pingMe)
+  .setName(SLASH_COMMAND_NAMES.pingMe)
   .setDescription('Pings you after the specified time')
   .addIntegerOption((option: ReadonlySlashCommandIntegerOption) =>
     option.setName('days').setDescription('The days to wait before pinging you')
@@ -231,21 +231,16 @@ const pingMe: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
   );
 
 const poe2: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
-  .setName(COMMAND_NAMES.poe2)
+  .setName(SLASH_COMMAND_NAMES.poe2)
   .setDescription('Get POE2 steam stats');
 
 const settings: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
-  .setName(COMMAND_NAMES.settings)
+  .setName(SLASH_COMMAND_NAMES.settings)
   .setDescription('Settings for configuring the behavior of the bot in this server. Permission required')
   .setContexts(InteractionContextType.Guild, InteractionContextType.PrivateChannel);
 
-const chatGptExplain: ReadonlyContextMenuCommandBuilder = new ContextMenuCommandBuilder()
-  .setName(CONTEXT_MENU_COMMAND_NAMES.chatGptExplain)
-  .setType(ApplicationCommandType.Message)
-  .setContexts(InteractionContextType.Guild, InteractionContextType.PrivateChannel);
-
 const pingList: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
-  .setName(COMMAND_NAMES.pingList)
+  .setName(SLASH_COMMAND_NAMES.pingList)
   .setDescription('Ping list')
   .addStringOption((option: ReadonlySlashCommandStringOption) =>
     option
@@ -258,7 +253,7 @@ const pingList: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder
   );
 
 const media: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
-  .setName(COMMAND_NAMES.media)
+  .setName(SLASH_COMMAND_NAMES.media)
   .setDescription('Get a media')
   .addStringOption((option: ReadonlySlashCommandStringOption) =>
     option.setName('name').setDescription("The media's name").setRequired(true).setAutocomplete(true)
@@ -266,7 +261,7 @@ const media: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
   .setContexts(InteractionContextType.Guild, InteractionContextType.PrivateChannel);
 
 const mediaList: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
-  .setName(COMMAND_NAMES.mediaList)
+  .setName(SLASH_COMMAND_NAMES.mediaList)
   .setDescription('Media list')
   .addStringOption((option: ReadonlySlashCommandStringOption) =>
     option
@@ -274,6 +269,16 @@ const mediaList: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilde
       .setDescription('Sort. Default: date added (newest first)')
       .addChoices({ name: 'Alphabetical Order', value: MEDIA_LIST.sortBy.alphabetical })
   )
+  .setContexts(InteractionContextType.Guild, InteractionContextType.PrivateChannel);
+
+const drama: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
+  .setName(SLASH_COMMAND_NAMES.drama)
+  .setDescription('Get the top post from r/LivestreamFail')
+  .setContexts(InteractionContextType.Guild, InteractionContextType.PrivateChannel);
+
+const chatGptExplain: ReadonlyContextMenuCommandBuilder = new ContextMenuCommandBuilder()
+  .setName(CONTEXT_MENU_COMMAND_NAMES.chatGptExplain)
+  .setType(ApplicationCommandType.Message)
   .setContexts(InteractionContextType.Guild, InteractionContextType.PrivateChannel);
 
 const addMedia: ReadonlyContextMenuCommandBuilder = new ContextMenuCommandBuilder()
@@ -286,11 +291,6 @@ const removeMedia: ReadonlyContextMenuCommandBuilder = new ContextMenuCommandBui
   .setType(ApplicationCommandType.Message)
   .setContexts(InteractionContextType.Guild, InteractionContextType.PrivateChannel);
 
-const drama: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
-  .setName(COMMAND_NAMES.drama)
-  .setDescription('Get the top post from r/LivestreamFail')
-  .setContexts(InteractionContextType.Guild, InteractionContextType.PrivateChannel);
-
 export const commands: readonly (
   | Readonly<RESTPostAPIChatInputApplicationCommandsJSONBody>
   | Readonly<RESTPostAPIContextMenuApplicationCommandsJSONBody>
@@ -298,13 +298,13 @@ export const commands: readonly (
   ...[
     emote.toJSON(),
     emotes.toJSON(),
-    emotelist.toJSON(),
+    emoteList.toJSON(),
     clip.toJSON(),
     addemote.toJSON(),
     chatgpt.toJSON(),
     gemini.toJSON(),
     translate.toJSON(),
-    shortestuniquesubstrings.toJSON(),
+    shortestUniqueSubstrings.toJSON(),
     transient.toJSON(),
     findTheEmoji.toJSON(),
     pingMe.toJSON(),

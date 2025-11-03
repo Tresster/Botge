@@ -1,7 +1,7 @@
 /** @format */
 
-import type { ChatInputCommandInteraction } from 'discord.js';
 import { describe, expect, test } from 'vitest';
+import type { ChatInputCommandInteraction } from 'discord.js';
 
 import { getAllSubstrings } from 'src/command-handlers/shortest-unique-substrings.ts';
 import { TwitchClipMessageBuilder } from 'src/message-builders/twitch-clip-message-builder.ts';
@@ -33,22 +33,22 @@ describe('TwitchClipMessageBuilder', () => {
   })();
   const twitchClipMessageBuilder = new TwitchClipMessageBuilder(chatInputCommandInteraction, twitchClips, undefined);
 
-  test('jumpToIdentifer exact', () => {
+  test('jumpToIdentifier exact', () => {
     twitchClipMessageBuilder.first();
 
-    expect(twitchClipMessageBuilder.jumpToIdentifer(getTestTitle(1))).toBeDefined();
+    expect(twitchClipMessageBuilder.jumpToIdentifier(getTestTitle(1))).toBeDefined();
   });
 
-  test('jumpToIdentifer lowercase', () => {
-    expect(twitchClipMessageBuilder.jumpToIdentifer(getTestTitle(2).toLowerCase())).toBeDefined();
+  test('jumpToIdentifier lowercase', () => {
+    expect(twitchClipMessageBuilder.jumpToIdentifier(getTestTitle(2).toLowerCase())).toBeDefined();
   });
 
-  test('jumpToIdentifer includes', () => {
+  test('jumpToIdentifier includes', () => {
     const identifier = getTestTitle(0);
     const allSubstrings = getAllSubstrings(identifier);
 
     for (const substring of allSubstrings) {
-      expect(twitchClipMessageBuilder.jumpToIdentifer(substring)).toBeDefined();
+      expect(twitchClipMessageBuilder.jumpToIdentifier(substring)).toBeDefined();
       twitchClipMessageBuilder.last();
     }
   });

@@ -5,12 +5,12 @@ import scheduler, { type Job } from 'node-schedule';
 import type { Client, TextChannel } from 'discord.js';
 
 import { getContent, ContentType } from '../message-builders/ping-for-ping-me-message-builder.ts';
-import { daysAndhoursAndMinutesToMiliseconds } from '../command-handlers/pingme.ts';
+import { daysAndHoursAndMinutesToMilliseconds } from '../command-handlers/pingme.ts';
 import type { PingsDatabase } from '../api/ping-database.ts';
 
-function milisecondsToHoursAndMinutes(miliseconds: number): string {
-  const hours = Math.floor(miliseconds / 3600000);
-  const minutes = Math.floor((miliseconds % 3600000) / 60000);
+function millisecondsToHoursAndMinutes(milliseconds: number): string {
+  const hours = Math.floor(milliseconds / 3600000);
+  const minutes = Math.floor((milliseconds % 3600000) / 60000);
 
   const hoursText = hours > 0 ? `${hours} hours and ` : '';
   const minutesText = hours === 0 && minutes === 0 ? 'less than a minute' : `${minutes} minute`;
@@ -28,7 +28,7 @@ export async function registerPings(
   for (const ping of pings) {
     const { time, days, hours, minutes, channelId } = ping;
 
-    const timeMilliseconds = time + daysAndhoursAndMinutesToMiliseconds(days ?? 0, hours ?? 0, minutes ?? 0);
+    const timeMilliseconds = time + daysAndHoursAndMinutesToMilliseconds(days ?? 0, hours ?? 0, minutes ?? 0);
     const pingDate = new Date(timeMilliseconds);
 
     let channel: TextChannel | undefined = undefined;
@@ -56,7 +56,7 @@ export async function registerPings(
       scheduledJobs.push(scheduledJob);
     } else {
       await channel.send(
-        `${pingedContent}\nSorry for the bot downtime! The ping was delivered with a ${milisecondsToHoursAndMinutes(-difference)} delay!`
+        `${pingedContent}\nSorry for the bot downtime! The ping was delivered with a ${millisecondsToHoursAndMinutes(-difference)} delay!`
       );
       pingsDataBase.delete(ping);
     }

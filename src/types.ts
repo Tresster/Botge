@@ -1,7 +1,6 @@
 /** @format */
 
 import type { DeepReadonly } from 'ts-essentials';
-
 import type OpenAI from 'openai';
 import type { GoogleGenAI } from '@google/genai';
 import type { Hit, RecordAny } from 'meilisearch';
@@ -55,7 +54,6 @@ export type SevenTVEmoteFile = {
   readonly height: number;
   readonly format: string;
 };
-
 export type SevenTVEmoteInSet = {
   readonly id: string;
   readonly name: string;
@@ -80,6 +78,7 @@ export type SevenTVEmoteNotInSet = {
   };
   readonly error?: string;
 };
+
 export type BTTVEmote = {
   readonly id: string;
   readonly code: string;
@@ -137,6 +136,30 @@ export type TwitchGlobalEmotes = {
   readonly data: readonly TwitchEmote[];
 };
 
+export type AddedEmote = {
+  readonly url: string;
+  readonly alias: string | null;
+};
+
+export type AssetInfo = {
+  readonly id: string;
+  readonly name: string;
+  readonly url: string;
+  readonly zeroWidth: boolean;
+  readonly animated: boolean;
+  readonly width: number | undefined;
+  readonly height: number | undefined;
+  readonly platform: Platform;
+  readonly timestamp: number | undefined;
+};
+export type DownloadedAsset = {
+  readonly filename: string;
+  readonly width: number;
+  readonly height: number;
+  readonly duration: number;
+  readonly animated: boolean;
+};
+
 export type TwitchClip = {
   readonly id: string;
   readonly url: string;
@@ -147,41 +170,12 @@ export type TwitchClip = {
   readonly created_at: string;
   readonly thumbnail_url: string;
 };
-export type TwitchGame = {
-  readonly id: string;
-  readonly name: string;
-};
-export type TwitchUser = {
-  readonly id: string;
-};
 
 export type TwitchClips = {
   readonly data: readonly TwitchClip[];
   readonly pagination: {
     readonly cursor?: string;
   };
-};
-export type TwitchGames = {
-  readonly data: readonly TwitchGame[];
-};
-export type TwitchUsers = {
-  readonly data: readonly TwitchUser[];
-};
-
-export type RedditLivestreamFails = {
-  readonly data: {
-    readonly children: readonly {
-      readonly data: {
-        readonly permalink: string;
-        readonly over_18: boolean;
-      };
-    }[];
-  };
-};
-
-export type AddedEmote = {
-  readonly url: string;
-  readonly alias: string | null;
 };
 
 export type Ping = {
@@ -196,62 +190,16 @@ export type Ping = {
   readonly userIdRemoved: boolean | null;
 };
 
-export type AssetInfo = {
-  readonly id: string;
-  readonly name: string;
+export type Media = {
   readonly url: string;
-  readonly zeroWidth: boolean;
-  readonly animated: boolean;
-  readonly width: number | undefined;
-  readonly height: number | undefined;
-  readonly platform: Platform;
-  readonly timestamp: number | undefined;
+  readonly name: string;
+  readonly dateAdded: Readonly<Date>;
+  readonly tenorUrl?: string;
 };
 
-export type DownloadedAsset = {
-  readonly filename: string;
-  readonly width: number;
-  readonly height: number;
-  readonly duration: number;
-  readonly animated: boolean;
-};
-
-export type TwitchGlobalOptions = {
-  readonly method: string;
-  readonly headers: {
-    readonly 'Authorization': string;
-    readonly 'Client-Id': string;
-  };
-};
-
-export type RedditGlobalOptions = {
-  readonly method: string;
-  readonly headers: {
-    readonly Authorization: string;
-  };
-};
-
-export type TwitchClientCredentialsGrantFlow = {
-  readonly access_token: string;
-  readonly expires_in: number;
-  readonly token_type: string;
-};
-
-export type RedditClientCredentialsGrantFlow = {
-  readonly access_token: string;
-  readonly expires_in: number;
-  readonly token_type: string;
-};
-
-export type HstackElement = {
-  readonly id: number;
-  readonly filterString: () => string;
-};
-
-export type NumberOfCurrentPlayers = {
-  readonly response: {
-    readonly player_count: number;
-  };
+export type EmoteMessageBuilderTransformFunctionReturnType = {
+  readonly embeds: readonly ReadonlyEmbedBuilder[];
+  readonly components: readonly ReadonlyActionRowBuilderMessageActionRowComponentBuilder[];
 };
 
 export type TwitchClipMessageBuilderTransformFunctionReturnType = {
@@ -260,20 +208,9 @@ export type TwitchClipMessageBuilderTransformFunctionReturnType = {
   readonly components: readonly ReadonlyActionRowBuilderMessageActionRowComponentBuilder[];
 };
 
-export type EmoteMessageBuilderTransformFunctionReturnType = {
-  readonly embeds: readonly ReadonlyEmbedBuilder[];
-  readonly components: readonly ReadonlyActionRowBuilderMessageActionRowComponentBuilder[];
-};
-
 export type PingForPingMeMessageBuilderTransformFunctionReturnType = {
   readonly content: string;
   readonly components: readonly ReadonlyActionRowBuilderMessageActionRowComponentBuilder[];
-};
-
-export type PingForPingMeMessageBuilderReplies = {
-  readonly reply: PingForPingMeMessageBuilderTransformFunctionReturnType | undefined;
-  readonly buttonReply: string | undefined;
-  readonly deletionEvent: boolean;
 };
 
 export type PingForPingListMessageBuilderTransformFunctionReturnType = {
@@ -281,16 +218,15 @@ export type PingForPingListMessageBuilderTransformFunctionReturnType = {
   readonly components: readonly ReadonlyActionRowBuilderMessageActionRowComponentBuilder[];
 };
 
-export type Media = {
-  readonly url: string;
-  readonly name: string;
-  readonly dateAdded: Readonly<Date>;
-  readonly tenorUrl?: string;
-};
-
 export type MediaMessageBuilderTransformFunctionReturnType = {
   readonly embeds: readonly ReadonlyEmbedBuilder[];
   readonly components: readonly ReadonlyActionRowBuilderMessageActionRowComponentBuilder[];
+};
+
+export type PingForPingMeMessageBuilderReplies = {
+  readonly reply: PingForPingMeMessageBuilderTransformFunctionReturnType | undefined;
+  readonly buttonReply: string | undefined;
+  readonly deletionEvent: boolean;
 };
 
 //Needed for @twemoji/api.parse, but we only parse string.

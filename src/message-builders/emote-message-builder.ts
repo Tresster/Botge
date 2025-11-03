@@ -32,7 +32,7 @@ export class EmoteMessageBuilder extends BaseMessageBuilder<AssetInfo, EmoteMess
   static #staticCounter = 0;
   readonly #extraRow: ReadonlyActionRowBuilderMessageActionRowComponentBuilder | undefined = undefined;
   readonly #shortestUniqueSubstrings: readonly string[] | undefined;
-  readonly #markedAsDeleteds: number[] | undefined = undefined;
+  readonly #markedAsDeletedArray: number[] | undefined = undefined;
 
   public constructor(
     interaction: ChatInputCommandInteraction | ButtonInteraction,
@@ -47,11 +47,11 @@ export class EmoteMessageBuilder extends BaseMessageBuilder<AssetInfo, EmoteMess
 
       if (this.#shortestUniqueSubstrings !== undefined)
         embed.addFields({
-          name: 'Shortest Unqiue Substrings',
+          name: 'Shortest Unique Substrings',
           value: this.#shortestUniqueSubstrings[this.currentIndex]
         });
 
-      if (this.#markedAsDeleteds !== undefined && this.#markedAsDeleteds.includes(this.currentIndex))
+      if (this.#markedAsDeletedArray !== undefined && this.#markedAsDeletedArray.includes(this.currentIndex))
         embed.setDescription('❌ DELETED ❌');
 
       embed
@@ -98,15 +98,15 @@ export class EmoteMessageBuilder extends BaseMessageBuilder<AssetInfo, EmoteMess
           .setLabel('Delete')
           .setStyle(ButtonStyle.Danger)
       );
-      this.#markedAsDeleteds = [];
+      this.#markedAsDeletedArray = [];
     }
 
     this.#shortestUniqueSubstrings = shortestUniqueSubstrings;
   }
 
   public get currentAddedEmote(): AddedEmote | undefined {
-    if (this.#markedAsDeleteds === undefined) return undefined;
-    if (this.#markedAsDeleteds.includes(this.currentIndex)) return undefined;
+    if (this.#markedAsDeletedArray === undefined) return undefined;
+    if (this.#markedAsDeletedArray.includes(this.currentIndex)) return undefined;
 
     const currentEmote = this.currentItem;
     if (currentEmote.platform !== Platform.sevenNotInSet) return undefined;
@@ -121,10 +121,10 @@ export class EmoteMessageBuilder extends BaseMessageBuilder<AssetInfo, EmoteMess
   }
 
   public markCurrentAsDeleted(): EmoteMessageBuilderTransformFunctionReturnType | undefined {
-    if (this.#markedAsDeleteds === undefined) return undefined;
-    if (this.#markedAsDeleteds.includes(this.currentIndex)) return undefined;
+    if (this.#markedAsDeletedArray === undefined) return undefined;
+    if (this.#markedAsDeletedArray.includes(this.currentIndex)) return undefined;
 
-    this.#markedAsDeleteds.push(this.currentIndex);
+    this.#markedAsDeletedArray.push(this.currentIndex);
     return this.current();
   }
 }

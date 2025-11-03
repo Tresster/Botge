@@ -2,7 +2,7 @@
 
 import { EmbedBuilder, type ChatInputCommandInteraction, type ButtonInteraction } from 'discord.js';
 
-import { daysAndhoursAndMinutesToMiliseconds } from '../command-handlers/pingme.ts';
+import { daysAndHoursAndMinutesToMilliseconds } from '../command-handlers/pingme.ts';
 import { booleanToString } from '../utils/boolean-to-string.ts';
 import type { PingForPingListMessageBuilderTransformFunctionReturnType } from '../types.ts';
 import { BaseMessageBuilder } from './base.ts';
@@ -22,7 +22,7 @@ export class PingForPingListMessageBuilder extends BaseMessageBuilder<
 > {
   public static readonly messageBuilderType = 'PingForPingList' as const;
   static #staticCounter = 0;
-  readonly #markedAsDeleteds: number[];
+  readonly #markedAsDeletedArray: number[];
 
   public constructor(
     interaction: ChatInputCommandInteraction | ButtonInteraction,
@@ -36,10 +36,10 @@ export class PingForPingListMessageBuilder extends BaseMessageBuilder<
       const { time, days, hours, minutes, message, userIdRemoved } = ping;
 
       const embed = new EmbedBuilder();
-      if (this.#markedAsDeleteds.includes(this.currentIndex)) embed.setDescription('❌ DELETED ❌');
+      if (this.#markedAsDeletedArray.includes(this.currentIndex)) embed.setDescription('❌ DELETED ❌');
 
       const pingDate = ((): Date => {
-        const pingDate_ = new Date(time + daysAndhoursAndMinutesToMiliseconds(days ?? 0, hours ?? 0, minutes ?? 0));
+        const pingDate_ = new Date(time + daysAndHoursAndMinutesToMilliseconds(days ?? 0, hours ?? 0, minutes ?? 0));
         if (timezone === undefined) return pingDate_;
 
         const [operator] = timezone;
@@ -106,19 +106,19 @@ export class PingForPingListMessageBuilder extends BaseMessageBuilder<
       undefined
     );
 
-    this.#markedAsDeleteds = [];
+    this.#markedAsDeletedArray = [];
   }
 
   public get currentPingForPingMeMessageBuilder(): Readonly<PingForPingMeMessageBuilder> | undefined {
-    if (this.#markedAsDeleteds.includes(this.currentIndex)) return undefined;
+    if (this.#markedAsDeletedArray.includes(this.currentIndex)) return undefined;
 
     return this.currentItem;
   }
 
   public markCurrentAsDeleted(): PingForPingListMessageBuilderTransformFunctionReturnType | undefined {
-    if (this.#markedAsDeleteds.includes(this.currentIndex)) return undefined;
+    if (this.#markedAsDeletedArray.includes(this.currentIndex)) return undefined;
 
-    this.#markedAsDeleteds.push(this.currentIndex);
+    this.#markedAsDeletedArray.push(this.currentIndex);
     return this.current();
   }
 }

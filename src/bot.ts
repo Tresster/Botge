@@ -1,11 +1,12 @@
 /** @format */
 
 import type { Job } from 'node-schedule';
+
 import { Events, type ChatInputCommandInteraction, type Client } from 'discord.js';
 import { joinVoiceChannel } from '@discordjs/voice';
 
 import { newGuild } from './utils/constructors/new-guild.ts';
-import { shortestuniquesubstringsHandler } from './command-handlers/shortest-unique-substrings.ts';
+import { shortestUniqueSubstringsHandler } from './command-handlers/shortest-unique-substrings.ts';
 import { emoteHandler, emotesHandler, emoteListHandler } from './command-handlers/emote.ts';
 import { addEmoteHandlerSevenTVNotInSet } from './command-handlers/add-emote.ts';
 import { findTheEmojiHandler } from './command-handlers/find-the-emoji.ts';
@@ -44,7 +45,7 @@ import { messageCreateHandler } from './message-create-handlers/message-create-h
 import type { ReadonlyGoogleGenAI, ReadonlyOpenAI, ReadonlyTranslator } from './types.ts';
 import type { TwitchClipsMeiliSearch } from './twitch-clips-meili-search.ts';
 import { GENERAL_CHANNEL_ID_CUTEDOG } from './guilds.ts';
-import { COMMAND_NAMES } from './commands.ts';
+import { SLASH_COMMAND_NAMES } from './commands.ts';
 import type { Guild } from './guild.ts';
 import type { User } from './user.ts';
 
@@ -116,28 +117,28 @@ export class Bot {
       string,
       (interaction: ChatInputCommandInteraction, guild: Readonly<Guild>) => Promise<void>
     >([
-      [COMMAND_NAMES.emote, emoteHandler()],
-      [COMMAND_NAMES.emoteList, emoteListHandler(this.#emoteMessageBuilders)],
-      [COMMAND_NAMES.gemini, geminiHandler(this.#googleGenAI)],
-      [COMMAND_NAMES.clip, clipHandler(this.#twitchClipMessageBuilders)],
-      [COMMAND_NAMES.addEmote, addEmoteHandlerSevenTVNotInSet(this.#addedEmotesDatabase)],
-      [COMMAND_NAMES.shortestUniqueSubstrings, shortestuniquesubstringsHandler(this.#emoteMessageBuilders)],
-      [COMMAND_NAMES.chatGpt, chatgptHandler(this.#openai)],
-      [COMMAND_NAMES.translate, translateHandler(this.#translator)],
-      [COMMAND_NAMES.transient, transientHandler()],
-      [COMMAND_NAMES.findTheEmoji, findTheEmojiHandler()],
+      [SLASH_COMMAND_NAMES.emote, emoteHandler()],
+      [SLASH_COMMAND_NAMES.emoteList, emoteListHandler(this.#emoteMessageBuilders)],
+      [SLASH_COMMAND_NAMES.gemini, geminiHandler(this.#googleGenAI)],
+      [SLASH_COMMAND_NAMES.clip, clipHandler(this.#twitchClipMessageBuilders)],
+      [SLASH_COMMAND_NAMES.addEmote, addEmoteHandlerSevenTVNotInSet(this.#addedEmotesDatabase)],
+      [SLASH_COMMAND_NAMES.shortestUniqueSubstrings, shortestUniqueSubstringsHandler(this.#emoteMessageBuilders)],
+      [SLASH_COMMAND_NAMES.chatGpt, chatgptHandler(this.#openai)],
+      [SLASH_COMMAND_NAMES.translate, translateHandler(this.#translator)],
+      [SLASH_COMMAND_NAMES.transient, transientHandler()],
+      [SLASH_COMMAND_NAMES.findTheEmoji, findTheEmojiHandler()],
       [
-        COMMAND_NAMES.pingMe,
+        SLASH_COMMAND_NAMES.pingMe,
         pingMeHandler(this.#pingsDatabase, this.#pingForPingMeMessageBuilders, this.#client, this.#scheduledJobs)
       ],
-      [COMMAND_NAMES.poe2, steamHandler('2694490')],
+      [SLASH_COMMAND_NAMES.poe2, steamHandler('2694490')],
       [
-        COMMAND_NAMES.pingList,
+        SLASH_COMMAND_NAMES.pingList,
         pingListHandler(this.#pingsDatabase, this.#pingForPingListMessageBuilders, this.#client, this.#scheduledJobs)
       ],
-      [COMMAND_NAMES.media, mediaHandler(this.#mediaDatabase)],
-      [COMMAND_NAMES.mediaList, mediaListHandler(this.#mediaDatabase, this.#mediaMessageBuilders)],
-      [COMMAND_NAMES.drama, dramaHandler(this.#redditApi)]
+      [SLASH_COMMAND_NAMES.media, mediaHandler(this.#mediaDatabase)],
+      [SLASH_COMMAND_NAMES.mediaList, mediaListHandler(this.#mediaDatabase, this.#mediaMessageBuilders)],
+      [SLASH_COMMAND_NAMES.drama, dramaHandler(this.#redditApi)]
     ]);
   }
 
@@ -344,14 +345,14 @@ export class Bot {
         return;
       }
 
-      if (interaction.commandName === COMMAND_NAMES.settings) {
+      if (interaction.commandName === SLASH_COMMAND_NAMES.settings) {
         void settingsHandler()(interaction, guild);
         return;
       }
 
       if (guild === undefined) return;
 
-      if (interaction.commandName === COMMAND_NAMES.emotes) {
+      if (interaction.commandName === SLASH_COMMAND_NAMES.emotes) {
         void emotesHandler(this.#cachedUrl)(guild, interaction);
         return;
       }

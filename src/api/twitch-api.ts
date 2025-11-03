@@ -5,10 +5,32 @@ import { writeFileSync } from 'node:fs';
 
 import { getTwitchAccessToken } from '../utils/api/twitch-api-utils.ts';
 import { fetchAndJson } from '../utils/fetch-and-json.ts';
-import type { TwitchClips, TwitchGames, TwitchGlobalEmotes, TwitchGlobalOptions, TwitchUsers } from '../types.ts';
+import type { TwitchClips, TwitchGlobalEmotes } from '../types.ts';
 import { TWITCH_API_ENDPOINTS, TWITCH_ACCESS_TOKEN_PATH } from '../paths-and-endpoints.ts';
 
-// raw twitch api methods
+type TwitchGlobalOptions = {
+  readonly method: string;
+  readonly headers: {
+    readonly 'Authorization': string;
+    readonly 'Client-Id': string;
+  };
+};
+
+type TwitchGame = {
+  readonly id: string;
+  readonly name: string;
+};
+type TwitchGames = {
+  readonly data: readonly TwitchGame[];
+};
+
+type TwitchUser = {
+  readonly id: string;
+};
+type TwitchUsers = {
+  readonly data: readonly TwitchUser[];
+};
+
 export class TwitchApi {
   readonly #clientId: string;
   readonly #secret: string;

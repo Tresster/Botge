@@ -3,9 +3,14 @@
 import fetch, { type Response } from 'node-fetch';
 import type { ChatInputCommandInteraction } from 'discord.js';
 
-import type { NumberOfCurrentPlayers } from '../types.ts';
 import { GUILD_ID_CUTEDOG } from '../guilds.ts';
 import type { Guild } from '../guild.ts';
+
+type NumberOfCurrentPlayers = {
+  readonly response: {
+    readonly player_count: number;
+  };
+};
 
 function getColor(percent: number): string {
   if (percent <= 39)

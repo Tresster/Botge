@@ -1,6 +1,4 @@
-ARG NODE_VERSION=25.0.0
-
-FROM node:${NODE_VERSION}-alpine AS build
+FROM node:25.1.0-alpine AS build
 
 WORKDIR /app
 
@@ -11,9 +9,9 @@ RUN npm ci
 COPY . .
 RUN npm run build:production
 
-FROM node:${NODE_VERSION}-alpine AS release
+FROM node:25.1.0-alpine AS release
 LABEL org.opencontainers.image.title="Botge" \
-  org.opencontainers.image.version="2.6.2" \
+  org.opencontainers.image.version="2.7.0" \
   org.opencontainers.image.description="Search emotes, clips, use zero-width emotes and other such commands." \
   org.opencontainers.image.url="https://botge.gitbook.io" \
   org.opencontainers.image.source="https://github.com/Tresster/Botge" \

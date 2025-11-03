@@ -24,7 +24,7 @@ export class MediaMessageBuilder extends BaseMessageBuilder<Media, MediaMessageB
   public static readonly messageBuilderType = 'Media' as const;
   static #staticCounter = 0;
   readonly #extraRow: ReadonlyActionRowBuilderMessageActionRowComponentBuilder;
-  readonly #markedAsDeleteds: number[] = [];
+  readonly #markedAsDeletedArray: number[] = [];
   readonly #sortedByText: string | undefined;
 
   public constructor(
@@ -37,7 +37,7 @@ export class MediaMessageBuilder extends BaseMessageBuilder<Media, MediaMessageB
 
       const embed = new EmbedBuilder();
 
-      if (this.#markedAsDeleteds.includes(this.currentIndex)) embed.setDescription('❌ DELETED ❌');
+      if (this.#markedAsDeletedArray.includes(this.currentIndex)) embed.setDescription('❌ DELETED ❌');
 
       embed
         .setColor('DarkButNotBlack')
@@ -90,16 +90,16 @@ export class MediaMessageBuilder extends BaseMessageBuilder<Media, MediaMessageB
   }
 
   public get currentMedia(): Media | undefined {
-    if (this.#markedAsDeleteds.includes(this.currentIndex)) return undefined;
+    if (this.#markedAsDeletedArray.includes(this.currentIndex)) return undefined;
 
     const currentMedia = this.currentItem;
     return currentMedia;
   }
 
   public markCurrentAsDeleted(): MediaMessageBuilderTransformFunctionReturnType | undefined {
-    if (this.#markedAsDeleteds.includes(this.currentIndex)) return undefined;
+    if (this.#markedAsDeletedArray.includes(this.currentIndex)) return undefined;
 
-    this.#markedAsDeleteds.push(this.currentIndex);
+    this.#markedAsDeletedArray.push(this.currentIndex);
     return this.current();
   }
 }

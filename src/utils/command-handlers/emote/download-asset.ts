@@ -1,6 +1,6 @@
 /** @format */
 
-import { join, basename } from 'path';
+import { join, basename } from 'node:path';
 import fetch from 'node-fetch';
 import { writeFile } from 'node:fs/promises';
 
@@ -8,7 +8,7 @@ import type { CachedUrl } from '../../../api/cached-url.ts';
 import type { AssetInfo, DownloadedAsset } from '../../../types.ts';
 import { getDimension, getDuration } from './ffprobe-utils.ts';
 
-export const DEFAULTDURATION = 0 as const;
+export const DEFAULT_DURATION = 0 as const;
 
 export async function downloadAsset(
   outdir: string,
@@ -30,7 +30,9 @@ export async function downloadAsset(
     }
 
     const hasWidthAndHeight = width !== undefined && height !== undefined;
-    let duration: Promise<number | undefined> | number | undefined = animated ? getDuration(filename) : DEFAULTDURATION;
+    let duration: Promise<number | undefined> | number | undefined = animated
+      ? getDuration(filename)
+      : DEFAULT_DURATION;
     let widthAndHeight: Promise<readonly [number, number] | undefined> | readonly [number, number] | undefined =
       hasWidthAndHeight ? [width, height] : getDimension(filename);
 
@@ -43,7 +45,7 @@ export async function downloadAsset(
       width: widthAndHeight[0],
       height: widthAndHeight[1],
       duration: duration,
-      animated: duration !== DEFAULTDURATION
+      animated: duration !== DEFAULT_DURATION
     };
   }
 
@@ -66,6 +68,6 @@ export async function downloadAsset(
     width: widthAndHeight[0],
     height: widthAndHeight[1],
     duration: duration,
-    animated: duration !== DEFAULTDURATION
+    animated: duration !== DEFAULT_DURATION
   };
 }

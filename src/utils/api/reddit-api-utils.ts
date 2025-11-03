@@ -3,7 +3,12 @@
 import fetch from 'node-fetch';
 
 import { REDDIT_API_ENDPOINTS } from '../../paths-and-endpoints.ts';
-import type { RedditClientCredentialsGrantFlow } from '../../types.ts';
+
+type RedditClientCredentialsGrantFlow = {
+  readonly access_token: string;
+  readonly expires_in: number;
+  readonly token_type: string;
+};
 
 export async function getRedditAccessToken(clientId: string, clientSecret: string): Promise<string> {
   const response = await fetch(REDDIT_API_ENDPOINTS.accessToken, {

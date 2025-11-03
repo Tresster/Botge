@@ -1,12 +1,13 @@
 /** @format */
 
-import { ensureDir, type Dirent } from 'fs-extra';
 import { readdir, rm } from 'node:fs/promises';
 import { scheduleJob } from 'node-schedule';
+import { join } from 'node:path';
+import { ensureDir, type Dirent } from 'fs-extra';
+
 import { GoogleGenAI } from '@google/genai';
 import { MeiliSearch } from 'meilisearch';
 import { Translator } from 'deepl-node';
-import { join } from 'node:path';
 import OpenAI from 'openai';
 import { Client, GatewayIntentBits } from 'discord.js';
 import { getVoiceConnections } from '@discordjs/voice';
@@ -109,7 +110,7 @@ const bot = await (async (): Promise<Readonly<Bot>> => {
   );
   const broadcasterNameAndPersonalEmoteSetsDatabase: Readonly<BroadcasterNameAndPersonalEmoteSetsDatabase> =
     new BroadcasterNameAndPersonalEmoteSetsDatabase(
-      DATABASE_ENDPOINTS.broadcasterNameAndpersonalEmoteSets,
+      DATABASE_ENDPOINTS.broadcasterNameAndPersonalEmoteSets,
       sqlJsStatic
     );
   const usersDatabase: Readonly<UsersDatabase> = new UsersDatabase(DATABASE_ENDPOINTS.users, sqlJsStatic);

@@ -110,6 +110,7 @@ export class BaseMessageBuilder<
         .setLabel('Last')
         .setStyle(ButtonStyle.Secondary)
     );
+
     this.#modal = new ModalBuilder()
       .setCustomId(getCustomId(JUMP_TO_MODAL_BASE_CUSTOM_ID, messageBuilderType, this.#counter))
       .setTitle('Jump to')
@@ -211,7 +212,7 @@ export class BaseMessageBuilder<
     return this.#transformFunction(this.#array[this.#currentIndex]);
   }
 
-  public jumpToIdentifer(jumpTo: string): TransformFunctionReturnType | undefined {
+  public jumpToIdentifier(jumpTo: string): TransformFunctionReturnType | undefined {
     if (jumpTo === '' || this.#getIdentifierFunction === undefined) return undefined;
 
     for (const [index, arrayItem] of this.#array.entries()) {

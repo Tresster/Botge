@@ -69,7 +69,7 @@ export const ASSIGN_EMOTE_SETS_MODAL_CUSTOM_ID = 'assignEmoteSetsModal' as const
 export const ASSIGN_GUILD_MODAL_CUSTOM_ID = 'assignGuildModal' as const;
 
 export const BROADCASTER_NAME_TEXT_INPUT_CUSTOM_ID = 'broadcasterNameTextInput' as const;
-export const SEVENTV_TEXT_INPUT_CUSTOM_ID = 'sevenTVTextInput' as const;
+export const SEVEN_TV_TEXT_INPUT_CUSTOM_ID = 'sevenTVTextInput' as const;
 export const GUILD_ID_TEXT_INPUT_CUSTOM_ID = 'guildIdTextInput' as const;
 
 const MAX_ROLE_SELECT_MENU_VALUES = 10 as const;
@@ -106,7 +106,7 @@ export function buttonHandler(
 
         const GUILD_ID_TEXT_INPUT_LABEL = new LabelBuilder()
           .setLabel('Guild ID')
-          .setDescription('The ID of the Disord server where you want to get the emotes from.')
+          .setDescription('The ID of the Discord server where you want to get the emotes from.')
           .setTextInputComponent(GUILD_ID_TEXT_INPUT);
 
         const assignGuildModal = new ModalBuilder()
@@ -197,26 +197,26 @@ export function buttonHandler(
           .setDescription('The Twitch username of the streamer.')
           .setTextInputComponent(BROADCASTER_NAME_TEXT_INPUT);
 
-        const SEVENTV_TEXT_INPUT = new TextInputBuilder()
-          .setCustomId(SEVENTV_TEXT_INPUT_CUSTOM_ID)
+        const SEVEN_TV_TEXT_INPUT = new TextInputBuilder()
+          .setCustomId(SEVEN_TV_TEXT_INPUT_CUSTOM_ID)
           .setStyle(TextInputStyle.Short)
           .setRequired(false);
-        const SEVENTV_TEXT_INPUT_LABEL = new LabelBuilder()
+        const SEVEN_TV_TEXT_INPUT_LABEL = new LabelBuilder()
           .setLabel('7TV Emote Set Link')
           .setDescription("The URL of the streamer's 7TV emote set.")
-          .setTextInputComponent(SEVENTV_TEXT_INPUT);
+          .setTextInputComponent(SEVEN_TV_TEXT_INPUT);
 
         const ASSIGN_EMOTE_SETS_MODAL = new ModalBuilder()
           .setCustomId(ASSIGN_EMOTE_SETS_MODAL_CUSTOM_ID)
           .setTitle('Configuration')
-          .addLabelComponents(BROADCASTER_NAME_TEXT_INPUT_LABEL, SEVENTV_TEXT_INPUT_LABEL);
+          .addLabelComponents(BROADCASTER_NAME_TEXT_INPUT_LABEL, SEVEN_TV_TEXT_INPUT_LABEL);
 
         if (guild.broadcasterName !== null) BROADCASTER_NAME_TEXT_INPUT.setValue(guild.broadcasterName);
 
         const { personalEmoteSets } = guild.personalEmoteMatcherConstructor;
         if (personalEmoteSets !== undefined) {
           if (personalEmoteSets.sevenTv !== null)
-            SEVENTV_TEXT_INPUT.setValue(getSevenTvEmoteSetLinkFromSevenTvApiUlr(personalEmoteSets.sevenTv));
+            SEVEN_TV_TEXT_INPUT.setValue(getSevenTvEmoteSetLinkFromSevenTvApiUlr(personalEmoteSets.sevenTv));
         }
 
         await interaction.showModal(ASSIGN_EMOTE_SETS_MODAL);
@@ -344,6 +344,7 @@ export function buttonHandler(
         | MediaMessageBuilderTransformFunctionReturnType
         | PingForPingListMessageBuilderTransformFunctionReturnType
         | undefined = undefined;
+
       if (baseCustomId === PREVIOUS_BUTTON_BASE_CUSTOM_ID) {
         reply = messageBuilder.previous();
       } else if (baseCustomId === NEXT_BUTTON_BASE_CUSTOM_ID) {

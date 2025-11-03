@@ -3,7 +3,7 @@
 import { defineConfig, type ViteUserConfig } from 'vitest/config';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
-const userConfig: ViteUserConfig = defineConfig({
+const viteUserConfig: ViteUserConfig = defineConfig({
   plugins: [tsconfigPaths()],
   test: {
     name: { label: 'Testge', color: 'cyan' },
@@ -14,4 +14,4 @@ const userConfig: ViteUserConfig = defineConfig({
   }
 });
 
-export default userConfig;
+export default viteUserConfig;

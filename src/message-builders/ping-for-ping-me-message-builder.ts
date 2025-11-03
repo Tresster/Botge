@@ -168,11 +168,11 @@ export class PingForPingMeMessageBuilder {
     if (this.#isCriticalTimeLeftOrIsPassed()) return undefined;
     if (this.#job !== undefined) return undefined;
 
-    const sceduledJob = this.#scheduledJobs.find(
+    const scheduledJob = this.#scheduledJobs.find(
       (scheduledJob_) => scheduledJob_.nextInvocation()?.toString() === this.#pingDate.toString()
     );
-    if (sceduledJob !== undefined) {
-      this.#job = sceduledJob;
+    if (scheduledJob !== undefined) {
+      this.#job = scheduledJob;
       return this.#transformFunction();
     }
 

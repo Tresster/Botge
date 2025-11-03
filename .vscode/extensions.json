@@ -1,11 +1,20 @@
 {
   "recommendations": [
-    "docker.docker",
-    "github.vscode-github-actions",
+    // Project
     "eamodio.gitlens",
-    "DavidAnson.vscode-markdownlint",
+    "docker.docker",
     "dbaeumer.vscode-eslint",
-    "esbenp.prettier-vscode"
+    "esbenp.prettier-vscode",
+
+    // Syntax
+    "streetsidesoftware.code-spell-checker",
+    "DavidAnson.vscode-markdownlint",
+    "redhat.vscode-yaml",
+
+    // Extras
+    "vscode-icons-team.vscode-icons",
+    "aaron-bond.better-comments",
+    "alefragnani.Bookmarks"
   ],
   "unwantedRecommendations": ["christian-kohler.npm-intellisense"]
 }

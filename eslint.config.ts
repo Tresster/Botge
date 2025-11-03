@@ -18,6 +18,7 @@ const config: readonly Config[] = defineConfig([
       'tmp/**/*'
     ]
   },
+
   {
     files: ['**/*.ts'],
     plugins: {
@@ -31,6 +32,7 @@ const config: readonly Config[] = defineConfig([
       }
     },
     extends: [tseslint.configs.strictTypeChecked, tseslint.configs.stylisticTypeChecked],
+
     rules: {
       '@typescript-eslint/class-methods-use-this': 'warn',
       '@typescript-eslint/consistent-return': 'warn',

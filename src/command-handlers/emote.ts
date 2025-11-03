@@ -1,7 +1,7 @@
 /** @format */
 
-import { spawn } from 'child_process';
-import { join } from 'path';
+import { spawn } from 'node:child_process';
+import { join } from 'node:path';
 import { ensureDirSync } from 'fs-extra';
 import { rm } from 'node:fs/promises';
 
@@ -15,19 +15,19 @@ import { stringToPlatform } from '../utils/platform-to-string.ts';
 import { stringToBoolean } from '../utils/boolean-to-string.ts';
 import type { CachedUrl } from '../api/cached-url.ts';
 import { EmoteMessageBuilder } from '../message-builders/emote-message-builder.ts';
-import type { AssetInfo, DownloadedAsset, HstackElement } from '../types.ts';
+import type { AssetInfo, DownloadedAsset } from '../types.ts';
 import { TMP_DIR } from '../paths-and-endpoints.ts';
 import { GUILD_ID_CUTEDOG } from '../guilds.ts';
 import type { Guild } from '../guild.ts';
 
 export const EMOTE_COMMAND_IDENTIFIER = '+' as const;
 
-const DEFAULTFPS = 25 as const;
+const DEFAULT_FPS = 25 as const;
 const MAXWIDTH = 192 as const;
 const MAXHEIGHT = 64 as const;
 const DOWNLOAD_ASSET_ERROR_MESSAGE = 'Failed to download asset(s).' as const;
 const FAILED_TO_DOWNLOAD_OR_GET_EMOJI_MESSAGE = 'Failed to download or get emoji(s).' as const;
-const SOMETHING_WENT_WRONG_REPLY_MESSAGE = 'Someting went wrong. Please try again later.' as const;
+const SOMETHING_WENT_WRONG_REPLY_MESSAGE = 'Something went wrong. Please try again later.' as const;
 
 function getMaxWidth(layers: readonly DownloadedAsset[], scaleToHeight: number): number {
   const scaledWidth = layers.map((layer) => (layer.width / layer.height) * scaleToHeight);
@@ -36,7 +36,12 @@ function getMaxWidth(layers: readonly DownloadedAsset[], scaleToHeight: number):
   return ret % 2 === 0 ? ret : ret + 1; // rounds up to even number because of ffmpeg
 }
 
-class SimpleElement implements HstackElement {
+type HorizontalStackElement = {
+  readonly id: number;
+  readonly filterString: () => string;
+};
+
+class SimpleElement implements HorizontalStackElement {
   public readonly id: number;
   readonly #asset: DownloadedAsset;
   readonly #width: number;
@@ -56,14 +61,14 @@ class SimpleElement implements HstackElement {
 
     if (this.#height > this.#asset.height) filterString += `pad=h=${this.#height}:x=-1:y=-1:color=black@0.0,`;
     filterString += `scale=${this.#width}:${this.#height}:force_original_aspect_ratio=decrease`;
-    if (this.#animated) filterString += `,fps=${DEFAULTFPS}`;
+    if (this.#animated) filterString += `,fps=${DEFAULT_FPS}`;
 
     filterString += `[o${this.id}];`;
     return filterString;
   }
 }
 
-class OverlayElement implements HstackElement {
+class OverlayElement implements HorizontalStackElement {
   public readonly id: number;
   readonly #layers: readonly DownloadedAsset[];
   readonly #fullSize: boolean;
@@ -95,7 +100,7 @@ class OverlayElement implements HstackElement {
 
     segments.push(`[${this.id}]`);
 
-    //pad second because scale doesnt keep transparency
+    //pad second because scale doesn't keep transparency
     segments.push(`scale=${this.#width}:${this.#height}:force_original_aspect_ratio=decrease`);
     if (this.#height > this.#layers[layerId].height && this.#width > this.#layers[layerId].width)
       segments.push(`,pad=${this.#width}:${this.#height}:x=-1:y=-1:color=black@0.0`);
@@ -104,7 +109,7 @@ class OverlayElement implements HstackElement {
     else if (this.#width > this.#layers[layerId].width)
       segments.push(`,pad=w=${this.#width}:x=-1:y=-1:color=black@0.0`);
 
-    if (this.#layers[layerId].animated) segments.push(`,fps=${DEFAULTFPS}`);
+    if (this.#layers[layerId].animated) segments.push(`,fps=${DEFAULT_FPS}`);
 
     segments.push(`[o${this.id}];`);
 
@@ -119,7 +124,7 @@ class OverlayElement implements HstackElement {
       segments.push(`[${id}]`);
 
       segments.push(`scale=${segmentWidth}:${segmentHeight}`);
-      if (this.#layers[layerId].animated) segments.push(`,fps=${DEFAULTFPS}`);
+      if (this.#layers[layerId].animated) segments.push(`,fps=${DEFAULT_FPS}`);
 
       segments.push(`[v${id}];`);
 
@@ -379,7 +384,7 @@ export function emotesHandler(cachedUrl: Readonly<CachedUrl>) {
       })();
       const maxWidth = fullSize ? getMaxWidth(downloadedAssets, maxHeight) : MAXWIDTH;
 
-      const elements: HstackElement[] = [];
+      const elements: HorizontalStackElement[] = [];
       ((): void => {
         // at least 2
         let boundary = 0;

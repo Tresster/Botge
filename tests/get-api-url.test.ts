@@ -7,7 +7,6 @@ import {
   getBttvApiUrlFromBroadcasterName,
   getFfzApiUrlFromBroadcasterName
 } from 'src/utils/interaction-handlers/get-api-url.ts';
-
 import { newTwitchApi } from 'src/utils/constructors/new-twitch-api.ts';
 
 const { TWITCH_CLIENT_ID, TWITCH_SECRET } = process.env;
@@ -32,7 +31,7 @@ describe('Get API Url', () => {
     });
 
     test('invalid emote set URL', async () => {
-      const emoteSetId = 'invaledEmoteSetUrl';
+      const emoteSetId = 'invalidEmoteSetUrl';
       const sevenTvEmoteSetLink = `https://7tv.app/emote-sets/${emoteSetId}`;
 
       const sevenTvApiUrlMessage = await getSevenTvApiUrlFromSevenTvEmoteSetLink(sevenTvEmoteSetLink);

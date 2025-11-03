@@ -1,7 +1,8 @@
 /** @format */
 
-import { MessageFlags, type ChatInputCommandInteraction } from 'discord.js';
 import { setTimeout } from 'node:timers/promises';
+
+import { MessageFlags, type ChatInputCommandInteraction } from 'discord.js';
 
 import { getOptionValue } from '../utils/get-option-value.ts';
 import type { Guild } from '../guild.ts';

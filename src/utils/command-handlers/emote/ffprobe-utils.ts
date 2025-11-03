@@ -1,8 +1,8 @@
 /** @format */
 
-import { exec, type ExecException } from 'child_process';
+import { exec, type ExecException } from 'node:child_process';
 
-import { DEFAULTDURATION } from './download-asset.ts';
+import { DEFAULT_DURATION } from './download-asset.ts';
 
 export async function getDimension(filename: string): Promise<readonly [number, number] | undefined> {
   return new Promise((resolve) => {
@@ -43,7 +43,7 @@ export async function getDuration(filename: string): Promise<number | undefined>
         const duration = stdout.trim();
         // Check if duration is "N/A" or empty, and use a default value
         if (duration === 'N/A' || duration === '') {
-          resolve(parseFloat(String(DEFAULTDURATION)));
+          resolve(parseFloat(String(DEFAULT_DURATION)));
           //reject(new Error('Duration is either N/A or empty.')); // or any default value you prefer
         } else {
           resolve(parseFloat(duration));

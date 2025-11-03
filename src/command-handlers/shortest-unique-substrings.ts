@@ -50,7 +50,7 @@ export function getShortestUniqueSubstrings(
   return [original, shortestUniqueSubstrings];
 }
 
-export function shortestuniquesubstringsHandler(emoteMessageBuilders: EmoteMessageBuilder[]) {
+export function shortestUniqueSubstringsHandler(emoteMessageBuilders: EmoteMessageBuilder[]) {
   return async (interaction: ChatInputCommandInteraction, guild: Readonly<Guild>): Promise<void> => {
     const { emoteMatcher } = guild;
     const ephemeral = getOptionValue(interaction, 'ephemeral', Boolean) ?? false;
@@ -111,7 +111,9 @@ export function shortestuniquesubstringsHandler(emoteMessageBuilders: EmoteMessa
       await interaction.editReply(message.trim());
       return;
     } catch (error) {
-      console.log(`Error at shortestuniquesubstrings --> ${error instanceof Error ? error.message : String(error)}`);
+      console.log(
+        `Error at shortestUniqueSubstringsHandler --> ${error instanceof Error ? error.message : String(error)}`
+      );
 
       await defer;
       await interaction.editReply('failed to provide shortest unique substrings.');

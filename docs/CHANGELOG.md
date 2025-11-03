@@ -2,6 +2,10 @@
 
 # Changelog
 
+## [v2.7.0](https://github.com/Tresster/Botge/tree/v2.7.0) (2025-11-03)
+
+[Full Changelog](https://github.com/Tresster/Botge/compare/v2.6.2...v2.7.0)
+
 ## [v2.6.2](https://github.com/Tresster/Botge/tree/v2.6.2) (2025-11-02)
 
 [Full Changelog](https://github.com/Tresster/Botge/compare/v2.6.0...v2.6.2)

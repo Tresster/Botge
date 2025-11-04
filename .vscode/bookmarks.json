@@ -4,7 +4,7 @@
 			"path": "src/index.ts",
 			"bookmarks": [
 				{
-					"line": 59,
+					"line": 56,
 					"column": 0,
 					"label": "bot"
 				},
@@ -484,7 +484,7 @@
 			"path": "eslint.config.ts",
 			"bookmarks": [
 				{
-					"line": 5,
+					"line": 4,
 					"column": 0,
 					"label": "config"
 				},
@@ -497,11 +497,6 @@
 					"line": 22,
 					"column": 0,
 					"label": "ts"
-				},
-				{
-					"line": 35,
-					"column": 0,
-					"label": "tsRules"
 				}
 			]
 		}

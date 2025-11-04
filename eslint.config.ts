@@ -2,6 +2,7 @@
 
 import { defineConfig, type Config } from 'eslint/config';
 import tseslint from 'typescript-eslint';
+import tsdoc from 'eslint-plugin-tsdoc';
 
 const config: readonly Config[] = defineConfig([
   {
@@ -22,7 +23,8 @@ const config: readonly Config[] = defineConfig([
   {
     files: ['**/*.ts'],
     plugins: {
-      tseslint
+      tseslint,
+      tsdoc
     },
     languageOptions: {
       parser: tseslint.parser,
@@ -139,7 +141,9 @@ const config: readonly Config[] = defineConfig([
       'require-atomic-updates': 'warn',
 
       'no-unused-expressions': 'warn',
-      'no-invalid-this': 'warn'
+      'no-invalid-this': 'warn',
+
+      'tsdoc/syntax': 'warn'
     }
   }
 ]);

@@ -37,7 +37,7 @@
 
   "bookmarks.saveBookmarksInProject": true,
   "bookmarks.experimental.enableNewStickyEngine": true,
-  "bookmarks.useWorkaroundForFormatters": true,
+  "bookmarks.useWorkaroundForFormatters": false,
   "bookmarks.sideBar.countBadge": "off",
   "bookmarks.sideBar.expanded": true,
   "bookmarks.revealLocation": "center",

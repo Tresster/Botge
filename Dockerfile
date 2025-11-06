@@ -29,7 +29,7 @@ RUN npm ci --omit=dev && rm -r .husky && rm .npmrc
 
 COPY --from=build /app/dist ./dist
 COPY docs ./docs
-COPY LICENSE.txt README.md ./
+COPY LICENSE.md README.md ./
 
 USER node
 

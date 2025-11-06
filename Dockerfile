@@ -2,7 +2,7 @@ FROM node:25.1.0-alpine AS base
 WORKDIR /app
 
 COPY docs ./docs
-COPY LICENSE.md README.md ./
+COPY LICENSE.txt README.md ./
 
 COPY .husky ./.husky
 COPY .npmrc ./

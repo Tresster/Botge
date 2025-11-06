@@ -1,25 +1,16 @@
 /** @format */
 
-import { defineConfig, type Config } from 'eslint/config';
+import { globalIgnores, defineConfig, type Config } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 import tsdoc from 'eslint-plugin-tsdoc';
 
 const config: readonly Config[] = defineConfig([
+  globalIgnores(['.github/', '.husky/_/', 'assets/', 'data/', 'dist/', 'docs/', 'meili_data/', 'nginx/cache/', 'tmp/']),
   {
-    ignores: [
-      '.github/**/*',
-      '.husky/_/**/*',
-      'assets/**/*',
-      'data/**/*',
-      'dist/**/*',
-      'docs/**/*',
-      'meili_data/**/*',
-      'nginx/cache/**/*',
-      'node_modules/**/*',
-      'tmp/**/*'
-    ]
+    linterOptions: {
+      noInlineConfig: true
+    }
   },
-
   {
     files: ['**/*.ts'],
     plugins: {
@@ -87,7 +78,7 @@ const config: readonly Config[] = defineConfig([
 
       '@typescript-eslint/adjacent-overload-signatures': 'off',
 
-      '@typescript-eslint/unified-signatures': 'off',
+      '@typescript-eslint/unified-signatures': 'warn',
 
       '@typescript-eslint/prefer-readonly-parameter-types': [
         'warn',
@@ -136,7 +127,7 @@ const config: readonly Config[] = defineConfig([
       'no-unmodified-loop-condition': 'warn',
       'no-unreachable-loop': 'warn',
 
-      'no-use-before-define': 'off',
+      'no-use-before-define': 'warn',
       'no-useless-assignment': 'warn',
       'require-atomic-updates': 'warn',
 

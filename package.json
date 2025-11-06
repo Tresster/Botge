@@ -1,6 +1,6 @@
 {
   "name": "botge",
-  "version": "2.7.0",
+  "version": "2.7.2",
   "description": "Search emotes, clips, use zero-width emotes and other such commands.",
   "keywords": [
     "bot",
@@ -30,7 +30,7 @@
     "build": "tsc --build src",
     "build:clean": "tsc --build --clean src",
     "build:production": "tsc --project src/tsconfig.production.json",
-    "eslint": "eslint . --flag unstable_native_nodejs_ts_config",
+    "eslint": "eslint . --flag unstable_native_nodejs_ts_config --concurrency=auto",
     "prepare": "node .husky/install.ts",
     "prettier": "prettier . --write",
     "test": "vitest tests"

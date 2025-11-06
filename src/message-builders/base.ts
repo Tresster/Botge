@@ -35,18 +35,70 @@ export const JUMP_TO_IDENTIFIER_INPUT_BASE_CUSTOM_ID = 'jumpToIdentifierTextInpu
 
 const BUTTON_CUSTOM_ID_SPLITTER = '-' as const;
 
+/**
+ * Get the base custom ID of the {@link ButtonBuilder} or {@link ModalBuilder}.
+ *
+ * @remarks
+ * The base custom ID is the ID for the functionality of the Builder.
+ *
+ * @example
+ * getBaseCustomIdFromCustomId('previousButtonEmote7') = 'previousButton'
+ *
+ * @param customId - The full custom ID
+ * @returns The base custom ID
+ */
 export function getBaseCustomIdFromCustomId(customId: string): string {
   return customId.split(BUTTON_CUSTOM_ID_SPLITTER)[0];
 }
 
+/**
+ * Get the messageBuilder type of the {@link ButtonBuilder} or {@link ModalBuilder}.
+ *
+ * @remarks
+ * The messageBuilder type is the type of the Builder.
+ *
+ * @example
+ * getMessageBuilderTypeFromCustomId('previousButtonEmote7') = 'Emote'
+ *
+ * @param customId - The full custom ID
+ * @returns The messageBuilder type
+ */
 export function getMessageBuilderTypeFromCustomId(customId: string): string {
   return customId.split(BUTTON_CUSTOM_ID_SPLITTER)[1];
 }
 
+/**
+ * Get the counter of the {@link ButtonBuilder} or {@link ModalBuilder}.
+ *
+ * @remarks
+ * The counter is index of the Builder in its corresponding array.
+ *
+ * @example
+ * getCounterFromCustomId('previousButtonEmote7') = '7'
+ *
+ * @param customId - The full custom ID
+ * @returns The counter
+ */
 export function getCounterFromCustomId(customId: string): number {
   return Number(customId.split(BUTTON_CUSTOM_ID_SPLITTER)[2]);
 }
 
+/**
+ * Constructs the full custom ID of the {@link ButtonBuilder} or {@link ModalBuilder}.
+ *
+ * @remarks
+ * The full custom ID is an always unique identifier.
+ *
+ * @example
+ * getCustomId('previousButton', 'Emote', 7) = 'previousButtonEmote7'
+ *
+ * @see the functions above.
+ *
+ * @param baseCustomId - The base custom ID of the Builder
+ * @param messageBuilderType - The messageBuilder type of the Builder
+ * @param counter - The counter of the Builder
+ * @returns The full custom ID
+ */
 export function getCustomId(baseCustomId: string, messageBuilderType: string, counter: number): string {
   return `${baseCustomId}${BUTTON_CUSTOM_ID_SPLITTER}${messageBuilderType}${BUTTON_CUSTOM_ID_SPLITTER}${counter}`;
 }
@@ -55,6 +107,16 @@ function randomNumberInInterval(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
+/**
+ * A class to manage building list-like messages.
+ *
+ * @remarks The class defines the common parts of message builders, such as navigation buttons and navigation popups.
+ *
+ * @privateRemarks This is peak object-oriented code.
+ *
+ * @typeParam ArrayItemType - The type of the objects in the list.
+ * @typeParam TransformFunctionReturnType - The Discord-sendable, display-form type of the objects in the list.
+ */
 export class BaseMessageBuilder<
   ArrayItemType = AssetInfo | TwitchClip | Ping,
   TransformFunctionReturnType =
@@ -65,7 +127,9 @@ export class BaseMessageBuilder<
   readonly #counter: number;
   readonly #interaction: ChatInputCommandInteraction | ButtonInteraction;
   readonly #array: readonly ArrayItemType[];
+  /** The navigation buttons */
   readonly #row: ReadonlyActionRowBuilderMessageActionRowComponentBuilder;
+  /** The navigation popups */
   readonly #modal: ReadonlyModalBuilder;
   readonly #transformFunction: (arrayItem: ArrayItemType) => TransformFunctionReturnType;
   readonly #getIdentifierFunction: ((arrayItem: ArrayItemType) => string) | undefined;
@@ -85,8 +149,7 @@ export class BaseMessageBuilder<
     this.#array = array;
     this.#transformFunction = transformFunction;
     this.#getIdentifierFunction = getIdentifierFunction;
-    //-1 because of first element
-    this.#currentIndex = -1;
+    this.#currentIndex = -1; // ! -1 because of first element
 
     this.#row = new ActionRowBuilder<MessageActionRowComponentBuilder>().addComponents(
       new ButtonBuilder()
@@ -248,6 +311,13 @@ export class BaseMessageBuilder<
     return undefined;
   }
 
+  /**
+   * Gets the current element.
+   *
+   * @remarks Discord-sendable.
+   *
+   * @returns The current element transformed
+   */
   protected current(): TransformFunctionReturnType {
     return this.#transformFunction(this.#array[this.#currentIndex]);
   }

@@ -1,5 +1,17 @@
 /** @format */
 
+// Copyright (c) 2025 Tresster. All rights reserved. Licensed under the MIT license.
+// See LICENSE.md in the project root for license information.
+
+/**
+ * Search emotes, clips, use zero-width emotes and other such commands.
+ *
+ * @remarks
+ * Initializes the {@link Bot} object, registers its handlers, and starts it.
+ *
+ * @packageDocumentation
+ */
+
 import { readdir, rm } from 'node:fs/promises';
 import { scheduleJob } from 'node-schedule';
 import { join } from 'node:path';
@@ -34,11 +46,17 @@ import type { Guild } from './guild.ts';
 import { User } from './user.js';
 import { Bot } from './bot.ts';
 
+/**
+ * Ensures that directories exist.
+ *
+ * @remarks
+ *
+ * Deletes everything in the {@link TMP_DIR} directory, but not the directory itself.
+ */
 const ensureDirs = (async (): Promise<void> => {
   await ensureDir(DATABASE_DIR);
   await ensureDir(TMP_DIR);
 
-  //delete everything in the tmp directory, if temp files got stuck. but not the tmp directory itself
   await Promise.all(
     (await readdir(TMP_DIR, { withFileTypes: true }))
       .filter((dirent: Readonly<Dirent>) => dirent.isDirectory())
@@ -56,7 +74,13 @@ const updateCommands_ = (async (): Promise<void> => {
   await updateCommands(process.argv[2]);
 })();
 
-//bot object
+/**
+ * The central {@link Bot} object.
+ *
+ * @remarks
+ *
+ * Gets the environmental variables and constructs each object based on them.
+ */
 const bot = await (async (): Promise<Readonly<Bot>> => {
   const {
     OPENAI_API_KEY,
@@ -173,6 +197,9 @@ const bot = await (async (): Promise<Readonly<Bot>> => {
   );
 })();
 
+/**
+ * Closes each database and other shutdown functionalities.
+ */
 function closeFunction(): void {
   try {
     bot.addedEmotesDatabase.close();
@@ -268,7 +295,6 @@ scheduleJob('12 */12 * * *', async () => {
   await GlobalEmoteMatcherConstructor.instance.refreshGlobalEmotes();
 });
 
-//main
 bot.registerHandlers();
 await ensureDirs;
 await updateCommands_;

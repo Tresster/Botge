@@ -4,22 +4,22 @@
 			"path": "src/index.ts",
 			"bookmarks": [
 				{
-					"line": 56,
+					"line": 83,
 					"column": 0,
 					"label": "bot"
 				},
 				{
-					"line": 175,
+					"line": 202,
 					"column": 0,
 					"label": "functions"
 				},
 				{
-					"line": 239,
+					"line": 266,
 					"column": 0,
 					"label": "schedules"
 				},
 				{
-					"line": 271,
+					"line": 297,
 					"column": 0,
 					"label": "registerHandlers"
 				}
@@ -29,22 +29,22 @@
 			"path": "src/bot.ts",
 			"bookmarks": [
 				{
-					"line": 53,
+					"line": 60,
 					"column": 0,
 					"label": "bot"
 				},
 				{
-					"line": 115,
+					"line": 122,
 					"column": 0,
 					"label": "commandHandlers"
 				},
 				{
-					"line": 178,
+					"line": 185,
 					"column": 0,
 					"label": "registerHandlers"
 				},
 				{
-					"line": 368,
+					"line": 375,
 					"column": 0,
 					"label": "functions"
 				}
@@ -79,17 +79,17 @@
 					"label": "horizontalStackElements"
 				},
 				{
-					"line": 139,
+					"line": 144,
 					"column": 0,
 					"label": "emoteHandler"
 				},
 				{
-					"line": 178,
+					"line": 183,
 					"column": 0,
 					"label": "emoteListHandler"
 				},
 				{
-					"line": 221,
+					"line": 226,
 					"column": 0,
 					"label": "emotesHandler"
 				}
@@ -294,17 +294,17 @@
 					"label": "messageContextMenuCommandHandler"
 				},
 				{
-					"line": 100,
+					"line": 101,
 					"column": 0,
 					"label": "chatGptExplain"
 				},
 				{
-					"line": 158,
+					"line": 159,
 					"column": 0,
 					"label": "addMedia"
 				},
 				{
-					"line": 222,
+					"line": 223,
 					"column": 0,
 					"label": "removeMedia"
 				}
@@ -319,27 +319,27 @@
 					"label": "BASE_CUSTOM_IDS"
 				},
 				{
-					"line": 37,
+					"line": 49,
 					"column": 0,
 					"label": "exportFunctions"
 				},
 				{
-					"line": 57,
+					"line": 119,
 					"column": 0,
 					"label": "BaseMessageBuilder"
 				},
 				{
-					"line": 90,
+					"line": 153,
 					"column": 0,
 					"label": "row"
 				},
 				{
-					"line": 113,
+					"line": 176,
 					"column": 0,
 					"label": "modal"
 				},
 				{
-					"line": 169,
+					"line": 232,
 					"column": 0,
 					"label": "functions"
 				}
@@ -484,17 +484,7 @@
 			"path": "eslint.config.ts",
 			"bookmarks": [
 				{
-					"line": 4,
-					"column": 0,
-					"label": "config"
-				},
-				{
-					"line": 7,
-					"column": 0,
-					"label": "ignores"
-				},
-				{
-					"line": 22,
+					"line": 14,
 					"column": 0,
 					"label": "ts"
 				}

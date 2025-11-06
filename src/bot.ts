@@ -51,6 +51,13 @@ import type { User } from './user.ts';
 
 const CLEANUP_MINUTES = 10 as const;
 
+/**
+ * The central class.
+ *
+ * @privateRemarks
+ *
+ * Has a lot of objects.
+ */
 export class Bot {
   readonly #client: Client;
   readonly #openai: ReadonlyOpenAI | undefined;

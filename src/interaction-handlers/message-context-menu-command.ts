@@ -97,6 +97,7 @@ export function messageContextMenuCommandHandler(
       interaction.commandName !== CONTEXT_MENU_COMMAND_NAMES.removeMedia
         ? interaction.deferReply()
         : undefined;
+
     try {
       if (interaction.commandName === CONTEXT_MENU_COMMAND_NAMES.chatGptExplain) {
         const { content } = interaction.targetMessage;

@@ -4,6 +4,7 @@
     "module": "nodenext",
 
     "resolveJsonModule": false,
+    "allowUmdGlobalAccess": false,
     "noUncheckedSideEffectImports": true,
     "rewriteRelativeImportExtensions": true,
 
@@ -12,6 +13,7 @@
     // Completeness
     "skipLibCheck": true,
     // Language and Environment
+    "target": "esnext",
     "lib": ["ESNext"],
     "libReplacement": false,
 
@@ -20,6 +22,9 @@
     "declarationMap": true,
     "noEmitOnError": true,
 
+    // JavaScript Support
+    "allowJs": false,
+
     // Interop Constraints
     "verbatimModuleSyntax": true,
     "isolatedDeclarations": true,
@@ -27,7 +32,7 @@
     // Type Checking
     "strict": true,
 
-    "noUnusedLocals": true,
+    "noUnusedLocals": false, // duplicate with eslint. allow build with unused locals.
     "noUnusedParameters": false,
 
     "noImplicitReturns": true,

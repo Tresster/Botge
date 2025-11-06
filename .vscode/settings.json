@@ -39,7 +39,7 @@
   "bookmarks.experimental.enableNewStickyEngine": true,
   "bookmarks.useWorkaroundForFormatters": false,
   "bookmarks.sideBar.countBadge": "off",
-  "bookmarks.sideBar.expanded": true,
+  "bookmarks.sideBar.expanded": false,
   "bookmarks.revealLocation": "center",
 
   "workbench.iconTheme": "vscode-icons",

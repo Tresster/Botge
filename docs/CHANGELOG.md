@@ -2,6 +2,14 @@
 
 # Changelog
 
+## [v2.7.2](https://github.com/Tresster/Botge/tree/v2.7.2) (2025-11-06)
+
+[Full Changelog](https://github.com/Tresster/Botge/compare/v2.7.0...v2.7.2)
+
+**Closed issues:**
+
+- add base for tsdoc [\#67](https://github.com/Tresster/Botge/issues/67)
+
 ## [v2.7.0](https://github.com/Tresster/Botge/tree/v2.7.0) (2025-11-03)
 
 [Full Changelog](https://github.com/Tresster/Botge/compare/v2.6.2...v2.7.0)

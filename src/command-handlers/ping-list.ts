@@ -91,7 +91,6 @@ export function pingListHandler(
 
       await defer;
       await interaction.editReply('Failed to show ping list.');
-      return;
     }
   };
 }

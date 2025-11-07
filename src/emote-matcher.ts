@@ -116,7 +116,6 @@ class SuffixTree {
     if (suffix !== '') {
       const tree = this.#getOrAddTree(suffix.charAt(0));
       tree?._addAllSuffix(suffix.slice(1), priority, asset);
-      return;
     }
   }
 

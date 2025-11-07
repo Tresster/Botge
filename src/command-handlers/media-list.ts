@@ -88,7 +88,6 @@ export function mediaListHandler(
 
       await defer;
       await interaction.editReply('Failed to show media list.');
-      return;
     }
   };
 }

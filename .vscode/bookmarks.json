@@ -29,22 +29,22 @@
 			"path": "src/bot.ts",
 			"bookmarks": [
 				{
-					"line": 60,
+					"line": 64,
 					"column": 0,
 					"label": "bot"
 				},
 				{
-					"line": 122,
+					"line": 126,
 					"column": 0,
 					"label": "commandHandlers"
 				},
 				{
-					"line": 185,
+					"line": 189,
 					"column": 0,
 					"label": "registerHandlers"
 				},
 				{
-					"line": 375,
+					"line": 376,
 					"column": 0,
 					"label": "functions"
 				}
@@ -64,7 +64,7 @@
 					"label": "suffixTree"
 				},
 				{
-					"line": 268,
+					"line": 267,
 					"column": 0,
 					"label": "emoteMatcher"
 				}
@@ -477,16 +477,6 @@
 					"line": 199,
 					"column": 0,
 					"label": "messageBuilders"
-				}
-			]
-		},
-		{
-			"path": "eslint.config.ts",
-			"bookmarks": [
-				{
-					"line": 14,
-					"column": 0,
-					"label": "ts"
 				}
 			]
 		}

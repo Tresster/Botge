@@ -1,84 +1,62 @@
 /** @format */
 
-import { globalIgnores, defineConfig, type Config } from 'eslint/config';
-import tseslint from 'typescript-eslint';
-import tsdoc from 'eslint-plugin-tsdoc';
+import { defineConfig, globalIgnores, type Config } from 'eslint/config';
 
-const config: readonly Config[] = defineConfig([
-  globalIgnores(['.github/', '.husky/_/', 'assets/', 'data/', 'dist/', 'docs/', 'meili_data/', 'nginx/cache/', 'tmp/']),
+const globalConfig: readonly Config[] = defineConfig([
   {
+    name: 'globalLanguageOptions',
+    languageOptions: {
+      sourceType: 'module',
+      parserOptions: {
+        projectService: true,
+        ecmaVersion: 'latest',
+        ecmaFeatures: {
+          impliedStrict: true
+        }
+      }
+    }
+  },
+  {
+    name: 'globalLinterOptions',
     linterOptions: {
       noInlineConfig: true
     }
   },
+  globalIgnores(
+    ['.github/', '.husky/_/', 'assets/', 'data/', 'dist/', 'docs/', 'meili_data/', 'nginx/cache/', 'tmp/'],
+    'globalIgnores'
+  )
+]);
+
+import { plugin, parser, configs } from 'typescript-eslint';
+import js from '@eslint/js';
+import tsdoc from 'eslint-plugin-tsdoc';
+
+const config: readonly Config[] = defineConfig([
+  ...globalConfig,
   {
+    name: 'ts',
     files: ['**/*.ts'],
     plugins: {
-      tseslint,
-      tsdoc
+      'typescript-eslint': plugin,
+      'js': js,
+      'tsdoc': tsdoc
     },
     languageOptions: {
-      parser: tseslint.parser,
-      parserOptions: {
-        projectService: true,
-        ecmaVersion: 'latest'
-      }
+      parser: parser
     },
-    extends: [tseslint.configs.strictTypeChecked, tseslint.configs.stylisticTypeChecked],
+    extends: [js.configs.recommended, configs.all, configs.stylisticTypeChecked, configs.strictTypeChecked],
 
     rules: {
-      '@typescript-eslint/class-methods-use-this': 'warn',
-      '@typescript-eslint/consistent-return': 'warn',
-      '@typescript-eslint/consistent-type-exports': 'warn',
-      '@typescript-eslint/consistent-type-imports': 'warn',
-      '@typescript-eslint/default-param-last': 'warn',
-      '@typescript-eslint/explicit-function-return-type': 'warn',
-      '@typescript-eslint/explicit-member-accessibility': 'warn',
-      '@typescript-eslint/explicit-module-boundary-types': 'warn',
-      '@typescript-eslint/init-declarations': 'warn',
-      //'@typescript-eslint/max-params': 'warn',
-      '@typescript-eslint/member-ordering': 'warn',
-      '@typescript-eslint/method-signature-style': 'warn',
-      //'@typescript-eslint/naming-convention': 'warn',
-      '@typescript-eslint/no-dupe-class-members': 'warn',
-      '@typescript-eslint/no-import-type-side-effects': 'warn',
-
-      '@typescript-eslint/no-invalid-this': 'warn',
-      '@typescript-eslint/no-loop-func': 'warn',
-      //'@typescript-eslint/no-magic-numbers': 'warn',
-      '@typescript-eslint/no-redeclare': 'warn',
-
-      '@typescript-eslint/no-restricted-imports': 'warn',
-      '@typescript-eslint/no-restricted-types': 'warn',
-      '@typescript-eslint/no-shadow': 'warn',
-      //'@typescript-eslint/no-type-alias': 'warn',
-      '@typescript-eslint/no-unnecessary-parameter-property-assignment': 'warn',
-
-      '@typescript-eslint/no-unnecessary-qualifier': 'warn',
-      //'@typescript-eslint/no-unsafe-type-assertion': 'warn',
-      '@typescript-eslint/no-use-before-define': 'warn',
-      '@typescript-eslint/no-useless-empty-export': 'warn',
-
-      '@typescript-eslint/parameter-properties': 'warn',
-      '@typescript-eslint/prefer-destructuring': 'warn',
-      '@typescript-eslint/prefer-enum-initializers': 'warn',
-      '@typescript-eslint/prefer-readonly': 'warn',
-
-      '@typescript-eslint/promise-function-async': 'warn',
-      '@typescript-eslint/require-array-sort-compare': 'warn',
-      '@typescript-eslint/strict-boolean-expressions': 'warn',
-      '@typescript-eslint/switch-exhaustiveness-check': 'warn',
-      '@typescript-eslint/typedef': 'warn',
-
-      '@typescript-eslint/restrict-template-expressions': ['warn', { allowNumber: true }],
-      '@typescript-eslint/no-misused-promises': ['warn', { checksVoidReturn: false }],
-
-      '@typescript-eslint/consistent-type-definitions': ['warn', 'type'],
-      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^guild$' }],
-
       '@typescript-eslint/adjacent-overload-signatures': 'off',
-
-      '@typescript-eslint/unified-signatures': 'warn',
+      '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
+      '@typescript-eslint/max-params': 'off',
+      '@typescript-eslint/naming-convention': 'off',
+      '@typescript-eslint/no-magic-numbers': 'off',
+      '@typescript-eslint/no-misused-promises': ['error', { checksVoidReturn: false }],
+      '@typescript-eslint/no-type-alias': 'off',
+      '@typescript-eslint/no-unsafe-type-assertion': 'off',
+      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^guild$' }],
 
       '@typescript-eslint/prefer-readonly-parameter-types': [
         'warn',
@@ -112,29 +90,86 @@ const config: readonly Config[] = defineConfig([
           ]
         }
       ],
+      '@typescript-eslint/restrict-template-expressions': ['error', { allowNumber: true }],
 
-      'eqeqeq': 'warn',
-      'strict': 'warn',
-      'array-callback-return': 'warn',
-      //'no-await-in-loop': 'warn',
-      'no-constructor-return': 'warn',
+      'eqeqeq': 'error',
+      'strict': ['error', 'never'],
+      'tsdoc/syntax': 'error',
 
-      'no-duplicate-imports': 'warn',
-      'no-inner-declarations': 'warn',
-      'no-promise-executor-return': 'warn',
-      'no-self-compare': 'warn',
-      'no-template-curly-in-string': 'warn',
-      'no-unmodified-loop-condition': 'warn',
-      'no-unreachable-loop': 'warn',
+      'array-callback-return': 'error',
 
-      'no-use-before-define': 'warn',
-      'no-useless-assignment': 'warn',
-      'require-atomic-updates': 'warn',
+      'no-await-in-loop': 'off', // ?
+      'no-constructor-return': 'error',
+      'no-duplicate-imports': 'error',
+      'no-inner-declarations': 'error',
+      'no-promise-executor-return': 'error',
+      'no-self-compare': 'error',
+      'no-template-curly-in-string': 'error',
+      'no-unassigned-vars': 'warn', // ?
+      'no-unmodified-loop-condition': 'error',
+      'no-unreachable-loop': 'error',
+      'no-use-before-define': 'off', // ! @typescript-eslint
+      'no-useless-assignment': 'warn', // ?
 
-      'no-unused-expressions': 'warn',
-      'no-invalid-this': 'warn',
+      'require-atomic-updates': 'error',
+      'block-scoped-var': 'error',
+      'guard-for-in': 'error',
+      'new-cap': 'error',
 
-      'tsdoc/syntax': 'warn'
+      'no-alert': 'error',
+      'no-array-constructor': 'off', // ! @typescript-eslint
+      'no-bitwise': ['error', { allow: ['&'] }],
+      'no-caller': 'error',
+      'no-empty': 'off', // ?
+      'no-empty-function': 'off', // ! @typescript-eslint
+      'no-eq-null': 'error',
+      'no-eval': 'off', // TODO
+      'no-extend-native': 'error',
+      'no-extra-bind': 'error',
+      'no-implicit-globals': 'error',
+      'no-implied-eval': 'off', // ! @typescript-eslint
+      'no-invalid-this': 'off', // ! @typescript-eslint
+      'no-iterator': 'error',
+      'no-lone-blocks': 'error',
+      'no-loop-func': 'off', // ! @typescript-eslint
+      'no-multi-assign': 'error',
+      'no-new': 'off', // ?
+      'no-new-func': 'error',
+      'no-new-wrappers': 'error',
+      'no-object-constructor': 'error',
+      'no-octal-escape': 'error',
+      'no-param-reassign': 'error',
+      'no-proto': 'error',
+      'no-restricted-exports': 'error',
+      'no-restricted-globals': 'error',
+      'no-restricted-imports': 'off', // ! @typescript-eslint
+      'no-restricted-properties': 'error',
+      'no-restricted-syntax': 'error',
+      'no-return-assign': 'error',
+      'no-script-url': 'error',
+      'no-sequences': 'error',
+      'no-shadow': 'off', // ! @typescript-eslint
+      'no-throw-literal': 'error',
+      'no-unused-expressions': 'off', // ! @typescript-eslint
+      'no-useless-call': 'error',
+      'no-useless-constructor': 'off', // ! @typescript-eslint
+      'no-useless-rename': 'error',
+      'no-useless-return': 'off', // TODO: conflict @typescript-eslint
+      'no-var': 'error',
+      'no-with': 'error',
+
+      'prefer-const': 'error',
+      'prefer-named-capture-group': 'off', // ?
+      'prefer-object-has-own': 'error',
+      'prefer-promise-reject-errors': 'off', // ! @typescript-eslint
+      'prefer-regex-literals': 'error',
+      'prefer-rest-params': 'error',
+      'preserve-caught-error': 'error',
+
+      'radix': 'error',
+      'require-await': 'off', // ! @typescript-eslint
+      'require-unicode-regexp': 'off', // ?
+      'symbol-description': 'error'
     }
   }
 ]);

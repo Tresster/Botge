@@ -37,6 +37,8 @@
     "eslint": "eslint . --flag unstable_native_nodejs_ts_config --concurrency=auto",
     "prepare": "node .husky/install.ts",
     "prettier": "prettier . --write",
+    "start": "docker compose up --build",
+    "stop": "docker compose stop",
     "test": "vitest tests"
   },
   "dependencies": {
@@ -69,7 +71,7 @@
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.46.3",
     "vite-tsconfig-paths": "5.1.4",
-    "vitest": "^4.0.7"
+    "vitest": "^4.0.8"
   },
   "engines": {
     "node": "v25.1.0",

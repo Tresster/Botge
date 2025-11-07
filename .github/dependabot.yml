@@ -21,8 +21,6 @@ updates:
       interval: daily
 
   - package-ecosystem: npm
-    registries:
-      - npm-registry
     versioning-strategy: increase
     open-pull-requests-limit: 5
     directory: '/'

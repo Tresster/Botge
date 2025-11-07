@@ -121,7 +121,8 @@
     "DUMPLESS",
     "pingable",
     "cooldown",
-    "analyse"
+    "analyse",
+    "unforgeable"
   ],
 
   "markdownlint.config": {

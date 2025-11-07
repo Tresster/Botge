@@ -7,3 +7,15 @@ updates:
     directory: '/'
     schedule:
       interval: daily
+
+  - package-ecosystem: docker
+    open-pull-requests-limit: 1
+    directory: '/'
+    schedule:
+      interval: daily
+
+  - package-ecosystem: docker-compose
+    open-pull-requests-limit: 3
+    directory: '/'
+    schedule:
+      interval: daily

@@ -16,6 +16,10 @@
     "type": "git",
     "url": "git+https://github.com/Tresster/Botge.git"
   },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/Tresster"
+  },
   "license": "MIT",
   "author": "Tresster",
   "contributors": [

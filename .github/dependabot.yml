@@ -13,10 +13,6 @@ updates:
     directory: '/'
     schedule:
       interval: daily
-    groups:
-      github-actions:
-        patterns:
-          - '*'
 
   - package-ecosystem: docker-compose
     open-pull-requests-limit: 1

@@ -3,7 +3,7 @@
 version: 2
 updates:
   - package-ecosystem: github-actions
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 8
     directory: '/'
     schedule:
       interval: daily

@@ -12,7 +12,7 @@ services:
   meilisearch:
     ports:
       - 7700:7700
-    image: getmeili/meilisearch:v1.16
+    image: getmeili/meilisearch:v1.24
     mem_limit: 512m
     healthcheck:
       test: set -o pipefail;curl -fsS http://localhost:7700/health | grep -q '{"status":"available"}'

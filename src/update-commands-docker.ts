@@ -1,7 +1,8 @@
 /** @format */
 
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
-import { Md5 } from 'ts-md5';
+
+import { createHash } from 'crypto';
 
 import { REST, Routes } from 'discord.js';
 
@@ -16,7 +17,7 @@ export async function updateCommands(lockFilePath: string): Promise<void> {
     if (!existsSync(lockFilePath)) return undefined;
     return readFileSync(lockFilePath, 'utf8');
   })();
-  const newCommands = Md5.hashStr(JSON.stringify(commands));
+  const newCommands = createHash('md5').update(JSON.stringify(commands)).digest('hex');
 
   if (currentCommands !== undefined && currentCommands === newCommands) {
     console.log('No commands change detected.');

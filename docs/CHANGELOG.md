@@ -2,6 +2,17 @@
 
 # Changelog
 
+## [Unreleased](https://github.com/Tresster/Botge/tree/HEAD)
+
+[Full Changelog](https://github.com/Tresster/Botge/compare/v2.7.2...HEAD)
+
+**Merged pull requests:**
+
+- Bump getmeili/meilisearch from v1.16 to v1.24 [\#73](https://github.com/Tresster/Botge/pull/73) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump nginx from 1.29.2-alpine to 1.29.3-alpine [\#72](https://github.com/Tresster/Botge/pull/72) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump docker/build-push-action from f2a1d5e99d037542a71f64918e516c093c6f3fc4 to 9e436ba9f2d7bcd1d038c8e55d039d37896ddc5d [\#71](https://github.com/Tresster/Botge/pull/71) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump docker/metadata-action from 9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7 to 8d8c7c12f7b958582a5cb82ba16d5903cb27976a [\#70](https://github.com/Tresster/Botge/pull/70) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [v2.7.2](https://github.com/Tresster/Botge/tree/v2.7.2) (2025-11-06)
 
 [Full Changelog](https://github.com/Tresster/Botge/compare/v2.7.0...v2.7.2)

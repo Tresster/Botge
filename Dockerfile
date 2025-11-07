@@ -41,7 +41,7 @@ COPY --from=node-dependencies /app/node_modules ./node_modules
 COPY --from=build /app/dist ./dist
 
 LABEL org.opencontainers.image.title="Botge" \
-  org.opencontainers.image.version="2.7.2" \
+  org.opencontainers.image.version="2.8.0" \
   org.opencontainers.image.description="Search emotes, clips, use zero-width emotes and other such commands." \
   org.opencontainers.image.url="https://botge.gitbook.io" \
   org.opencontainers.image.source="https://github.com/Tresster/Botge" \

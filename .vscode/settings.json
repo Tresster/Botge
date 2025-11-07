@@ -79,6 +79,7 @@
     // Project
     "NodeNext",
     "ESNext",
+    "devcontainers",
 
     // Lib
     "healthcheck",

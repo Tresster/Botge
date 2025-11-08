@@ -6,14 +6,9 @@
   "image": "mcr.microsoft.com/devcontainers/base:alpine",
 
   "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {
-      "version": "latest",
-      "moby": true,
-      "installDockerBuildx": true
-    },
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
     "ghcr.io/devcontainers/features/node:1": {
-      "version": "latest",
-      "nodeGypDependencies": false
+      "version": "latest"
     }
   },
 

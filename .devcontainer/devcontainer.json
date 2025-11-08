@@ -8,8 +8,8 @@
   "features": {
     "ghcr.io/devcontainers/features/docker-in-docker:2": {
       "version": "latest",
-      "moby": true,
-      "installDockerBuildx": false
+      "moby": false,
+      "installDockerBuildx": true
     },
     "ghcr.io/devcontainers/features/node:1": {
       "version": "latest",

@@ -3,15 +3,7 @@
 {
   "name": "Node.js & TypeScript",
   // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-  "image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm",
-  "features": {
-    "ghcr.io/devcontainers/features/github-cli:1": {
-      "version": "latest"
-    },
-    "ghcr.io/devcontainers/features/node:1": {
-      "version": "latest"
-    }
-  }
+  "image": "mcr.microsoft.com/devcontainers/typescript-node",
 
   // Features to add to the dev container. More info: https://containers.dev/features.
   // "features": {},
@@ -20,7 +12,7 @@
   // "forwardPorts": [],
 
   // Use 'postCreateCommand' to run commands after the container is created.
-  // "postCreateCommand": "npm ci"
+  "postCreateCommand": "npm install"
 
   // Configure tool-specific properties.
   // "customizations": {},

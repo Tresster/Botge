@@ -14,7 +14,9 @@
     "ghcr.io/devcontainers/features/github-cli:1": {}
   },
 
-  "postCreateCommand": "npm install",
+  "forwardPorts": [7700],
+
+  "postCreateCommand": "npm install && sudo chmod a+r nginx/cache/tmp",
 
   "customizations": {
     "vscode": {
@@ -32,25 +34,7 @@
         // Extras
         "vscode-icons-team.vscode-icons",
         "aaron-bond.better-comments",
-        "alefragnani.Bookmarks",
-
-        // Removes
-        "-vscode.css-language-features",
-        "-vscode.emmet",
-        "-vscode.extension-editing",
-
-        "-vscode.grunt",
-        "-vscode.gulp",
-
-        "-vscode.html-language-features",
-        "-vscode.jake",
-
-        "-ms-vscode.js-debug",
-        "-vscode.tunnel-forwarding",
-        "-vscode.mermaid-chat-features",
-
-        "-vscode.php-language-features",
-        "-jmrog.vscode-nuget-package-manager"
+        "alefragnani.Bookmarks"
       ]
     }
   }

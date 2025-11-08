@@ -1,4 +1,7 @@
 {
+  "terminal.integrated.shellIntegration.enabled": true,
+  "terminal.integrated.suggest.enabled": true,
+
   "telemetry.feedback.enabled": false,
   "files.autoSave": "onFocusChange",
 
@@ -122,7 +125,17 @@
     "pingable",
     "cooldown",
     "analyse",
-    "unforgeable"
+    "unforgeable",
+
+    // DevContainer
+    "moby",
+    "eamodio",
+    "buildx",
+    "esbenp",
+    "jmrog",
+    "alefragnani",
+    "Anson",
+    "dbaeumer"
   ],
 
   "markdownlint.config": {

@@ -1,8 +1,8 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/typescript-node
+
 {
   "name": "Node.js & TypeScript",
-  // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
   "image": "mcr.microsoft.com/devcontainers/typescript-node",
   "features": {
     "ghcr.io/devcontainers/features/docker-in-docker:2": {
@@ -10,19 +10,12 @@
       "moby": false,
       "installDockerBuildx": false
     },
-    "ghcr.io/devcontainers/features/node:1": { "version": "latest", "nodeGypDependencies": false }
+    "ghcr.io/devcontainers/features/node:1": { "version": "latest", "nodeGypDependencies": false },
+    "ghcr.io/devcontainers/features/github-cli:1": {}
   },
 
-  // Features to add to the dev container. More info: https://containers.dev/features.
-  // "features": {},
+  "postCreateCommand": "npm install",
 
-  // Use 'forwardPorts' to make a list of ports inside the container available locally.
-  // "forwardPorts": [],
-
-  // Use 'postCreateCommand' to run commands after the container is created.
-  // "postCreateCommand": "yarn install",
-
-  // Configure tool-specific properties.
   "customizations": {
     "vscode": {
       "extensions": [
@@ -39,11 +32,26 @@
         // Extras
         "vscode-icons-team.vscode-icons",
         "aaron-bond.better-comments",
-        "alefragnani.Bookmarks"
+        "alefragnani.Bookmarks",
+
+        // Removes
+        "-vscode.css-language-features",
+        "-vscode.emmet",
+        "-vscode.extension-editing",
+
+        "-vscode.grunt",
+        "-vscode.gulp",
+
+        "-vscode.html-language-features",
+        "-vscode.jake",
+
+        "-ms-vscode.js-debug",
+        "-vscode.tunnel-forwarding",
+        "-vscode.mermaid-chat-features",
+
+        "-vscode.php-language-features",
+        "-jmrog.vscode-nuget-package-manager"
       ]
     }
   }
-
-  // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-  // "remoteUser": "root"
 }

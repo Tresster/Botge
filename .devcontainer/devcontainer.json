@@ -7,11 +7,9 @@
   "features": {
     "ghcr.io/devcontainers/features/git-lfs:1": {
       "autoPull": true,
-      "installDirectlyFromGitHubRelease": true,
       "version": "latest"
     },
     "ghcr.io/devcontainers/features/github-cli:1": {
-      "installDirectlyFromGitHubRelease": true,
       "version": "latest"
     },
     "ghcr.io/devcontainers/features/node:1": {
@@ -21,7 +19,7 @@
       "pnpmVersion": "latest",
       "nvmVersion": "latest"
     }
-  },
+  }
 
   // Features to add to the dev container. More info: https://containers.dev/features.
   // "features": {},
@@ -30,7 +28,7 @@
   // "forwardPorts": [],
 
   // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": "npm ci"
+  // "postCreateCommand": "npm ci"
 
   // Configure tool-specific properties.
   // "customizations": {},

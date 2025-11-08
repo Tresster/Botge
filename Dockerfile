@@ -41,8 +41,8 @@ LABEL org.opencontainers.image.title="Botge" \
 RUN apk add --no-cache ffmpeg
 COPY --from=node-dependencies /app/node_modules ./node_modules
 COPY --from=build /app/dist ./dist
-COPY docs ./docs/docs
-COPY LICENSE.txt README.md ./docs
+COPY docs ./docs
+COPY LICENSE.txt README.md ./
 
 USER node
 

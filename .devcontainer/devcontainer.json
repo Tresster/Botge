@@ -1,21 +1,49 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
-// README at: https://github.com/devcontainers/templates/tree/main/src/typescript-node
+// README at: https://github.com/devcontainers/templates/tree/main/src/docker-in-docker
 {
-  "name": "Node.js & TypeScript",
+  "name": "Docker in Docker",
   // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-  "image": "mcr.microsoft.com/devcontainers/typescript-node",
+  "image": "mcr.microsoft.com/devcontainers/base:alpine",
 
-  // Features to add to the dev container. More info: https://containers.dev/features.
-  // "features": {},
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "version": "latest",
+      "moby": false,
+      "installDockerBuildx": false
+    },
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "latest",
+      "nodeGypDependencies": false
+    }
+  },
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   // "forwardPorts": [],
 
   // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": "npm install"
+  "postCreateCommand": "docker --version",
 
   // Configure tool-specific properties.
-  // "customizations": {},
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        // Project
+        "eamodio.gitlens",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+
+        // Syntax
+        "streetsidesoftware.code-spell-checker",
+        "DavidAnson.vscode-markdownlint",
+        "redhat.vscode-yaml",
+
+        // Extras
+        "vscode-icons-team.vscode-icons",
+        "aaron-bond.better-comments",
+        "alefragnani.Bookmarks"
+      ]
+    }
+  }
 
   // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
   // "remoteUser": "root"

@@ -15,14 +15,7 @@
     "ghcr.io/devcontainers/features/github-cli:1": {}
   },
 
-  "postCreateCommand": [
-    "sudo chmod -R a+rwx data",
-    "sudo chmod -R a+rwx tmp",
-    "sudo chmod -R a+rx nginx/cache",
-    "npm install",
-    "npm run build",
-    "docker-compose build"
-  ],
+  "postCreateCommand": "sudo chmod -R a+rwx data && sudo chmod -R a+rwx tmp && sudo chmod -R a+rx nginx/cache && npm install && npm run build && docker-compose build",
 
   "customizations": {
     "codespaces": {

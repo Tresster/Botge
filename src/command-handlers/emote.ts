@@ -486,6 +486,7 @@ export function emotesHandler(cachedUrl: Readonly<CachedUrl>) {
           //Here you can get the exit code of the script
           return async function (code: number): Promise<void> {
             await defer;
+
             if (code === 0) {
               if (interaction !== undefined) await interaction.editReply({ files: [outfile] });
               else if (message !== undefined)
@@ -495,13 +496,13 @@ export function emotesHandler(cachedUrl: Readonly<CachedUrl>) {
               else if (message !== undefined)
                 await message.reply({ content: 'gif creation failed', allowedMentions: { repliedUser: false } });
             }
+
             void rm(outdir, { recursive: true });
           };
         })()
       );
 
-      //???
-      //await defer;
+      // ? await defer;
     } catch (error) {
       console.log(`Error at emoteCombinedHandler --> ${error instanceof Error ? error.message : String(error)}`);
       const editReplyMessage =

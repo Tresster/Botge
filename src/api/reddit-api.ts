@@ -65,8 +65,9 @@ export class RedditApi {
     const query = `hot.json`;
     const query2 = 'limit=5';
 
-    const x = await fetchAndJson(`${REDDIT_API_ENDPOINTS.livestreamFail}/${query}?${query2}`, this.#apiRequestOptions);
-    console.log(x);
-    return x as RedditLivestreamFails;
+    return (await fetchAndJson(
+      `${REDDIT_API_ENDPOINTS.livestreamFail}/${query}?${query2}`,
+      this.#apiRequestOptions
+    )) as RedditLivestreamFails;
   }
 }

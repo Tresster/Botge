@@ -29,7 +29,7 @@
     "santirack"
   ],
   "type": "module",
-  "main": "src/index.ts",
+  "main": "dist/index.js",
   "scripts": {
     "build": "tsc --build src",
     "build:clean": "tsc --build --clean src",

@@ -45,7 +45,7 @@ export async function getDuration(filename: string): Promise<number | undefined>
         // Check if duration is "N/A" or empty, and use a default value
         if (duration === 'N/A' || duration === '') {
           resolve(parseFloat(String(DEFAULT_DURATION)));
-          //reject(new Error('Duration is either N/A or empty.')); // or any default value you prefer
+          // ? reject(new Error('Duration is either N/A or empty.')); // or any default value you prefer
         } else {
           resolve(parseFloat(duration));
         }

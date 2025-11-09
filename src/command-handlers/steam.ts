@@ -14,10 +14,10 @@ type NumberOfCurrentPlayers = {
 
 function getColor(percent: number): string {
   if (percent <= 39)
-    return '\u001b[31m'; //red
+    return '\u001b[31m'; // red
   else if (percent <= 69)
-    return '\u001b[33m'; //yellow
-  else return '\u001b[34m'; //blue
+    return '\u001b[33m'; // yellow
+  else return '\u001b[34m'; // blue
 }
 
 function getReviewLabel(percent: number): string {

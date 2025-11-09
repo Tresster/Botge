@@ -354,7 +354,7 @@ export function buttonHandler(
       } else if (baseCustomId === LAST_BUTTON_BASE_CUSTOM_ID) {
         reply = messageBuilder.last();
       } else if (baseCustomId === JUMP_TO_BUTTON_BASE_CUSTOM_ID) {
-        //can't defer, when showing modal
+        // ! can't defer, when showing modal
         await interaction.showModal(messageBuilder.modal);
         return undefined;
       } else if (baseCustomId === DELETE_EMOTE_BUTTON_BASE_CUSTOM_ID) {

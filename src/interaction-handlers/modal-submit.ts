@@ -248,7 +248,7 @@ export function modalSubmitHandler(
         jumpToIdentifierTextInputValue !== undefined &&
         jumpToIdentifierTextInputValue !== ''
       ) {
-        //can't set both
+        // can't set both
         await defer;
         return;
       }

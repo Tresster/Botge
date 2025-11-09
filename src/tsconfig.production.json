@@ -2,13 +2,13 @@
   "extends": "./tsconfig",
   "references": [],
   "compilerOptions": {
-    //Projects
+    // Projects
     "composite": false,
 
-    //Emit
+    // Emit
     "declarationMap": false,
 
-    //Interop Constraints
+    // Interop Constraints
     "isolatedDeclarations": false
   }
 }

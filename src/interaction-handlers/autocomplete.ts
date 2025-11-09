@@ -290,7 +290,6 @@ export function autocompleteHandler(
         }
       } else if (interactionCommandName === SLASH_COMMAND_NAMES.pingList) {
         if (focusedOptionName === 'timezone') {
-          //const timezones = Intl.supportedValuesOf('timeZone').filter(timezone => timezone.includes(focusedOptionValue.trim()));
           const timezones_ = timezones.default.filter((timezone: Readonly<TimeZone>) =>
             timezone.name.toLowerCase().includes(focusedOptionValue.trim().toLowerCase())
           );

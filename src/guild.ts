@@ -101,7 +101,7 @@ export class Guild {
     twitchApi: Readonly<TwitchApi> | undefined,
     broadcasterName: string
   ): Promise<void> {
-    //if (this.#broadcasterName === broadcasterName) return;
+    // ? if (this.#broadcasterName === broadcasterName) return;
 
     this.#broadcasterName = broadcasterName;
     await this.refreshClips(twitchApi, true);
@@ -125,7 +125,7 @@ export class Guild {
     if (deleteOld !== undefined && deleteOld) await this.#twitchClipsMeiliSearchIndex.deleteAllDocuments().waitTask();
 
     if (this.#id === GUILD_ID_CUTEDOG) {
-      //custom clips
+      // custom clips
       const increment = 100;
       const clipIds = await listCutedogClipIds();
 
@@ -139,7 +139,7 @@ export class Guild {
         updated += clips.length;
       }
     } else {
-      //get top 1000 most viewed clips
+      // get top 1000 most viewed clips
       let getClipsWithGameNameFromBroadcasterName_ = await getClipsWithGameNameFromBroadcasterName(
         twitchApi,
         this.#broadcasterName

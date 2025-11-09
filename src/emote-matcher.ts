@@ -180,7 +180,6 @@ class SuffixTree {
 
     if (assets.length === 0) return undefined;
 
-    //reached the end of the iteration, return
     if (sortByDateAdded !== undefined && sortByDateAdded) {
       const assetsTimestampNotUndefined = assets.filter((asset) => asset.timestamp !== undefined);
       const assetsTimestampUndefined = assets.filter((asset) => asset.timestamp === undefined);
@@ -321,9 +320,9 @@ export class EmoteMatcher {
     if (ffzPersonal !== undefined) priority--;
 
     for (const emote of sevenNotInSet ?? []) {
-      //there may be a case where an emote was added with /addemote
-      //and afterwards added to the channel
-      //or it was added to 7tv global emotes
+      // there may be a case where an emote was added with /addemote
+      // and afterwards added to the channel
+      // or it was added to 7tv global emotes
       if (emote.error !== undefined) continue;
       if (this.matchSingleExact(emote.name)) continue;
 

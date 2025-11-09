@@ -52,7 +52,7 @@ export function chatgptHandler(openai: ReadonlyOpenAI | undefined) {
         }
       }
 
-      //TODO: detect if img is png, jpg, webp, or non animated gif
+      // TODO: detect if img is png, jpg, webp, or non animated gif
 
       const input = ((): OpenAIResponseInput => {
         const inputImage: OpenAIResponseInput | undefined =
@@ -69,7 +69,7 @@ export function chatgptHandler(openai: ReadonlyOpenAI | undefined) {
         return inputImage ?? [{ role: 'user', content: prompt }];
       })();
 
-      //1 token is around 4 english characters
+      // ! 1 token is around 4 english characters
       const response = await openai.responses.create({
         model: 'gpt-4.1',
         input: input,

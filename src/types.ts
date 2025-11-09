@@ -229,7 +229,7 @@ export type PingForPingMeMessageBuilderReplies = {
   readonly deletionEvent: boolean;
 };
 
-//Needed for @twemoji/api.parse, but we only parse string.
+// ! Needed for @twemoji/api.parse, but we only parse string.
 declare module '@twemoji/api' {
   type HTMLElement = string;
 }

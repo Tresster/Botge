@@ -21,7 +21,7 @@ export class BaseDatabase {
   }
 
   public close(): void {
-    //should it exportDatabase() on close?
+    // ? should it exportDatabase() on close?
     this.database.close();
   }
 

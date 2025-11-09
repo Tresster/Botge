@@ -100,7 +100,7 @@ class OverlayElement implements HorizontalStackElement {
 
     segments.push(`[${this.id}]`);
 
-    //pad second because scale doesn't keep transparency
+    // ! pad second because scale doesn't keep transparency
     segments.push(`scale=${this.#width}:${this.#height}:force_original_aspect_ratio=decrease`);
     if (this.#height > this.#layers[layerId].height && this.#width > this.#layers[layerId].width)
       segments.push(`,pad=${this.#width}:${this.#height}:x=-1:y=-1:color=black@0.0`);
@@ -296,7 +296,7 @@ export function emotesHandler(cachedUrl: Readonly<CachedUrl>) {
         return;
       }
 
-      //dir sync only if multiple emotes
+      // dir sync only if multiple emotes
       ensureDirSync(outdir);
 
       const uniqueTokens: readonly string[] = emotes.filter(onlyUnique);
@@ -483,7 +483,7 @@ export function emotesHandler(cachedUrl: Readonly<CachedUrl>) {
       ffmpeg.on(
         'close',
         (() => {
-          //Here you can get the exit code of the script
+          // Here you can get the exit code of the script
           return async function (code: number): Promise<void> {
             await defer;
 

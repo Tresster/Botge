@@ -7,10 +7,7 @@ const viteUserConfig: ViteUserConfig = defineConfig({
   plugins: [tsconfigPaths({ parseNative: true })],
   test: {
     name: { label: 'Testge', color: 'cyan' },
-    logHeapUsage: true,
-    typecheck: {
-      enabled: true
-    }
+    logHeapUsage: true
   }
 });
 

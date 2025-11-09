@@ -28,7 +28,7 @@ export class PingsDatabase extends BaseDatabase {
     super(filepath, sqlJsStatic);
 
     this.#createTable();
-    //this.#alterTable();
+    // this.#alterTable();
   }
 
   public insert(ping: Ping): void {

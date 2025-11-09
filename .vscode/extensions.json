@@ -1,8 +1,9 @@
 {
   "recommendations": [
     // Project
-    "eamodio.gitlens",
+    "ms-vscode-remote.remote-containers",
     "docker.docker",
+    "eamodio.gitlens",
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
 

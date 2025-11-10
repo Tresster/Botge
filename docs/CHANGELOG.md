@@ -2,9 +2,9 @@
 
 # Changelog
 
-## [Unreleased](https://github.com/Tresster/Botge/tree/HEAD)
+## [v2.8.0](https://github.com/Tresster/Botge/tree/v2.8.0) (2025-11-09)
 
-[Full Changelog](https://github.com/Tresster/Botge/compare/v2.7.2...HEAD)
+[Full Changelog](https://github.com/Tresster/Botge/compare/v2.7.2...v2.8.0)
 
 **Merged pull requests:**
 

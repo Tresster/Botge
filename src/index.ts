@@ -1,7 +1,7 @@
 /** @format */
 
 // Copyright (c) 2025 Tresster. All rights reserved. Licensed under the MIT license.
-// See LICENSE.md in the project root for license information.
+// See LICENSE.txt in the project root for license information.
 
 /**
  * Search emotes, clips, use zero-width emotes and other such commands.

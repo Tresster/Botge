@@ -18,6 +18,9 @@ on:
     branches: ['main']
   pull_request:
     branches: ['main']
+    paths-ignore:
+      - '**/*.md'
+      - '**/*.txt'
   schedule:
     - cron: '31 11 * * 3'
 
@@ -47,7 +50,7 @@ jobs:
         include:
           - language: actions
             build-mode: none
-          - language: javascript-typescript
+          - language: typescript
             build-mode: none
         # CodeQL supports the following values keywords for 'language': 'actions', 'c-cpp', 'csharp', 'go', 'java-kotlin', 'javascript-typescript', 'python', 'ruby', 'rust', 'swift'
         # Use `c-cpp` to analyze code written in C, C++ or both

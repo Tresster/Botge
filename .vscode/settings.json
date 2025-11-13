@@ -5,6 +5,19 @@
   "terminal.integrated.shellIntegration.enabled": true,
   "terminal.integrated.suggest.enabled": true,
 
+  "github.copilot.enable": {
+    "*": false
+  },
+  "github.copilot.chat.codeGeneration.useInstructionFiles": true,
+  "github.copilot.nextEditSuggestions.enabled": false,
+  "github.copilot.chat.codesearch.enabled": true,
+  "github.copilot.chat.editor.temporalContext.enabled": true,
+  "github.copilot.chat.edits.temporalContext.enabled": true,
+  "github.copilot.chat.languageContext.fix.typescript.enabled": true,
+  "github.copilot.chat.languageContext.inline.typescript.enabled": true,
+  "github.copilot.chat.languageContext.typescript.enabled": true,
+  "github.copilot.chat.languageContext.typescript.includeDocumentation": true,
+
   "telemetry.feedback.enabled": false,
   "files.autoSave": "onFocusChange",
 
@@ -44,6 +57,7 @@
 
   "bookmarks.saveBookmarksInProject": true,
   "bookmarks.experimental.enableNewStickyEngine": true,
+  "bookmarks.keepBookmarksOnLineDelete": true, // ! needed for agents
   "bookmarks.useWorkaroundForFormatters": false,
   "bookmarks.sideBar.countBadge": "off",
   "bookmarks.sideBar.expanded": false,

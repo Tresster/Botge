@@ -27,6 +27,8 @@
     "vscode": {
       "extensions": [
         // Project
+        "GitHub.copilot",
+        "GitHub.copilot-chat",
         "eamodio.gitlens",
         "dbaeumer.vscode-eslint",
         "esbenp.prettier-vscode",

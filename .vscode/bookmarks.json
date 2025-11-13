@@ -29,22 +29,22 @@
 			"path": "src/bot.ts",
 			"bookmarks": [
 				{
-					"line": 64,
+					"line": 60,
 					"column": 0,
 					"label": "bot"
 				},
 				{
-					"line": 126,
+					"line": 122,
 					"column": 0,
 					"label": "commandHandlers"
 				},
 				{
-					"line": 189,
+					"line": 185,
 					"column": 0,
 					"label": "registerHandlers"
 				},
 				{
-					"line": 376,
+					"line": 375,
 					"column": 0,
 					"label": "functions"
 				}

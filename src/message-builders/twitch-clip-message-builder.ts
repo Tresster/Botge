@@ -1,13 +1,22 @@
 /** @format */
 
-import { EmbedBuilder, type ChatInputCommandInteraction } from 'discord.js';
+import {
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  type ChatInputCommandInteraction,
+  type MessageActionRowComponentBuilder
+} from 'discord.js';
 
+import { getPingableUserId } from '../utils/message-builders/get-pingable-user-id.ts';
 import type {
   TwitchClip,
   TwitchClipMessageBuilderTransformFunctionReturnType,
-  ReadonlyEmbedBuilder
+  ReadonlyActionRowBuilderMessageActionRowComponentBuilder
 } from '../types.ts';
-import { BaseMessageBuilder } from './base.ts';
+import { BaseMessageBuilder, getCustomId } from './base.ts';
+
+export const SEND_CLIP_BUTTON_BASE_CUSTOM_ID = 'sendClipButton' as const;
 
 const { EMBED_SERVER_TWITCH } = process.env;
 
@@ -17,48 +26,19 @@ export class TwitchClipMessageBuilder extends BaseMessageBuilder<
 > {
   public static readonly messageBuilderType = 'Clip' as const;
   static #staticCounter = 0;
-  readonly #sortedByText: string | undefined;
+  readonly #extraRow: ReadonlyActionRowBuilderMessageActionRowComponentBuilder | undefined = undefined;
 
-  public constructor(
-    interaction: ChatInputCommandInteraction,
-    twitchClips: readonly TwitchClip[],
-    sortedBy: string | undefined
-  ) {
-    const transformFunctionWithEmbedServer = (
-      twitchClip: TwitchClip
-    ): TwitchClipMessageBuilderTransformFunctionReturnType => {
+  public constructor(interaction: ChatInputCommandInteraction, twitchClips: readonly TwitchClip[], ephemeral: boolean) {
+    // if (EMBED_SERVER_TWITCH === undefined) throw new Error('EMBED_SERVER_TWITCH undefined');
+    // ! no env file in test
+
+    const transformFunction = (twitchClip: TwitchClip): TwitchClipMessageBuilderTransformFunctionReturnType => {
       const { id } = twitchClip;
       const content = `${EMBED_SERVER_TWITCH}${id}\n${this.currentIndex + 1}/${this.arrayLength}`;
 
       return {
         content: content,
-        components: [this.row]
-      };
-    };
-
-    const transformFunctionWithoutEmbedServer = (
-      twitchClip: TwitchClip
-    ): TwitchClipMessageBuilderTransformFunctionReturnType => {
-      const { title, url, creator_name, game_id, view_count, created_at, thumbnail_url } = twitchClip;
-
-      const embed: ReadonlyEmbedBuilder = new EmbedBuilder()
-        .setColor('DarkButNotBlack')
-        .setTitle(title)
-        .setURL(url)
-        .addFields(
-          { name: 'Clipper', value: creator_name },
-          { name: 'Game', value: game_id, inline: true },
-          { name: 'Views', value: view_count.toString(), inline: true },
-          { name: 'Created', value: created_at, inline: true }
-        )
-        .setImage(thumbnail_url)
-        .setFooter({
-          text: `${this.currentIndex + 1}/${this.arrayLength}. ${this.#sortedByText === 'shuffle' ? 'Shuffled' : `Sorted by ${this.#sortedByText}`}.`
-        });
-
-      return {
-        embeds: [embed],
-        components: [this.row]
+        components: this.#extraRow !== undefined ? [this.row, this.#extraRow] : [this.row]
       };
     };
 
@@ -71,11 +51,29 @@ export class TwitchClipMessageBuilder extends BaseMessageBuilder<
       TwitchClipMessageBuilder.messageBuilderType,
       interaction,
       twitchClips,
-      EMBED_SERVER_TWITCH !== undefined ? transformFunctionWithEmbedServer : transformFunctionWithoutEmbedServer,
+      transformFunction,
       getIdentifierFunction,
       'title'
     );
 
-    this.#sortedByText = sortedBy ?? 'date created(newest first)';
+    if (ephemeral) {
+      this.#extraRow = new ActionRowBuilder<MessageActionRowComponentBuilder>().addComponents(
+        new ButtonBuilder()
+          .setCustomId(
+            getCustomId(SEND_CLIP_BUTTON_BASE_CUSTOM_ID, TwitchClipMessageBuilder.messageBuilderType, this.counter)
+          )
+          .setLabel('Send')
+          .setStyle(ButtonStyle.Success)
+      );
+    }
+  }
+
+  public currentWithSentBy(): TwitchClipMessageBuilderTransformFunctionReturnType {
+    const current = this.current();
+    const [contentUrl] = current.content.split('\n');
+
+    return {
+      content: `${contentUrl}\nSent by: ${getPingableUserId(this.interaction.user.id)}`
+    };
   }
 }

@@ -131,6 +131,9 @@ const clip: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()
       .setDescription('Sort. Default: date created (newest first)')
       .addChoices({ name: 'Views', value: 'views' }, { name: 'Shuffle the list', value: 'shuffle' })
   )
+  .addBooleanOption((option: ReadonlySlashCommandBooleanOption) =>
+    option.setName('ephemeral').setDescription('Whether to display the clips only for you (includes a send button)')
+  )
   .setContexts(InteractionContextType.Guild, InteractionContextType.PrivateChannel);
 
 const addemote: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder()

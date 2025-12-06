@@ -10,6 +10,7 @@ import {
   type TextChannel
 } from 'discord.js';
 
+import { getPingableUserId } from '../utils/message-builders/get-pingable-user-id.ts';
 import type { PingsDatabase } from '../api/ping-database.ts';
 import type {
   Ping,
@@ -22,10 +23,6 @@ import { getCustomId } from './base.ts';
 export const enum ContentType {
   PingRegistered = 0,
   Pinged = 1
-}
-
-function getPingableUserId(userId: string): string {
-  return `<@${userId}>`;
 }
 
 export function getContent(ping: Ping, contentType: ContentType): string {

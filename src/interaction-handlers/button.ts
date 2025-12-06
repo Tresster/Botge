@@ -8,9 +8,12 @@ import {
   TextInputBuilder,
   ModalBuilder,
   LabelBuilder,
+  type Client,
   type ButtonInteraction,
   type MessageActionRowComponentBuilder,
-  type ModalSubmitInteraction
+  type ModalSubmitInteraction,
+  type TextChannel,
+  type PermissionsBitField
 } from 'discord.js';
 
 import {
@@ -30,7 +33,10 @@ import {
   NEXT_BUTTON_BASE_CUSTOM_ID,
   JUMP_TO_BUTTON_BASE_CUSTOM_ID
 } from '../message-builders/base.ts';
-import { TwitchClipMessageBuilder } from '../message-builders/twitch-clip-message-builder.ts';
+import {
+  TwitchClipMessageBuilder,
+  SEND_CLIP_BUTTON_BASE_CUSTOM_ID
+} from '../message-builders/twitch-clip-message-builder.ts';
 import { EmoteMessageBuilder, DELETE_EMOTE_BUTTON_BASE_CUSTOM_ID } from '../message-builders/emote-message-builder.ts';
 import {
   MediaMessageBuilder,
@@ -91,7 +97,8 @@ export function buttonHandler(
   addedEmotesDatabase: Readonly<AddedEmotesDatabase>,
   permittedRoleIdsDatabase: Readonly<PermittedRoleIdsDatabase>,
   pingsDataBase: Readonly<PingsDatabase>,
-  mediaDatabase: Readonly<MediaDatabase>
+  mediaDatabase: Readonly<MediaDatabase>,
+  client: Client
 ) {
   return async (interaction: ButtonInteraction): Promise<EmoteMessageBuilder | undefined> => {
     try {
@@ -357,6 +364,43 @@ export function buttonHandler(
         // ! can't defer, when showing modal
         await interaction.showModal(messageBuilder.modal);
         return undefined;
+      } else if (baseCustomId === SEND_CLIP_BUTTON_BASE_CUSTOM_ID) {
+        const messageBuilder_ = messageBuilder as Readonly<TwitchClipMessageBuilder>;
+
+        const { channelId } = interaction;
+        let channel: TextChannel | undefined = undefined;
+
+        try {
+          channel = client.channels.cache.get(channelId) as TextChannel | undefined;
+          if (channel === undefined) throw new Error('Channel not found.');
+        } catch {
+          await interaction.deferUpdate();
+          return undefined;
+        }
+
+        const interactionGuild = interaction.guild;
+        if (interactionGuild === null) {
+          await interaction.deferUpdate();
+          return undefined;
+        }
+
+        const botPermissionsInChannel = ((): Readonly<PermissionsBitField> => {
+          if (user === undefined) throw new Error('Bot client user is empty.');
+
+          const botAsMember = interactionGuild.members.cache.get(user.id);
+          if (botAsMember === undefined) throw new Error('Bot is not in the guild.');
+
+          const botPermissionsInChannel_ = channel.permissionsFor(botAsMember);
+          return botPermissionsInChannel_;
+        })();
+
+        if (!botPermissionsInChannel.has('ViewChannel') || !botPermissionsInChannel.has('SendMessages')) {
+          await interaction.deferUpdate();
+          return undefined;
+        }
+
+        await channel.send({ ...messageBuilder_.currentWithSentBy(), allowedMentions: { repliedUser: false } });
+        reply = undefined;
       } else if (baseCustomId === DELETE_EMOTE_BUTTON_BASE_CUSTOM_ID) {
         const messageBuilder_ = messageBuilder as Readonly<EmoteMessageBuilder>;
         const { currentAddedEmote } = messageBuilder_;

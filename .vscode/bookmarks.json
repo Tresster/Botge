@@ -44,7 +44,7 @@
 					"label": "registerHandlers"
 				},
 				{
-					"line": 375,
+					"line": 376,
 					"column": 0,
 					"label": "functions"
 				}
@@ -134,52 +134,52 @@
 			"path": "src/interaction-handlers/button.ts",
 			"bookmarks": [
 				{
-					"line": 99,
+					"line": 106,
 					"column": 0,
 					"label": "CONFIGURATION_USER"
 				},
 				{
-					"line": 122,
+					"line": 129,
 					"column": 0,
 					"label": "PERMITTED_ROLES"
 				},
 				{
-					"line": 153,
+					"line": 160,
 					"column": 0,
 					"label": "ALLOW_EVERYONE_TO_ADD_EMOTE"
 				},
 				{
-					"line": 165,
+					"line": 172,
 					"column": 0,
 					"label": "ADDED_EMOTE_DELETION_MENU"
 				},
 				{
-					"line": 189,
+					"line": 196,
 					"column": 0,
 					"label": "CONFIGURATION_GUILD"
 				},
 				{
-					"line": 225,
+					"line": 232,
 					"column": 0,
 					"label": "messageBuilderType"
 				},
 				{
-					"line": 301,
+					"line": 308,
 					"column": 0,
 					"label": "messageBuilders"
 				},
 				{
-					"line": 333,
+					"line": 340,
 					"column": 0,
 					"label": "messageBuilder"
 				},
 				{
-					"line": 340,
+					"line": 347,
 					"column": 0,
 					"label": "reply"
 				},
 				{
-					"line": 434,
+					"line": 480,
 					"column": 0,
 					"label": "editReply"
 				}
@@ -349,37 +349,37 @@
 			"path": "src/message-builders/ping-for-ping-me-message-builder.ts",
 			"bookmarks": [
 				{
-					"line": 21,
+					"line": 22,
 					"column": 0,
 					"label": "enum"
 				},
 				{
-					"line": 26,
+					"line": 27,
 					"column": 0,
 					"label": "exportFunctions"
 				},
 				{
-					"line": 75,
+					"line": 73,
 					"column": 0,
 					"label": "BASE_CUSTOM_IDS"
 				},
 				{
-					"line": 80,
+					"line": 78,
 					"column": 0,
 					"label": "PingForPingMeMessageBuilder"
 				},
 				{
-					"line": 130,
+					"line": 128,
 					"column": 0,
 					"label": "row"
 				},
 				{
-					"line": 164,
+					"line": 162,
 					"column": 0,
 					"label": "functions"
 				},
 				{
-					"line": 294,
+					"line": 292,
 					"column": 0,
 					"label": "privateFunctions"
 				}

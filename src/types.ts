@@ -203,9 +203,8 @@ export type EmoteMessageBuilderTransformFunctionReturnType = {
 };
 
 export type TwitchClipMessageBuilderTransformFunctionReturnType = {
-  readonly content?: string;
-  readonly embeds?: readonly ReadonlyEmbedBuilder[];
-  readonly components: readonly ReadonlyActionRowBuilderMessageActionRowComponentBuilder[];
+  readonly content: string;
+  readonly components?: readonly ReadonlyActionRowBuilderMessageActionRowComponentBuilder[];
 };
 
 export type PingForPingMeMessageBuilderTransformFunctionReturnType = {

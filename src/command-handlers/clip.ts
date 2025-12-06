@@ -1,6 +1,6 @@
 /** @format */
 
-import type { ChatInputCommandInteraction } from 'discord.js';
+import { MessageFlags, type ChatInputCommandInteraction } from 'discord.js';
 
 import { TwitchClipMessageBuilder } from '../message-builders/twitch-clip-message-builder.ts';
 import { getOptionValue } from '../utils/get-option-value.ts';
@@ -23,6 +23,12 @@ const { EMBED_SERVER_TWITCH } = process.env;
 
 export function clipHandler(twitchClipMessageBuilders: TwitchClipMessageBuilder[]) {
   return async (interaction: ChatInputCommandInteraction, guild: Readonly<Guild>): Promise<void> => {
+    const ephemeral = getOptionValue(interaction, 'ephemeral', Boolean) ?? false;
+    if (ephemeral && interaction.guild === null) {
+      await interaction.reply({ content: 'Ephemeral cannot be used in DMs.', flags: MessageFlags.Ephemeral });
+      return;
+    }
+
     const { twitchClipsMeiliSearchIndex } = guild;
     if (twitchClipsMeiliSearchIndex === undefined) {
       void interaction.reply('clip command is not available in this server.');
@@ -35,7 +41,7 @@ export function clipHandler(twitchClipMessageBuilders: TwitchClipMessageBuilder[
       return;
     }
 
-    const defer = interaction.deferReply();
+    const defer = ephemeral ? interaction.deferReply({ flags: MessageFlags.Ephemeral }) : interaction.deferReply();
     try {
       const title = getOptionValue<string>(interaction, 'title')?.toLowerCase();
       const clipper = getOptionValue<string>(interaction, 'clipper');
@@ -85,7 +91,7 @@ export function clipHandler(twitchClipMessageBuilders: TwitchClipMessageBuilder[
         return;
       }
 
-      const twitchClipMessageBuilder = new TwitchClipMessageBuilder(interaction, hits, sortBy);
+      const twitchClipMessageBuilder = new TwitchClipMessageBuilder(interaction, hits, ephemeral);
       const reply = twitchClipMessageBuilder.first();
       await defer;
 

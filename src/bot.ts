@@ -340,7 +340,8 @@ export class Bot {
           this.#addedEmotesDatabase,
           this.#permittedRoleIdsDatabase,
           this.#pingsDatabase,
-          this.#mediaDatabase
+          this.#mediaDatabase,
+          this.#client
         )(interaction);
 
         if (emoteMessageBuilder !== undefined) this.#emoteMessageBuilders.push(emoteMessageBuilder);

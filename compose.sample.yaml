@@ -2,7 +2,7 @@
 
 services:
   nginx:
-    image: nginx:1.29.3-alpine
+    image: nginx:1.29.4-alpine
     mem_limit: 256m
     restart: always
     volumes:

@@ -1,6 +1,6 @@
 /** @format */
 
-// Copyright (c) 2025 Tresster. All rights reserved. Licensed under the MIT license.
+// Copyright (c) 2026 Tresster. All rights reserved. Licensed under the MIT license.
 // See LICENSE.txt in the project root for license information.
 
 /**

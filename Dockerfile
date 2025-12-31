@@ -30,7 +30,7 @@ RUN npm run build:production
 FROM base AS node
 WORKDIR /app
 LABEL org.opencontainers.image.title="Botge" \
-  org.opencontainers.image.version="2.8.1" \
+  org.opencontainers.image.version="2.8.2" \
   org.opencontainers.image.description="Search emotes, clips, use zero-width emotes and other such commands." \
   org.opencontainers.image.url="https://botge.gitbook.io" \
   org.opencontainers.image.source="https://github.com/Tresster/Botge" \

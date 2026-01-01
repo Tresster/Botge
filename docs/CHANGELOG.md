@@ -2,6 +2,47 @@
 
 # Changelog
 
+## [v2.8.2](https://github.com/Tresster/Botge/tree/v2.8.2) (2025-12-31)
+
+[Full Changelog](https://github.com/Tresster/Botge/compare/v2.8.1...v2.8.2)
+
+**Merged pull requests:**
+
+- Bump getmeili/meilisearch from v1.30 to v1.31 [\#102](https://github.com/Tresster/Botge/pull/102) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump docker/login-action from 65b78e6e13532edd9afa3aa52ac7964289d1a9c1 to 6862ffc5ab2cdb4405cf318a62a6f4c066e2298b [\#100](https://github.com/Tresster/Botge/pull/100) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump github/codeql-action from 4.31.8 to 4.31.9 [\#99](https://github.com/Tresster/Botge/pull/99) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump actions/attest-build-provenance from 3.0.0 to 3.1.0 [\#98](https://github.com/Tresster/Botge/pull/98) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump getmeili/meilisearch from v1.29 to v1.30 [\#97](https://github.com/Tresster/Botge/pull/97) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump github/codeql-action from 4.31.7 to 4.31.8 [\#96](https://github.com/Tresster/Botge/pull/96) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump nginx from 1.29.3-alpine to 1.29.4-alpine [\#95](https://github.com/Tresster/Botge/pull/95) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump getmeili/meilisearch from v1.28 to v1.29 [\#94](https://github.com/Tresster/Botge/pull/94) ([dependabot[bot]](https://github.com/apps/dependabot))
+
+## [v2.8.1](https://github.com/Tresster/Botge/tree/v2.8.1) (2025-12-06)
+
+[Full Changelog](https://github.com/Tresster/Botge/compare/v2.8.0...v2.8.1)
+
+**Implemented enhancements:**
+
+- think of 'decoration' type of additions [\#58](https://github.com/Tresster/Botge/issues/58)
+
+**Merged pull requests:**
+
+- Bump actions/checkout from 6.0.0 to 6.0.1 [\#93](https://github.com/Tresster/Botge/pull/93) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump github/codeql-action from 4.31.6 to 4.31.7 [\#92](https://github.com/Tresster/Botge/pull/92) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump getmeili/meilisearch from v1.25 to v1.28 [\#91](https://github.com/Tresster/Botge/pull/91) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump the npm_and_yarn group across 1 directory with 2 updates [\#90](https://github.com/Tresster/Botge/pull/90) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump github/codeql-action from 4.31.2 to 4.31.6 [\#89](https://github.com/Tresster/Botge/pull/89) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump docker/metadata-action from 8d8c7c12f7b958582a5cb82ba16d5903cb27976a to c299e40c65443455700f0fdfc63efafe5b349051 [\#88](https://github.com/Tresster/Botge/pull/88) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump typescript-eslint from 8.46.3 to 8.48.0 [\#87](https://github.com/Tresster/Botge/pull/87) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump prettier from 3.6.2 to 3.7.3 [\#86](https://github.com/Tresster/Botge/pull/86) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump openai from 6.8.1 to 6.9.1 [\#85](https://github.com/Tresster/Botge/pull/85) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump deepl-node from 1.21.0 to 1.22.0 [\#84](https://github.com/Tresster/Botge/pull/84) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump eslint-plugin-tsdoc from 0.4.0 to 0.5.0 [\#83](https://github.com/Tresster/Botge/pull/83) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump node from 25.2.0-alpine to 25.2.1-alpine [\#81](https://github.com/Tresster/Botge/pull/81) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump actions/checkout from 5.0.0 to 6.0.0 [\#80](https://github.com/Tresster/Botge/pull/80) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump node from 25.1.0-alpine to 25.2.0-alpine [\#76](https://github.com/Tresster/Botge/pull/76) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump getmeili/meilisearch from v1.24 to v1.25 [\#75](https://github.com/Tresster/Botge/pull/75) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [v2.8.0](https://github.com/Tresster/Botge/tree/v2.8.0) (2025-11-09)
 
 [Full Changelog](https://github.com/Tresster/Botge/compare/v2.7.2...v2.8.0)

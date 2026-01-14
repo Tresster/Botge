@@ -9,11 +9,12 @@ These instructions are for GitHub Copilot (chat and inline) when working in this
 - **Language:** TypeScript (Node.js)
 - **Domain:** Discord/Twitch bot with media/emote commands and Meilisearch integration.
 - **Entry points:**
-  - index.ts / bot.ts for bot startup and wiring.
-  - commands.ts for command registration/metadata.
+  - `src/index.ts` / `src/bot.ts` for bot startup and wiring.
+  - `src/commands.ts` for command registration/metadata.
   - `src/command-handlers/*` for command behavior.
   - `src/interaction-handlers/*` for interactions (buttons, autocomplete, modals, etc.).
   - `src/message-builders/*` for generating rich Discord messages.
+  - `src/message-create-handlers/*` for message-create event behavior.
   - `src/api/*` for external APIs (Twitch, Reddit, media, Meilisearch, etc.).
 - **Configuration:**
   - Root tsconfig.json with per-package `tsconfig` under src and tests.
@@ -27,18 +28,21 @@ When adding or updating behavior, follow existing patterns in these directories 
   - Use **TypeScript** everywhere in src and tests.
   - Respect existing **naming**, **folder structure**, and **module boundaries**.
   - Prefer **explicit types** for public functions and exported symbols.
+  - Avoid `any` and non-null assertions when a safe type or guard is possible.
   - Do **not** add license or copyright headers.
   - Use **readonly types** from `types.ts` when passing Discord.js or third-party objects (e.g., `ReadonlyEmbedBuilder`, `ReadonlyOpenAI`).
 
 - **Imports & Modules**
   - Keep import style consistent with nearby files (relative vs. root-based).
   - Group imports logically: built-ins, third-party, then local modules.
+  - This repo is **ESM** (`"type": "module"`): avoid `require`, CommonJS patterns, and default interop assumptions.
+  - Prefer Node built-ins via the `node:` prefix (e.g., `node:fs/promises`) to match existing style.
   - Always use **`.ts` extensions** in import statements (e.g., `import { foo } from './bar.ts'`).
 
 - **Error Handling**
   - Handle external API failures gracefully (Twitch, Reddit, HTTP, Meilisearch).
   - Avoid throwing in hot paths where a safe fallback is better (e.g., return an error message instead of crashing the bot).
-  - Use and extend existing utility functions in utils where appropriate.
+  - Use and extend existing utility functions in `src/utils/*` where appropriate.
 
 - **Logging**
   - Follow existing logging strategy (console/log helpers) rather than introducing new logging frameworks.
@@ -65,6 +69,9 @@ When making changes, try to fit into these patterns:
   - Use `src/message-builders/*` to construct Discord messages/embeds.
   - Don’t build complex message payloads inline inside handlers; prefer creating/updating message builder functions.
 
+- **Shared Utilities**
+  - Place reusable helpers under `src/utils/*` (or the matching `src/utils/<area>/*` folder) instead of duplicating logic across handlers.
+
 - **APIs**
   - External API usage should go through modules in `src/api/` or `src/utils/api/`.
   - When adding a new API call, centralize HTTP logic in an appropriate API or utils module instead of sprinkling `fetch`/`axios` calls throughout handlers.
@@ -85,9 +92,14 @@ When making changes, try to fit into these patterns:
 
 ## Tooling & CI
 
-- **Node.js:** Use Node.js v25.2.0 with npm >=11.6.2 (as specified in `package.json` engines).
+- **Node.js:** Use Node.js v25.2.1 with npm >=11.6.2 (as specified in `package.json` engines).
 - **TypeScript config:** Respect existing `tsconfig.json` files; avoid large structural changes unless explicitly requested.
 - **Linting:** Follow existing `eslint.config.ts` rules; don't introduce new style rules unless asked.
+- **Dev workflow:** Prefer existing npm scripts:
+  - `npm run build` / `npm run build:production`
+  - `npm test`
+  - `npm run eslint`
+  - `npm run prettier`
 - **Docker/Compose:** If a change affects runtime behavior (env vars, ports, external services), also update:
   - `Dockerfile`
   - `compose.yaml`

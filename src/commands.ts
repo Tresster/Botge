@@ -158,8 +158,8 @@ const chatgpt: ReadonlySlashCommandOptionsOnlyBuilder = new SlashCommandBuilder(
   .addStringOption((option: ReadonlySlashCommandStringOption) =>
     option
       .setName('instruction')
-      .setDescription('High-level instruction for controlling response. Default: no instruction')
-      .addChoices({ name: 'Be concise', value: 'Be concise.' })
+      .setDescription('High-level instruction for controlling response. Default: Be concise.')
+      .addChoices({ name: 'No instruction', value: 'No instruction.' })
   )
   .setContexts(InteractionContextType.Guild, InteractionContextType.PrivateChannel);
 

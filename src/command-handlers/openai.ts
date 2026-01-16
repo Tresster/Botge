@@ -29,7 +29,7 @@ export function chatgptHandler(openai: ReadonlyOpenAI | undefined) {
       const instructions = ((): string | undefined => {
         const instruction = getOptionValue<string>(interaction, 'instruction');
 
-        let instructions_ = instruction ?? '';
+        let instructions_ = instruction === 'No instruction.' ? '' : 'Be concise.';
         if (DISCORD_EMOJIS_JOINED !== undefined)
           instructions_ += ` You use ${DISCORD_EMOJIS_JOINED} frequently at the end of your sentences.`;
 
@@ -71,7 +71,7 @@ export function chatgptHandler(openai: ReadonlyOpenAI | undefined) {
 
       // ! 1 token is around 4 english characters
       const response = await openai.responses.create({
-        model: 'gpt-4.1',
+        model: 'gpt-5.2',
         input: input,
         max_output_tokens: 400,
         instructions: instructions ?? null,

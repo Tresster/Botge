@@ -143,7 +143,7 @@ export function messageContextMenuCommandHandler(
         })();
 
         const response = await openai.responses.create({
-          model: 'gpt-4.1',
+          model: 'gpt-5.2',
           input: input,
           max_output_tokens: 400,
           instructions: instructions,

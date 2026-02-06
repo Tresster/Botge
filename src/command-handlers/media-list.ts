@@ -37,9 +37,9 @@ async function getAllMediaWithTenorUrls(allMedia: readonly Media[]): Promise<rea
       await fetch(`https://tenor.googleapis.com/v2/posts?key=${TENOR_API_KEY}&ids=${idsJoined}&media_filter=tinygif`)
     ).json()) as TenorResponse;
 
-    tenorResponse.results.forEach((tenorResponseResult) =>
-      tenorUrls.push(tenorResponseResult.media_formats.tinygif.url)
-    );
+    tenorResponse.results.forEach((tenorResponseResult) => {
+      tenorUrls.push(tenorResponseResult.media_formats.tinygif.url);
+    });
   }
 
   let tenorUrlsIndex = 0;

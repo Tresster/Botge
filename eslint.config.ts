@@ -91,6 +91,7 @@ const config: readonly Config[] = defineConfig([
         }
       ],
       '@typescript-eslint/restrict-template-expressions': ['error', { allowNumber: true }],
+      '@typescript-eslint/strict-void-return': 'off', // generally useful.
 
       'eqeqeq': 'error',
       'strict': ['error', 'never'],

@@ -77,9 +77,9 @@ export function pingListHandler(
         pingForPingMeMessageBuilders,
         timezone
       );
-      pingForPingMeMessageBuilders.forEach((pingForPingMeMessageBuilder_: Readonly<PingForPingMeMessageBuilder>) =>
-        pingForPingMeMessageBuilder_.registerPing(pingsDataBase)
-      );
+      pingForPingMeMessageBuilders.forEach((pingForPingMeMessageBuilder_: Readonly<PingForPingMeMessageBuilder>) => {
+        pingForPingMeMessageBuilder_.registerPing(pingsDataBase);
+      });
       const reply = pingForPingListMessageBuilder.first();
       await defer;
 

@@ -81,7 +81,7 @@ export class BroadcasterNameAndPersonalEmoteSetsDatabase extends BaseDatabase {
     ) as readonly DatabaseBroadcasterNamesAndPersonalEmoteSets[];
     const map = new Map<string, readonly [string | null, PersonalEmoteSets]>();
 
-    databaseBroadcasterNamesAndPersonalEmoteSetsArray.forEach((databaseBroadcasterNamesAndPersonalEmoteSets) =>
+    databaseBroadcasterNamesAndPersonalEmoteSetsArray.forEach((databaseBroadcasterNamesAndPersonalEmoteSets) => {
       map.set(databaseBroadcasterNamesAndPersonalEmoteSets.guildId, [
         databaseBroadcasterNamesAndPersonalEmoteSets.broadcasterName,
         new PersonalEmoteSets(
@@ -89,8 +89,8 @@ export class BroadcasterNameAndPersonalEmoteSetsDatabase extends BaseDatabase {
           databaseBroadcasterNamesAndPersonalEmoteSets.bttv,
           databaseBroadcasterNamesAndPersonalEmoteSets.ffz
         )
-      ])
-    );
+      ]);
+    });
 
     return map;
   }

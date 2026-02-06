@@ -36,7 +36,9 @@ export class UsersDatabase extends BaseDatabase {
     const databaseUsers = this.getAll_(`SELECT userId, guildId FROM ${TABLE_NAME}`) as readonly DatabaseUser[];
     const map = new Map<string, readonly [string]>();
 
-    databaseUsers.forEach((databaseUser) => map.set(databaseUser.userId, [databaseUser.guildId]));
+    databaseUsers.forEach((databaseUser) => {
+      map.set(databaseUser.userId, [databaseUser.guildId]);
+    });
 
     return map;
   }
